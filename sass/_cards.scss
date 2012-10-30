@@ -1,0 +1,101 @@
+.card {
+  @include border-radius(0.5em);
+  @include single-box-shadow(rgba(0, 0, 0, 0.5), 0, 0, 0.5em);
+  background-color: #fff;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  float: left;
+  height: 14em;
+  margin: 20px;
+  position: relative;
+  width: 10em;
+
+  &.heart,
+  &.diamond {
+    color: #df0000;
+  }
+
+  .corner {
+    //display: none;
+    line-height: 1;
+    position: absolute;
+    text-align: center;
+
+    span {
+      display: block;
+      font-size: 1.5em;
+    }
+
+    .number {
+      font-size: 1.4em;
+      font-weight: bold;
+    }
+
+    &.top {
+      left: 0.4em;
+      top: 0.5em;
+    }
+
+    &.bottom {
+      @include rotate(180deg);
+      bottom: 0.5em;
+      right: 0.4em;
+    }
+  }
+
+  &.ten .corner .number {
+    font-size: 1.3em;
+  }
+
+  .suit {
+    border: 1px dashed silver;
+    font-size: 3em;
+    font-weight: normal;
+    height: 1em;
+    position: absolute;
+    text-align: center;
+    width: 1em;
+
+    &.top {
+      top: 0.3em;
+    }
+
+    &.under-top {
+      top: 0.9em;
+    }
+
+    &.over-middle {
+      top: 1.3em;
+    }
+
+    &.middle {
+      top: 1.8em;
+    }
+
+    &.under-middle {
+      @include rotate(180deg);
+      bottom: 1.3em;
+    }
+
+    &.over-bottom {
+      @include rotate(180deg);
+      bottom: 0.9em;
+    }
+
+    &.bottom {
+      @include rotate(180deg);
+      bottom: 0.3em;
+    }
+
+    &.left {
+      left: 0.5em;
+    }
+
+    &.center {
+      left: 1.16em;
+    }
+
+    &.right {
+      right: 0.5em;
+    }
+  }
+}

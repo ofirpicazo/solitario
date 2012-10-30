@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" />
+
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
+
+  <title>Solitario</title>
+
+  <!-- Included CSS Files -->
+  <link rel="stylesheet" href="stylesheets/app.css">
+
+  <script src="javascripts/foundation/modernizr.foundation.js"></script>
+
+  <!-- IE Fix for HTML5 Tags -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+</head>
+<body>
+  <div class="top-row">
+    <div class="stock">
+      stock
+    </div>
+
+    <div class="waste">
+      waste
+    </div>
+
+    <div class="foundation">
+      <div class="pile"></div>
+      <div class="pile"></div>
+      <div class="pile"></div>
+      <div class="pile"></div>
+    </div>
+  </div>
+
+  <div class="tableux">
+    <div class="tableu">
+      <div class="card diamond">
+        <div class="corner top">
+          <span class="number">A</span>
+          <span>♦</span>
+        </div>
+        <span class="suit middle center">♦</span>
+        <div class="corner bottom">
+          <span class="number">A</span>
+          <span>♦</span>
+        </div>
+      </div>
+      <div class="card club">
+        <div class="corner top">
+          <span class="number">2</span>
+          <span>♣</span>
+        </div>
+        <span class="suit top center">♣</span>
+        <span class="suit bottom center">♣</span>
+        <div class="corner bottom">
+          <span class="number">2</span>
+          <span>♣</span>
+        </div>
+      </div>
+      <div class="card club ten">
+        <div class="corner top">
+          <span class="number">10</span>
+          <span>♣</span>
+        </div>
+        <span class="suit top left">♣</span>
+        <span class="suit top right">♣</span>
+        <span class="suit under-top center">♣</span>
+        <span class="suit over-middle left">♣</span>
+        <span class="suit over-middle right">♣</span>
+        <span class="suit under-middle left">♣</span>
+        <span class="suit under-middle right">♣</span>
+        <span class="suit over-bottom center">♣</span>
+        <span class="suit bottom left">♣</span>
+        <span class="suit bottom right">♣</span>
+        <div class="corner bottom">
+          <span class="number">10</span>
+          <span>♣</span>
+        </div>
+      </div>
+    </div>
+    <div class="tableu"></div>
+    <div class="tableu"></div>
+    <div class="tableu"></div>
+    <div class="tableu"></div>
+    <div class="tableu"></div>
+    <div class="tableu"></div>
+    <div class="tableu"></div>
+  </div>
+
+</body>
+</html>
