@@ -1,101 +1,135 @@
+@import "compass/css3/user-interface";
+
 .card {
-  @include border-radius(0.5em);
-  @include single-box-shadow(rgba(0, 0, 0, 0.5), 0, 0, 0.5em);
-  background-color: #fff;
+  @include perspective(1000);
+  @include user-select(none);
+  cursor: auto;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  float: left;
   height: 14em;
-  margin: 20px;
-  position: relative;
   width: 10em;
+
+  &:hover .flipper,
+  &.flipped {
+    @include rotateY(180deg);
+  }
+
+  .flipper {
+    @include transition-duration(0.4s);
+    @include transition-timing-function(ease-out);
+    @include transform-style(preserve-3d);
+    position: relative;
+  }
 
   &.heart,
   &.diamond {
     color: #df0000;
   }
 
-  .corner {
-    //display: none;
-    line-height: 1;
+  .front {
+    @include backface-visibility(hidden);
+    @include border-radius(0.5em);
+    @include single-box-shadow(rgba(0, 0, 0, 0.5), 0, 0, 0.5em);
+    background-color: #fff;
+    height: 14em;
+    left: 0;
     position: absolute;
-    text-align: center;
+    top: 0;
+    width: 10em;
+    z-index: 2;
 
-    span {
-      display: block;
-      font-size: 1.5em;
+    .corner {
+      //display: none;
+      line-height: 1;
+      position: absolute;
+      text-align: center;
+
+      span {
+        display: block;
+        font-size: 1.5em;
+      }
+
+      .number {
+        font-size: 1.4em;
+        font-weight: bold;
+      }
+
+      &.top {
+        left: 0.4em;
+        top: 0.5em;
+      }
+
+      &.bottom {
+        @include rotate(180deg);
+        bottom: 0.5em;
+        right: 0.4em;
+      }
     }
 
-    .number {
-      font-size: 1.4em;
-      font-weight: bold;
-    }
+    .suit {
+      border: 1px dashed silver;
+      font-size: 3em;
+      font-weight: normal;
+      height: 1em;
+      position: absolute;
+      text-align: center;
+      width: 1em;
 
-    &.top {
-      left: 0.4em;
-      top: 0.5em;
-    }
+      &.top {
+        top: 0.3em;
+      }
 
-    &.bottom {
-      @include rotate(180deg);
-      bottom: 0.5em;
-      right: 0.4em;
+      &.under-top {
+        top: 1em;
+      }
+
+      &.over-middle {
+        top: 1.3em;
+      }
+
+      &.middle {
+        top: 1.8em;
+      }
+
+      &.under-middle {
+        @include rotate(180deg);
+        bottom: 1.3em;
+      }
+
+      &.over-bottom {
+        @include rotate(180deg);
+        bottom: 1em;
+      }
+
+      &.bottom {
+        @include rotate(180deg);
+        bottom: 0.3em;
+      }
+
+      &.left {
+        left: 0.5em;
+      }
+
+      &.center {
+        left: 1.16em;
+      }
+
+      &.right {
+        right: 0.5em;
+      }
     }
   }
 
-  &.ten .corner .number {
-    font-size: 1.3em;
-  }
-
-  .suit {
-    border: 1px dashed silver;
-    font-size: 3em;
-    font-weight: normal;
-    height: 1em;
+  .back {
+    @include backface-visibility(hidden);
+    @include border-radius(0.5em);
+    @include single-box-shadow(rgba(0, 0, 0, 0.5), 0, 0, 0.5em);
+    @include rotateY(180deg);
+    background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAATElEQVQYV2O0O3X+PwMQHDIzZATRuAAj0QqxmfDghh3YFgWNQ3BbsFpHtEJstjBWnIdY02GIsIYyhdh0f5oZB7aFL30Rfs8QrRCbLQDvfSALXdnbSgAAAABJRU5ErkJggg==);
+    height: 14em;
+    left: 0;
     position: absolute;
-    text-align: center;
-    width: 1em;
-
-    &.top {
-      top: 0.3em;
-    }
-
-    &.under-top {
-      top: 0.9em;
-    }
-
-    &.over-middle {
-      top: 1.3em;
-    }
-
-    &.middle {
-      top: 1.8em;
-    }
-
-    &.under-middle {
-      @include rotate(180deg);
-      bottom: 1.3em;
-    }
-
-    &.over-bottom {
-      @include rotate(180deg);
-      bottom: 0.9em;
-    }
-
-    &.bottom {
-      @include rotate(180deg);
-      bottom: 0.3em;
-    }
-
-    &.left {
-      left: 0.5em;
-    }
-
-    &.center {
-      left: 1.16em;
-    }
-
-    &.right {
-      right: 0.5em;
-    }
+    top: 0;
+    width: 10em;
+    z-index: 1;
   }
 }
