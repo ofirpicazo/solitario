@@ -3,19 +3,21 @@
 }
 
 body {
-  background: image-url("bg.jpg") left top;
-  font-size: 16px;
+  background: image-url("felt.jpg") left top;
+  font-size: 17px;
 }
 
 .stock,
+.foundation,
 .waste {
+  display: inline-block;
   height: 14em;
 }
 
-.pile,
+.foundation,
 .stock,
 .tableu,
 .waste {
   display: inline-block;
-  width: 14.2%;
+  width: 14%;
 }
