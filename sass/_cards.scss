@@ -1,14 +1,17 @@
 @import "compass/css3/user-interface";
 
 $card-color: #F5F5F5;
+$card-height: 14em;
+$card-shadow-color: #DDD;
+$card-width: 10em;
 
 .card {
   @include perspective(1000);
   @include user-select(none);
   cursor: auto;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  height: 14em;
-  width: 10em;
+  height: $card-height;
+  width: $card-width;
 
   &:hover .flipper,
   &.flipped .flipper {
@@ -27,16 +30,20 @@ $card-color: #F5F5F5;
     color: #df0000;
   }
 
-  .front {
+  %card-side {
     @include backface-visibility(hidden);
     @include border-radius(0.5em);
     @include single-box-shadow(rgba(0, 0, 0, 0.5), 0, 0, 0.5em);
-    background-color: $card-color;
-    height: 14em;
+    height: $card-height;
     left: 0;
     position: absolute;
     top: 0;
-    width: 10em;
+    width: $card-width;
+  }
+
+  .front {
+    @extend %card-side;
+    @include background-image(linear-gradient(left top, $card-color 50%, $card-shadow-color 100%));
     z-index: 2;
 
     .corner {
@@ -120,18 +127,11 @@ $card-color: #F5F5F5;
   }
 
   .back {
-    @include backface-visibility(hidden);
-    @include border-radius(0.5em);
-    @include single-box-shadow(rgba(0, 0, 0, 0.5), 0, 0, 0.5em);
+    @extend %card-side;
     @include rotateY(180deg);
     // http://ptrn.it/TZjjc4
     background: $card-color url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAS0lEQVQYV2NkgAIW+57/MDYy/edgCSOIDyZwKYYpAisEmYQsADMZXQysEKQDJoFLI1whzHpspsOtJqQIRSG6SchOIc0zRAcPsQEOAOC2Qt8fLssgAAAAAElFTkSuQmCC);
-    border: 1px solid #666;
-    height: 14em;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 10em;
+    border: 5px solid $card-color;
     z-index: 1;
   }
 }

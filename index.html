@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 
-<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<html lang="en">
 <head>
   <meta charset="utf-8" />
 
@@ -16,16 +12,9 @@
   <!-- Included CSS Files -->
   <link rel="stylesheet" href="stylesheets/app.css">
 
-  <script src="javascripts/foundation/modernizr.foundation.js"></script>
-
-  <!-- IE Fix for HTML5 Tags -->
-  <!--[if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-
 </head>
 <body>
-  <div class="top-piles">
+  <div class="piles">
     <div class="stock">
       <div class="card diamond">
         <div class="flipper">
@@ -53,7 +42,7 @@
     </div>
 
     <div class="waste">
-      <div class="card club ten">
+      <div class="card club">
         <div class="flipper">
           <div class="front">
             <div class="corner top">
@@ -79,84 +68,86 @@
       </div>
     </div>
 
-    <div class="foundation">
-      <div class="card club ten">
-        <div class="flipper">
-          <div class="front">
-            <div class="corner top">
-              <span class="number">10</span>
-              <span>♣</span>
+    <div class="foundations">
+      <div class="foundation" id="foundation-1">
+        <div class="card club ten">
+          <div class="flipper">
+            <div class="front">
+              <div class="corner top">
+                <span class="number">10</span>
+                <span>♣</span>
+              </div>
+              <span class="suit top left">♣</span>
+              <span class="suit top right">♣</span>
+              <span class="suit under-top center">♣</span>
+              <span class="suit over-middle left">♣</span>
+              <span class="suit over-middle right">♣</span>
+              <span class="suit under-middle left">♣</span>
+              <span class="suit under-middle right">♣</span>
+              <span class="suit over-bottom center">♣</span>
+              <span class="suit bottom left">♣</span>
+              <span class="suit bottom right">♣</span>
+              <div class="corner bottom">
+                <span class="number">10</span>
+                <span>♣</span>
+              </div>
             </div>
-            <span class="suit top left">♣</span>
-            <span class="suit top right">♣</span>
-            <span class="suit under-top center">♣</span>
-            <span class="suit over-middle left">♣</span>
-            <span class="suit over-middle right">♣</span>
-            <span class="suit under-middle left">♣</span>
-            <span class="suit under-middle right">♣</span>
-            <span class="suit over-bottom center">♣</span>
-            <span class="suit bottom left">♣</span>
-            <span class="suit bottom right">♣</span>
-            <div class="corner bottom">
-              <span class="number">10</span>
-              <span>♣</span>
-            </div>
+            <div class="back"></div>
           </div>
-          <div class="back"></div>
         </div>
       </div>
-    </div>
-    <div class="foundation">
-      <div class="card diamond">
-        <div class="flipper">
-          <div class="front">
-            <div class="corner top">
-              <span class="number">J</span>
-              <span>♦</span>
+      <div class="foundation" id="foundation-2">
+        <div class="card diamond">
+          <div class="flipper">
+            <div class="front">
+              <div class="corner top">
+                <span class="number">J</span>
+                <span>♦</span>
+              </div>
+              <span class="suit middle center">♦</span>
+              <div class="corner bottom">
+                <span class="number">J</span>
+                <span>♦</span>
+              </div>
             </div>
-            <span class="suit middle center">♦</span>
-            <div class="corner bottom">
-              <span class="number">J</span>
-              <span>♦</span>
-            </div>
+            <div class="back"></div>
           </div>
-          <div class="back"></div>
         </div>
       </div>
-    </div>
-    <div class="foundation">
-      <div class="card diamond">
-        <div class="flipper">
-          <div class="front">
-            <div class="corner top">
-              <span class="number">Q</span>
-              <span>♦</span>
+      <div class="foundation" id="foundation-3">
+        <div class="card diamond">
+          <div class="flipper">
+            <div class="front">
+              <div class="corner top">
+                <span class="number">Q</span>
+                <span>♦</span>
+              </div>
+              <span class="suit middle center">♦</span>
+              <div class="corner bottom">
+                <span class="number">Q</span>
+                <span>♦</span>
+              </div>
             </div>
-            <span class="suit middle center">♦</span>
-            <div class="corner bottom">
-              <span class="number">Q</span>
-              <span>♦</span>
-            </div>
+            <div class="back"></div>
           </div>
-          <div class="back"></div>
         </div>
       </div>
-    </div>
-    <div class="foundation">
-      <div class="card diamond">
-        <div class="flipper">
-          <div class="front">
-            <div class="corner top">
-              <span class="number">K</span>
-              <span>♦</span>
+      <div class="foundation" id="foundation-4">
+        <div class="card diamond">
+          <div class="flipper">
+            <div class="front">
+              <div class="corner top">
+                <span class="number">K</span>
+                <span>♦</span>
+              </div>
+              <span class="suit middle center">♦</span>
+              <div class="corner bottom">
+                <span class="number">K</span>
+                <span>♦</span>
+              </div>
             </div>
-            <span class="suit middle center">♦</span>
-            <div class="corner bottom">
-              <span class="number">K</span>
-              <span>♦</span>
-            </div>
+            <div class="back"></div>
           </div>
-          <div class="back"></div>
         </div>
       </div>
     </div>

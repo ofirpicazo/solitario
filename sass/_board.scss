@@ -1,23 +1,54 @@
+$pile-height: 14em;
+$pile-width: 10em;
+
 * {
   @include box-sizing(border-box);
 }
 
 body {
   background: image-url("felt.jpg") left top;
-  font-size: 17px;
+  font-size: 16px;
+  margin: 1em;
+}
+
+.piles {
+  height: $pile-height + 1;
+  position: relative;
+  top: 0;
+  width: 100%;
+}
+
+%pile {
+  @include box-sizing(content-box);
+  @include border-radius(0.5em);
+  @include single-box-shadow(rgba(0, 0, 0, 0.8), 0, 0, 0.5em, false, true);
+  display: block;
+  float: left;
+  margin-left: 1em;
+  margin-right: 1em;
+  min-height: $pile-height;
+  width: $pile-width;
 }
 
 .stock,
 .foundation,
 .waste {
-  display: inline-block;
-  height: 14em;
+  @extend %pile;
+  height: $pile-height;
 }
 
-.foundation,
-.stock,
-.tableu,
-.waste {
-  display: inline-block;
-  width: 14%;
+.tableu {
+  @extend %pile;
+}
+
+.foundations {
+  position: absolute;
+  left: ($pile-width * 3) + 6; // + 3 to account for margin.
+  top: 0;
+}
+
+.tableux {
+  position: relative;
+  top: 4em;
+  width: 100%;
 }
