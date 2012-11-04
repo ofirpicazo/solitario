@@ -14,7 +14,7 @@ $card-width: 10em;
   width: $card-width;
 
   &:hover .flipper,
-  &.flipped .flipper {
+  &.revealed .flipper {
     @include rotateY(180deg);
   }
 
@@ -44,7 +44,8 @@ $card-width: 10em;
   .front {
     @extend %card-side;
     @include background-image(linear-gradient(left top, $card-color 50%, $card-shadow-color 100%));
-    z-index: 2;
+    @include rotateY(180deg);
+    z-index: 1;
 
     .corner {
       line-height: 1;
@@ -128,10 +129,9 @@ $card-width: 10em;
 
   .back {
     @extend %card-side;
-    @include rotateY(180deg);
     // http://ptrn.it/TZjjc4
     background: $card-color url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAS0lEQVQYV2NkgAIW+57/MDYy/edgCSOIDyZwKYYpAisEmYQsADMZXQysEKQDJoFLI1whzHpspsOtJqQIRSG6SchOIc0zRAcPsQEOAOC2Qt8fLssgAAAAAElFTkSuQmCC);
     border: 5px solid $card-color;
-    z-index: 1;
+    z-index: 2;
   }
 }

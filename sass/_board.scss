@@ -1,5 +1,6 @@
 $pile-height: 14em;
 $pile-width: 10em;
+$pile-size: $pile-width + 2; // 1em of padding.on each side.
 
 * {
   @include box-sizing(border-box);
@@ -22,6 +23,7 @@ body {
   @include box-sizing(content-box);
   @include border-radius(0.5em);
   @include single-box-shadow(rgba(0, 0, 0, 0.8), 0, 0, 0.5em, false, true);
+  background-color: rgba(255, 255, 255, 0.1);
   display: block;
   float: left;
   margin-left: 1em;
@@ -43,12 +45,13 @@ body {
 
 .foundations {
   position: absolute;
-  left: ($pile-width * 3) + 6; // + 3 to account for margin.
+  left: $pile-size * 3;
   top: 0;
+  width: $pile-size * 4;
 }
 
 .tableux {
   position: relative;
   top: 4em;
-  width: 100%;
+  width: $pile-size * 7;
 }
