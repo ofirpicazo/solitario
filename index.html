@@ -10,13 +10,14 @@
   <title>Solitario</title>
 
   <!-- Included CSS Files -->
-  <link rel="stylesheet" href="stylesheets/app.css">
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="css/app.css">
+  <script src="js/goog/base.js"></script>
+  <script src="js/solitario/app.js"></script>
   <script>
-  $(document).ready(function() {
-    $(".card").draggable();
-  });
+    (function (window, undefined) {
+      'use strict';
+      solitario.init();
+    })(this);
   </script>
 </head>
 <body>
