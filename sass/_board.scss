@@ -1,6 +1,7 @@
+$board-margin: 1em;
 $pile-height: 14em;
 $pile-width: 10em;
-$pile-size: $pile-width + 2; // 1em of padding.on each side.
+$pile-left-offset: $pile-width + 2em; // 1em of padding on each side.
 
 * {
   @include box-sizing(border-box);
@@ -9,49 +10,56 @@ $pile-size: $pile-width + 2; // 1em of padding.on each side.
 body {
   background: image-url("felt.jpg") left top;
   font-size: 16px;
-  margin: 1em;
-}
-
-.piles {
-  height: $pile-height + 1;
   position: relative;
-  top: 0;
-  width: 100%;
 }
 
-%pile {
+.pile {
   @include box-sizing(content-box);
   @include border-radius(0.5em);
   @include single-box-shadow(rgba(0, 0, 0, 0.8), 0, 0, 0.5em, false, true);
   background-color: rgba(255, 255, 255, 0.1);
   display: block;
-  float: left;
-  margin-left: 1em;
-  margin-right: 1em;
-  min-height: $pile-height;
+  height: $pile-height;
+  position: absolute;
   width: $pile-width;
+  z-index: 1;
 }
 
-.stock,
-.foundation,
-.waste {
-  @extend %pile;
-  height: $pile-height;
+%top-row {
+  top: $board-margin;
+}
+
+%bottom-row {
+  top: $pile-height + 4em;
+}
+
+#stock {
+  @extend %top-row;
+  left: $board-margin;
+}
+
+#waste {
+  @extend %top-row;
+  left: $board-margin + $pile-left-offset;
+}
+
+.foundation {
+  @extend %top-row;
 }
 
 .tableu {
-  @extend %pile;
+  @extend %bottom-row;
 }
 
-.foundations {
-  position: absolute;
-  left: $pile-size * 3;
-  top: 0;
-  width: $pile-size * 4;
+@for $i from 1 through 4 {
+  $left-offset: $pile-left-offset * 3;
+  #foundation-#{$i} {
+    left: $board-margin + $left-offset + ($pile-left-offset * ($i - 1));
+  }
 }
 
-.tableux {
-  position: relative;
-  top: 4em;
-  width: $pile-size * 7;
+@for $i from 1 through 7 {
+  #tableu-#{$i} {
+    left: $board-margin + ($pile-left-offset * ($i - 1));
+  }
 }

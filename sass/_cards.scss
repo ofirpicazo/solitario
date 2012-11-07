@@ -8,12 +8,15 @@ $card-width: 10em;
 .card {
   @include perspective(1000);
   @include user-select(none);
-  cursor: auto;
+  cursor: default;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   height: $card-height;
+  left: 0;
+  position: absolute;
+  top: 0;
   width: $card-width;
+  z-index: 10;
 
-  &:hover .flipper,
   &.revealed .flipper {
     @include rotateY(180deg);
   }
@@ -33,7 +36,6 @@ $card-width: 10em;
   %card-side {
     @include backface-visibility(hidden);
     @include border-radius(0.5em);
-    @include single-box-shadow(rgba(0, 0, 0, 0.5), 0, 0, 0.5em);
     height: $card-height;
     left: 0;
     position: absolute;
@@ -41,11 +43,16 @@ $card-width: 10em;
     width: $card-width;
   }
 
+  &.ui-draggable-dragging %card-side {
+    @include single-box-shadow(rgba(0, 0, 0, 0.5), 0, 0, 0.5em);
+  }
+
   .front {
     @extend %card-side;
+    background-color: $card-color;
     @include background-image(linear-gradient(left top, $card-color 50%, $card-shadow-color 100%));
     @include rotateY(180deg);
-    z-index: 1;
+    z-index: 20;
 
     .corner {
       line-height: 1;
@@ -132,6 +139,6 @@ $card-width: 10em;
     // http://ptrn.it/TZjjc4
     background: $card-color url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAS0lEQVQYV2NkgAIW+57/MDYy/edgCSOIDyZwKYYpAisEmYQsADMZXQysEKQDJoFLI1whzHpspsOtJqQIRSG6SchOIc0zRAcPsQEOAOC2Qt8fLssgAAAAAElFTkSuQmCC);
     border: 5px solid $card-color;
-    z-index: 2;
+    z-index: 30;
   }
 }
