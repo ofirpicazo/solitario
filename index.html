@@ -11,14 +11,9 @@
 
   <!-- Included CSS Files -->
   <link rel="stylesheet" href="css/app.css">
-  <script src="js/goog/base.js"></script>
-  <script src="js/solitario/app.js"></script>
-  <script>
-    (function (window, undefined) {
-      'use strict';
-      solitario.init();
-    })(this);
-  </script>
+  <!-- <script src="js/goog/base.js"></script>
+  <script src="js/solitario/init.js"></script> -->
+  <script src="js/app.js"></script>
 </head>
 <body>
   <div class="pile" id="stock"></div>
@@ -1101,5 +1096,11 @@
     </div>
   </div>
 
+  <script>
+    (function (window, undefined) {
+      'use strict';
+      solitario.init();
+    })(this);
+  </script>
 </body>
 </html>

@@ -1,34 +1,4 @@
-;(function ($, window, undefined) {
-  'use strict';
-
-  var $doc = $(document),
-      Modernizr = window.Modernizr;
-
-  $.fn.foundationAlerts           ? $doc.foundationAlerts() : null;
-  $.fn.foundationButtons          ? $doc.foundationButtons() : null;
-  $.fn.foundationAccordion        ? $doc.foundationAccordion() : null;
-  $.fn.foundationNavigation       ? $doc.foundationNavigation() : null;
-  $.fn.foundationTopBar           ? $doc.foundationTopBar() : null;
-  $.fn.foundationCustomForms      ? $doc.foundationCustomForms() : null;
-  $.fn.foundationMediaQueryViewer ? $doc.foundationMediaQueryViewer() : null;
-  $.fn.foundationTabs             ? $doc.foundationTabs({callback : $.foundation.customForms.appendCustomMarkup}) : null;
-  $.fn.foundationTooltips         ? $doc.foundationTooltips() : null;
-
-  $('input, textarea').placeholder();
-
-  // UNCOMMENT THE LINE YOU WANT BELOW IF YOU WANT IE8 SUPPORT AND ARE USING .block-grids
-  // $('.block-grid.two-up>li:nth-child(2n+1)').css({clear: 'both'});
-  // $('.block-grid.three-up>li:nth-child(3n+1)').css({clear: 'both'});
-  // $('.block-grid.four-up>li:nth-child(4n+1)').css({clear: 'both'});
-  // $('.block-grid.five-up>li:nth-child(5n+1)').css({clear: 'both'});
-
-  // Hide address bar on mobile devices
-  if (Modernizr.touch) {
-    $(window).load(function () {
-      setTimeout(function () {
-        window.scrollTo(0, 1);
-      }, 0);
-    });
-  }
-
-})(jQuery, this);
+var c=this;var d,e,f,h;function i(){return c.navigator?c.navigator.userAgent:null}h=f=e=d=!1;var j;if(j=i()){var k=c.navigator;d=0==j.indexOf("Opera");e=!d&&-1!=j.indexOf("MSIE");f=!d&&-1!=j.indexOf("WebKit");h=!d&&!f&&"Gecko"==k.product}var l=e,m=h,n=f;function r(){var g=c.document;return g?g.documentMode:void 0}var s;
+a:{var t="",u;if(d&&c.opera)var v=c.opera.version,t="function"==typeof v?v():v;else if(m?u=/rv\:([^\);]+)(\)|;)/:l?u=/MSIE\s+([^\);]+)(\)|;)/:n&&(u=/WebKit\/(\S+)/),u)var w=u.exec(i()),t=w?w[1]:"";if(l){var x=r();if(x>parseFloat(t)){s=String(x);break a}}s=t}var y={};
+function z(g){if(!y[g]){for(var p=0,D=String(s).replace(/^[\s\xa0]+|[\s\xa0]+$/g,"").split("."),E=String(g).replace(/^[\s\xa0]+|[\s\xa0]+$/g,"").split("."),J=Math.max(D.length,E.length),q=0;0==p&&q<J;q++){var K=D[q]||"",L=E[q]||"",M=RegExp("(\\d*)(\\D*)","g"),N=RegExp("(\\d*)(\\D*)","g");do{var a=M.exec(K)||["","",""],b=N.exec(L)||["","",""];if(0==a[0].length&&0==b[0].length)break;p=((0==a[1].length?0:parseInt(a[1],10))<(0==b[1].length?0:parseInt(b[1],10))?-1:(0==a[1].length?0:parseInt(a[1],10))>
+(0==b[1].length?0:parseInt(b[1],10))?1:0)||((0==a[2].length)<(0==b[2].length)?-1:(0==a[2].length)>(0==b[2].length)?1:0)||(a[2]<b[2]?-1:a[2]>b[2]?1:0)}while(0==p)}y[g]=0<=p}}var A=c.document,B=!A||!l?void 0:r()||("CSS1Compat"==A.compatMode?parseInt(s,10):5);if(m||l){var C;if(C=l)C=l&&9<=B;C||m&&z("1.9.1")}l&&z("9");function F(){window.console.debug(document.getElementById("sk"))}var G=["solitario","init"],H=c;!(G[0]in H)&&H.execScript&&H.execScript("var "+G[0]);for(var I;G.length&&(I=G.shift());){var O;if(O=!G.length)O=void 0!==F;O?H[I]=F:H=H[I]?H[I]:H[I]={}};

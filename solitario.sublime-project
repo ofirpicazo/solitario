@@ -1,0 +1,30 @@
+{
+  "folders":
+  [
+    {
+      "path": "/Users/ofirp/Documents/work/solitario",
+      "folder_exclude_patterns": [
+          ".sass-cache"
+       ],
+       "file_exclude_patterns": [
+          "solitario.sublime-workspace"
+       ]
+    }
+  ],
+  "build_systems":
+  [
+      {
+        "name": "Closure compiler",
+        "cmd": [
+          "/Users/ofirp/src/closure-library/closure/bin/build/closurebuilder.py",
+          "--root=/Users/ofirp/src/closure-library/",
+          "--root=${project_path}/js/",
+          "--input=${project_path}/js/solitario/init.js",
+          "--output_mode=compiled",
+          "--compiler_jar=/Users/ofirp/bin/closure-compiler.jar",
+          "--compiler_flags=--compilation_level=ADVANCED_OPTIMIZATIONS",
+          "--output_file=${project_path}/js/app.js"
+        ]
+      }
+  ]
+}
