@@ -24,7 +24,8 @@
           "--compiler_jar=/Users/ofirp/bin/closure-compiler.jar",
           "--compiler_flags=--compilation_level=ADVANCED_OPTIMIZATIONS",
           "--output_file=${project_path}/js/app.js"
-        ]
+        ],
+        "selector": "source.js"
       }
   ]
 }
