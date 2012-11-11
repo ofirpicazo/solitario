@@ -12,7 +12,7 @@ SUIT_MAP = {
 }
 
 templateA = """
-<div class="card %(suit)s" id="%(id)s">
+<div class="card %(suit)s" id="%(id)s" data-suit="%(suit)s" data-number="%(number)s">
   <div class="flipper">
     <div class="front">
       <div class="corner top">
@@ -30,7 +30,7 @@ templateA = """
 </div>"""
 
 template2 = """
-<div class="card %(suit)s" id="%(id)s">
+<div class="card %(suit)s" id="%(id)s" data-suit="%(suit)s" data-number="%(number)s">
   <div class="flipper">
     <div class="front">
       <div class="corner top">
@@ -49,7 +49,7 @@ template2 = """
 </div>"""
 
 template3 = """
-<div class="card %(suit)s" id="%(id)s">
+<div class="card %(suit)s" id="%(id)s" data-suit="%(suit)s" data-number="%(number)s">
   <div class="flipper">
     <div class="front">
       <div class="corner top">
@@ -69,7 +69,7 @@ template3 = """
 </div>"""
 
 template4 = """
-<div class="card %(suit)s" id="%(id)s">
+<div class="card %(suit)s" id="%(id)s" data-suit="%(suit)s" data-number="%(number)s">
   <div class="flipper">
     <div class="front">
       <div class="corner top">
@@ -90,7 +90,7 @@ template4 = """
 </div>"""
 
 template5 = """
-<div class="card %(suit)s" id="%(id)s">
+<div class="card %(suit)s" id="%(id)s" data-suit="%(suit)s" data-number="%(number)s">
   <div class="flipper">
     <div class="front">
       <div class="corner top">
@@ -112,7 +112,7 @@ template5 = """
 </div>"""
 
 template6 = """
-<div class="card %(suit)s" id="%(id)s">
+<div class="card %(suit)s" id="%(id)s" data-suit="%(suit)s" data-number="%(number)s">
   <div class="flipper">
     <div class="front">
       <div class="corner top">
@@ -135,7 +135,7 @@ template6 = """
 </div>"""
 
 template7 = """
-<div class="card %(suit)s" id="%(id)s">
+<div class="card %(suit)s" id="%(id)s" data-suit="%(suit)s" data-number="%(number)s">
   <div class="flipper">
     <div class="front">
       <div class="corner top">
@@ -159,7 +159,7 @@ template7 = """
 </div>"""
 
 template8 = """
-<div class="card %(suit)s" id="%(id)s">
+<div class="card %(suit)s" id="%(id)s" data-suit="%(suit)s" data-number="%(number)s">
   <div class="flipper">
     <div class="front">
       <div class="corner top">
@@ -184,7 +184,7 @@ template8 = """
 </div>"""
 
 template9 = """
-<div class="card %(suit)s" id="%(id)s">
+<div class="card %(suit)s" id="%(id)s" data-suit="%(suit)s" data-number="%(number)s">
   <div class="flipper">
     <div class="front">
       <div class="corner top">
@@ -210,7 +210,7 @@ template9 = """
 </div>"""
 
 template10 = """
-<div class="card %(suit)s" id="%(id)s">
+<div class="card %(suit)s" id="%(id)s" data-suit="%(suit)s" data-number="%(number)s">
   <div class="flipper">
     <div class="front">
       <div class="corner top">
