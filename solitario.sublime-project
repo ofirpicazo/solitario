@@ -31,7 +31,7 @@
       "name": "Closure depswriter",
       "cmd": [
         "/Users/ofirp/src/closure-library/closure/bin/build/depswriter.py",
-        "--root=${project_path}/js/",
+        "--root_with_prefix=${project_path}/js/ ../",
         "--output_file=${project_path}/js/solitario/deps.js"
       ],
       "selector": "source.js"

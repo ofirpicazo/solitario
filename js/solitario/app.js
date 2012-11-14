@@ -31,8 +31,14 @@ solitario.init = function() {
  */
 solitario.App = function() {
   /**
+   * The current game loaded in the app.
+   * @type {solitario.game.Game}
+   * @private
+   */
+  this.game_ = new solitario.game.Game();
+
+  /**
    * Viewport monitor to adjust for size changes.
-   *
    * @type {goog.dom.ViewportSizeMonitor}
    * @private
    */
