@@ -104,10 +104,13 @@ solitario.game.Card.prototype.isRevealed = function() {
 
 
 /**
- * Sets the absolute position of the card in the viewport.
+ * Sets the absolute position of the card in the viewport, in ems.
  *
  * @param {goog.math.Coordinate} position Absolute position to set the card to.
  */
 solitario.game.Card.prototype.setPosition = function(position) {
-  goog.style.setPosition(this.element_, position);
+  var relativeFontSize = parseFloat(goog.dom.getDocument().body.style.fontSize);
+  var left = (position.x / relativeFontSize).toFixed(0) + 'em';
+  var top = (position.y / relativeFontSize).toFixed(0) + 'em';
+  goog.style.setPosition(this.element_, left, top);
 };
