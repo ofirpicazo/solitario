@@ -139,8 +139,8 @@ $card-width: 10em;
     // http://ptrn.it/TZjjc4
     //background: $card-color url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAS0lEQVQYV2NkgAIW+57/MDYy/edgCSOIDyZwKYYpAisEmYQsADMZXQysEKQDJoFLI1whzHpspsOtJqQIRSG6SchOIc0zRAcPsQEOAOC2Qt8fLssgAAAAAElFTkSuQmCC);
     background: $card-color image-url("card_pattern.svg");
-    background-size: 2em;
-    border: 0.4em solid $card-color;
+    background-size: 0.7em;
+    border: 1px solid #666;
     z-index: 30;
   }
 }
