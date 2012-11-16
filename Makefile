@@ -22,7 +22,7 @@ deps:
 	  --output_file=$(abspath src/solitario/deps.js)
 
 lint:
-	gjslint -r $(abspath src/solitario)
+	/usr/local/bin/gjslint -r $(abspath src/solitario)
 
 css:
 	compass compile $(abspath .) \

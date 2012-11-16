@@ -14,27 +14,26 @@
   "build_systems":
   [
     {
-      "name": "Closure compiler",
-      "cmd": [
-        "/Users/ofirp/src/closure-library/closure/bin/build/closurebuilder.py",
-        "--root=/Users/ofirp/src/closure-library/",
-        "--root=${project_path}/js/",
-        "--input=${project_path}/js/solitario/app.js",
-        "--output_mode=compiled",
-        "--compiler_jar=/Users/ofirp/bin/closure-compiler.jar",
-        "--compiler_flags=--compilation_level=ADVANCED_OPTIMIZATIONS",
-        "--output_file=${project_path}/js/app.compiled.js"
-      ],
-      "selector": "source.js"
-    },
-    {
-      "name": "Closure depswriter",
-      "cmd": [
-        "/Users/ofirp/src/closure-library/closure/bin/build/depswriter.py",
-        "--root_with_prefix=${project_path}/js/ ../",
-        "--output_file=${project_path}/js/solitario/deps.js"
-      ],
-      "selector": "source.js"
+      "cmd": ["make", "deps"],
+      "name": "Solitario",
+      "variants": [
+        {
+          "cmd": ["make", "compile"],
+          "name": "compile"
+        },
+        {
+          "cmd": ["make", "css"],
+          "name": "css"
+        },
+        {
+          "cmd": ["make", "deps"],
+          "name": "deps"
+        },
+        {
+          "cmd": ["make", "lint"],
+          "name": "lint"
+        }
+      ]
     }
   ]
 }
