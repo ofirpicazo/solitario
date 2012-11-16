@@ -6,8 +6,8 @@
  * @author ofirpicazo@gmail.com (Ofir Picazo)
  */
 
-goog.provide('solitario.init');
 goog.provide('solitario.App');
+goog.provide('solitario.init');
 
 goog.require('goog.dom');
 goog.require('goog.dom.BufferedViewportSizeMonitor');
@@ -62,7 +62,8 @@ goog.addSingletonGetter(solitario.App);
  * @private
  */
 solitario.App.prototype.resizeBoard_ = function(e) {
-  var pixelSize = (this.viewportMonitor_.getSize().width / 85).toFixed(1) + 'px';
+  var pixelSize = (this.viewportMonitor_.getSize().width / 85).toFixed(1) +
+      'px';
   goog.dom.getDocument().body.style.fontSize = pixelSize;
 };
 

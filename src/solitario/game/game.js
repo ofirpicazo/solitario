@@ -89,7 +89,7 @@ solitario.game.Game.prototype.init_ = function() {
   for (var i = 0; i < cardElements.length; i++) {
     var card = new solitario.game.Card(cardElements[i]);
     this.cards_[card.id] = card;
-  };
+  }
 
   // Build stock and waste.
   this.stock_ = new solitario.game.Stock(goog.dom.getElement(
