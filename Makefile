@@ -6,6 +6,8 @@ CLOSURE_COMPILER_BIN = /Users/ofirp/bin/closure-compiler.jar
 CLOSURE_LIB_DIR = /Users/ofirp/src/closure-library/
 CLOSURE_TOOLS_DIR = $(CLOSURE_LIB_DIR)closure/bin/build/
 
+all: css deps compile
+
 compile:
 	$(CLOSURE_TOOLS_DIR)closurebuilder.py \
 	  --root=$(CLOSURE_LIB_DIR) \
@@ -31,4 +33,7 @@ css:
 	  --images-dir="images" \
 	  --sass-dir="src/sass" \
 	  --force \
-	  --relative-assets
+	  --relative-assets \
+	  --output-style=compress
+
+.PHONY: compile deps lint css

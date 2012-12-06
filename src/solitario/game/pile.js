@@ -9,6 +9,7 @@
 goog.provide('solitario.game.Pile');
 
 goog.require('goog.style');
+goog.require('solitario.game.utils');
 
 
 /**
@@ -25,6 +26,14 @@ solitario.game.Pile = function(el) {
    */
   this.element_ = el;
 
+  /**
+   * Relative (ems) position of the Pile in the viewport.
+   * @type {goog.math.Coordinate}
+   * @private
+   */
+  this.position_ = solitario.game.utils.toRelativeUnits(
+      this.getAbsolutePosition_());
+
     /**
    * Pile of cards stacked in this tableu.
    * @type {Array.<solitario.game.Card>}
@@ -35,10 +44,11 @@ solitario.game.Pile = function(el) {
 
 
 /**
- * Gets the computed value of the css position.
+ * Gets the computed value of the css absolute position (in pixels).
  *
  * @return {goog.math.Coordinate} Absolute position of the pile in the viewport.
+ * @private
  */
-solitario.game.Pile.prototype.getPosition = function() {
+solitario.game.Pile.prototype.getAbsolutePosition_ = function() {
   return goog.style.getClientPosition(this.element_);
 };
