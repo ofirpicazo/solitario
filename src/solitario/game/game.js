@@ -23,11 +23,11 @@ goog.require('solitario.game.Waste');
  */
 solitario.game.Game = function() {
   /**
-   * Map of card ids to the card objects.
-   * @type {Object.<string, solitario.game.Card>}
+   * Array of card objects for the game.
+   * @type {Array.<solitario.game.Card>}
    * @private
    */
-  this.cards_ = {};
+  this.cards_ = [];
 
   /**
    * Pile to represent the waste.
@@ -57,6 +57,14 @@ solitario.game.Game = function() {
    */
   this.tableux_ = [];
 
+  /**
+   * Flag to indicate whether the game has been started.
+   * Defaults to false.
+   *
+   * @type {Boolean}
+   */
+  this.is_started = false;
+
   // Initialize the elements of the game.
   this.init_();
 };
@@ -83,28 +91,27 @@ solitario.game.Game.ClassNames_ = {
  * @private
  */
 solitario.game.Game.prototype.init_ = function() {
-  // Build the card map.
+  // Assign the card deck.
   var cardElements = goog.dom.getElementsByClass(
       solitario.game.Game.ClassNames_.CARD);
   for (var i = 0; i < cardElements.length; i++) {
-    var card = new solitario.game.Card(cardElements[i]);
-    this.cards_[card.id] = card;
+    this.cards_.push(new solitario.game.Card(cardElements[i]));
   }
 
-  // Build stock and waste.
+  // Assign stock and waste.
   this.stock_ = new solitario.game.Stock(goog.dom.getElement(
       solitario.game.Game.ClassNames_.STOCK));
   this.waste_ = new solitario.game.Waste(goog.dom.getElement(
       solitario.game.Game.ClassNames_.WASTE));
 
-  // Build foundations.
+  // Assign foundations.
   var foundationElements = goog.dom.getElementsByClass(
       solitario.game.Game.ClassNames_.FOUNDATION);
   for (var i = 0; i < foundationElements.length; i++) {
     this.foundations_[i] = new solitario.game.Foundation(foundationElements[i]);
   }
 
-  // Build tableux.
+  // Assign tableux.
   var tableuElements = goog.dom.getElementsByClass(
       solitario.game.Game.ClassNames_.TABLEU);
   for (var i = 0; i < tableuElements.length; i++) {
@@ -114,9 +121,40 @@ solitario.game.Game.prototype.init_ = function() {
 
 
 /**
+ * Shuffles the cards in random order.
+ * @private
+ */
+solitario.game.Game.prototype.shuffleCards_ = function() {
+  for (var i = this.cards_.length - 1; i >= 0; i--) {
+    var randomPosition = solitario.game.utils.getRandomInt(0, i);
+    var tmp = this.cards_[i];
+    this.cards_[i] = this.cards_[randomPosition];
+    this.cards_[randomPosition] = tmp;
+  }
+};
+
+
+/**
  * Starts a new game reinitializing all the elements.
  */
 solitario.game.Game.prototype.start = function() {
+  // Shuffles the cards.
+  this.shuffleCards_();
 
+  // Sets cards for tableux.
+  var numCardsForTableu = 0;
+  var startIndex, endIndex = 0;
+  goog.array.forEach(this.tableux_, function(tableu, index) {
+    numCardsForTableu = index + 1;
+    startIndex = endIndex;
+    endIndex += numCardsForTableu;
+
+    var tableuCards = this.cards_.slice(startIndex, endIndex);
+    tableu.initialize(tableuCards);
+  }, this);
+
+  // Sets cards for stock
+  var cardsForStock = this.cards_.slice(endIndex);
+  this.stock_.initialize(cardsForStock);
 };
 

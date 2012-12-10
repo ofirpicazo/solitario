@@ -8,8 +8,10 @@
 
 goog.provide('solitario.game.Card');
 
+goog.require('goog.dom.classes');
 goog.require('goog.dom.dataset');
 goog.require('goog.style');
+goog.require('solitario.game.utils');
 
 
 /**
@@ -51,8 +53,20 @@ solitario.game.Card = function(el) {
    * Values are 'red' or 'black'.
    * @type {string}
    */
-  this.color = (this.suit === 'heart' ||
-                this.suit === 'diamond') ? 'red' : 'black';
+  this.color = (this.suit === solitario.game.Card.Suits_.HEART ||
+                this.suit === solitario.game.Card.Suits_.DIAMOND) ?
+                'red' : 'black';
+};
+
+
+/**
+ * Class names used in the card object.
+ * @enum {string}
+ * @const
+ * @private
+ */
+solitario.game.Card.ClassNames_ = {
+  REVEALED: 'revealed'
 };
 
 
@@ -69,9 +83,23 @@ solitario.game.Card.DataAttrs_ = {
 
 
 /**
+ * Constants for the card suits.
+ * @enum {string}
+ * @const
+ * @private
+ */
+solitario.game.Card.Suits_ = {
+  CLUB: 'club',
+  DIAMOND: 'diamond',
+  HEART: 'heart',
+  SPADE: 'spade'
+};
+
+
+/**
  * Obtains the current z-index of this card.
  *
- * @return {Number} The z-index as an integer.
+ * @return {number} The z-index as an integer.
  */
 solitario.game.Card.prototype.getZIndex = function() {
   return parseInt(this.element_.style.zIndex);
@@ -81,36 +109,51 @@ solitario.game.Card.prototype.getZIndex = function() {
 /**
  * Modifies the z-index of this card.
  *
- * @param {Number} zIndex The z-index as an integer.
+ * @param {number} zIndex The z-index as an integer.
  */
 solitario.game.Card.prototype.setZIndex = function(zIndex) {
   this.element_.style.zIndex = zIndex + '';  // explicit string cast.
 };
 
 
+/** @inheritDoc */
 solitario.game.Card.prototype.isDraggable = function() {
 
 };
 
 
+/** @inheritDoc */
 solitario.game.Card.prototype.isDroppable = function() {
 
 };
 
 
+/**
+ * Returns whether or not the card is revealed.
+ *
+ * @return {boolean} True if revealed.
+ */
 solitario.game.Card.prototype.isRevealed = function() {
-
+  return goog.dom.classes.has(
+      this.element_, solitario.game.Card.ClassNames_.REVEALED);
 };
 
 
 /**
- * Sets the absolute position of the card in the viewport, in ems.
+ * Reveals the card.
+ */
+solitario.game.Card.prototype.reveal = function() {
+  goog.dom.classes.add(this.element_, solitario.game.Card.ClassNames_.REVEALED);
+};
+
+
+/**
+ * Sets the relative position of the card in the viewport, in ems.
  *
- * @param {goog.math.Coordinate} position Absolute position to set the card to.
+ * @param {goog.math.Coordinate} position Relative position to set the card to.
  */
 solitario.game.Card.prototype.setPosition = function(position) {
-  var relativeFontSize = parseFloat(goog.dom.getDocument().body.style.fontSize);
-  var left = (position.x / relativeFontSize).toFixed(0) + 'em';
-  var top = (position.y / relativeFontSize).toFixed(0) + 'em';
-  goog.style.setPosition(this.element_, left, top);
+  var leftEms = solitario.game.utils.getEmStyleValue(position.x);
+  var topEms = solitario.game.utils.getEmStyleValue(position.y);
+  goog.style.setPosition(this.element_, leftEms, topEms);
 };

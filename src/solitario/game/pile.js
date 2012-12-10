@@ -26,29 +26,59 @@ solitario.game.Pile = function(el) {
    */
   this.element_ = el;
 
-  /**
-   * Relative (ems) position of the Pile in the viewport.
-   * @type {goog.math.Coordinate}
-   * @private
-   */
-  this.position_ = solitario.game.utils.toRelativeUnits(
-      this.getAbsolutePosition_());
-
     /**
    * Pile of cards stacked in this tableu.
    * @type {Array.<solitario.game.Card>}
-   * @private
+   * @protected
    */
-  this.pile_;
+  this.pile_ = [];
 };
 
 
 /**
- * Gets the computed value of the css absolute position (in pixels).
- *
- * @return {goog.math.Coordinate} Absolute position of the pile in the viewport.
- * @private
+ * The z-index difference between each card in the Pile.
+ * @type {number}
  */
-solitario.game.Pile.prototype.getAbsolutePosition_ = function() {
-  return goog.style.getClientPosition(this.element_);
+solitario.game.Pile.INTERCARD_ZINDEX = 10;
+
+
+/**
+ * Gets the relative (ems) position of the Pile in the viewport.
+ *
+ * @return {goog.math.Coordinate} Relative position of the pile in the viewport.
+ * @protected
+ */
+solitario.game.Pile.prototype.getPosition_ = function() {
+  return solitario.game.utils.toRelativeUnits(
+      goog.style.getClientPosition(this.element_));
+};
+
+
+/**
+ * Gets the current z-index of the pile element.
+ *
+ * @return {number} z-index of the card element.
+ * @protected
+ */
+solitario.game.Pile.prototype.getZIndex_ = function() {
+  return parseInt(goog.style.getComputedZIndex(this.element_));
+};
+
+/**
+ * Pushes a new card in the pile.
+ *
+ * @param {solitario.game.Card} card The card to be pushed.
+ */
+solitario.game.Pile.prototype.push = function(card) {
+  this.pile_.push(card);
+};
+
+
+/**
+ * Pops a new card from the pile.
+ *
+ * @return {solitario.game.Card} The card popped from the pile.
+ */
+solitario.game.Pile.prototype.pop = function() {
+  return this.pile_.pop();
 };

@@ -10,8 +10,8 @@ goog.provide('solitario.game.utils_test');
 
 goog.require('goog.dom');
 goog.require('goog.math.Coordinate');
-goog.require('goog.testing.jsunit');
 goog.require('goog.testing.PropertyReplacer');
+goog.require('goog.testing.jsunit');
 goog.require('solitario.game.utils');
 
 goog.setTestOnly('Tests for utils module');

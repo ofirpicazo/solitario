@@ -23,3 +23,27 @@ solitario.game.Stock = function(el) {
   goog.base(this, el);
 };
 goog.inherits(solitario.game.Stock, solitario.game.Pile);
+
+
+/**
+ * Initializes the Stock with the given array of cards, the last card will
+ * be revealed.
+ *
+ * @param {Array.<solitario.game.Card>} cards Cards to be stacked in the stock.
+ */
+solitario.game.Stock.prototype.initialize = function(cards) {
+  var stockPosition = this.getPosition_();
+  var currentZindex = this.getZIndex_();
+
+  // Set position and z-index for each card.
+  goog.array.forEach(cards, function(card) {
+    this.push(card);
+    card.setPosition(stockPosition);
+    card.setZIndex(currentZindex);
+    currentZindex += solitario.game.Pile.INTERCARD_ZINDEX;
+  }, this);
+
+  // Reveal the card at the top.
+  // TODO(ofir): Improve this.
+  this.pile_[this.pile_.length - 1].reveal();
+};

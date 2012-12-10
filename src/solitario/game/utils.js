@@ -28,6 +28,7 @@ goog.require('goog.math.Coordinate');
  */
 solitario.game.utils.toRelativeUnits = function(arg1, opt_arg2) {
   var leftPx, topPx, leftEm, topEm;
+  var relativeFontSize = parseFloat(goog.dom.getDocument().body.style.fontSize);
 
   if (arg1 instanceof goog.math.Coordinate) {
     leftPx = arg1.x;
@@ -37,7 +38,6 @@ solitario.game.utils.toRelativeUnits = function(arg1, opt_arg2) {
     topPx = opt_arg2;
   }
 
-  var relativeFontSize = parseFloat(goog.dom.getDocument().body.style.fontSize);
   leftEm = Math.round(leftPx / relativeFontSize);
   topEm = Math.round(topPx / relativeFontSize);
 
@@ -60,4 +60,17 @@ solitario.game.utils.getEmStyleValue = function(value) {
   }
 
   return value;
+};
+
+
+/**
+ * Returns a random integer between two values, inclusive.
+ *
+ * @param {number} min Lower limit of the range.
+ * @param {number} max Upper limit of the range.
+ *
+ * @return {number} Random integer between the given range.
+ */
+solitario.game.utils.getRandomInt = function(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 };

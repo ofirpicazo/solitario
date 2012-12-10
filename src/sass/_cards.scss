@@ -58,6 +58,7 @@ $card-width: 10em;
   .front {
     @extend %card-side;
     background-color: $card-color;
+    border: 1px solid #666;
     @include background-image(linear-gradient(left top, $card-color 50%, $card-shadow-color 100%));
     @include rotateY(180deg);
     z-index: 20;
@@ -148,7 +149,7 @@ $card-width: 10em;
     //background: $card-color url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAS0lEQVQYV2NkgAIW+57/MDYy/edgCSOIDyZwKYYpAisEmYQsADMZXQysEKQDJoFLI1whzHpspsOtJqQIRSG6SchOIc0zRAcPsQEOAOC2Qt8fLssgAAAAAElFTkSuQmCC);
     background: $card-color image-url("card_pattern.svg");
     background-size: 0.7em;
-    border: 1px solid #666;
+    border: 4px solid $card-shadow-color;
     z-index: 30;
   }
 }
