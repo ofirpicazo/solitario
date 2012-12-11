@@ -8,6 +8,7 @@
 
 @import "compass/css3/user-interface";
 
+$card-border-color: #666;
 $card-color: #F5F5F5;
 $card-height: 14em;
 $card-shadow-color: #DDD;
@@ -27,11 +28,12 @@ $card-width: 10em;
 
   &.slanted-left {
     @include rotate(-3deg);
+    @include transform-origin(15%, 100%);
   }
 
   &.slanted-right {
     @include rotate(3deg);
-    @include transform-origin(50%, 100%);
+    @include transform-origin(100%, 15%);
   }
 
   &.revealed .flipper {
@@ -67,7 +69,7 @@ $card-width: 10em;
   .front {
     @extend %card-side;
     background-color: $card-color;
-    border: 1px solid #666;
+    border: 1px solid $card-border-color;
     @include background-image(linear-gradient(left top, $card-color 50%, $card-shadow-color 100%));
     @include rotateY(180deg);
     z-index: 20;
@@ -154,6 +156,8 @@ $card-width: 10em;
 
   .back {
     @extend %card-side;
+    // This shadow creates an outline for the card.
+    @include single-box-shadow($card-border-color, 0, 0, 0, 1px);
     // http://ptrn.it/TZjjc4
     //background: $card-color url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAS0lEQVQYV2NkgAIW+57/MDYy/edgCSOIDyZwKYYpAisEmYQsADMZXQysEKQDJoFLI1whzHpspsOtJqQIRSG6SchOIc0zRAcPsQEOAOC2Qt8fLssgAAAAAElFTkSuQmCC);
     background: $card-color image-url("card_pattern.svg");
