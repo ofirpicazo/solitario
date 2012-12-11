@@ -28,6 +28,7 @@ solitario.game.Tableu = function(el) {
 };
 goog.inherits(solitario.game.Tableu, solitario.game.Pile);
 
+
 /**
  * The relative distance (ems) between each card in the Tableu.
  * @type {number}

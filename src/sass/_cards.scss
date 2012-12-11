@@ -25,6 +25,15 @@ $card-width: 10em;
   width: $card-width;
   z-index: 10;
 
+  &.slanted-left {
+    @include rotate(-3deg);
+  }
+
+  &.slanted-right {
+    @include rotate(3deg);
+    @include transform-origin(50%, 100%);
+  }
+
   &.revealed .flipper {
     @include rotateY(180deg);
   }
@@ -149,7 +158,7 @@ $card-width: 10em;
     //background: $card-color url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAS0lEQVQYV2NkgAIW+57/MDYy/edgCSOIDyZwKYYpAisEmYQsADMZXQysEKQDJoFLI1whzHpspsOtJqQIRSG6SchOIc0zRAcPsQEOAOC2Qt8fLssgAAAAAElFTkSuQmCC);
     background: $card-color image-url("card_pattern.svg");
     background-size: 0.7em;
-    border: 4px solid $card-shadow-color;
+    border: 0.25em solid $card-shadow-color;
     z-index: 30;
   }
 }

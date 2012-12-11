@@ -43,7 +43,7 @@ solitario.game.Stock.prototype.initialize = function(cards) {
     currentZindex += solitario.game.Pile.INTERCARD_ZINDEX;
   }, this);
 
-  // Reveal the card at the top.
-  // TODO(ofir): Improve this.
-  this.pile_[this.pile_.length - 1].reveal();
+  // Slant the second and third last cards to create stack effect.
+  this.pile_[1].slantLeft();
+  this.pile_[2].slantRight();
 };

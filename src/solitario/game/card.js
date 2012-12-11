@@ -66,7 +66,9 @@ solitario.game.Card = function(el) {
  * @private
  */
 solitario.game.Card.ClassNames_ = {
-  REVEALED: 'revealed'
+  REVEALED: 'revealed',
+  SLANT_LEFT: 'slanted-left',
+  SLANT_RIGHT: 'slanted-right'
 };
 
 
@@ -144,6 +146,24 @@ solitario.game.Card.prototype.isRevealed = function() {
  */
 solitario.game.Card.prototype.reveal = function() {
   goog.dom.classes.add(this.element_, solitario.game.Card.ClassNames_.REVEALED);
+};
+
+
+/**
+ * Rotates the card slightly to the left.
+ */
+solitario.game.Card.prototype.slantLeft = function() {
+  goog.dom.classes.add(this.element_,
+                       solitario.game.Card.ClassNames_.SLANT_LEFT);
+};
+
+
+/**
+ * Rotates the card slightly to the right.
+ */
+solitario.game.Card.prototype.slantRight = function() {
+  goog.dom.classes.add(this.element_,
+                       solitario.game.Card.ClassNames_.SLANT_RIGHT);
 };
 
 
