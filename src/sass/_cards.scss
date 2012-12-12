@@ -14,11 +14,14 @@ $card-height: 14em;
 $card-shadow-color: #DDD;
 $card-width: 10em;
 
+@include font-face("Suit", font-files("suit.woff", "suit.ttf", "suit.svg"),
+                   "suit.eot");
+
 .card {
   @include perspective(1000);
   @include user-select(none);
   cursor: default;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Suit", "Helvetica Neue", Helvetica, Arial, sans-serif;
   height: $card-height;
   left: 0;
   position: absolute;

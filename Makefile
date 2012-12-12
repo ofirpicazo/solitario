@@ -32,6 +32,7 @@ css:
 	  --javascripts-dir="js" \
 	  --images-dir="images" \
 	  --sass-dir="src/sass" \
+	  --fonts-dir="fonts" \
 	  --force \
 	  --relative-assets \
 	  --output-style=compress
