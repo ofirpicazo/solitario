@@ -35,6 +35,7 @@ css:
 	  --fonts-dir="fonts" \
 	  --force \
 	  --relative-assets \
-	  --output-style=compress
+	  --output-style=expanded \
+	  --require=zurb-foundation
 
 .PHONY: compile deps lint css

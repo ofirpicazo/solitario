@@ -7,9 +7,11 @@
  */
 
 $board-margin: 1em;
+$controlbar-height: 3em;
 $pile-height: 14em;
 $pile-width: 10em;
 $pile-left-offset: $pile-width + 2em; // 1em of padding on each side.
+$text-shadow-color: #333;
 
 * {
   @include box-sizing(border-box);
@@ -17,14 +19,56 @@ $pile-left-offset: $pile-width + 2em; // 1em of padding on each side.
 
 body {
   background: #518906 image-url("felt.jpg") left top;
+  font-family: "Rambla", sans-serif;
   font-size: 10px;
   position: relative;
+}
+
+#controlbar {
+  @include single-box-shadow(rgba(0, 0, 0, 0.4), 0, -1.5em, 4em, 0, true);
+  background: image-url("felt.jpg") left top;
+  border-bottom: 3px solid rgba(0,0,0,0.4);
+  height: $controlbar-height;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+#controlbar h1 {
+  color: #F5F5F5;
+  font-size: ($controlbar-height / 3) * 2;  // 2/3rds of the bar height
+  font-weight: bold;
+  float: left;
+  line-height: $controlbar-height / 2;
+  margin: 0 1em;
+  text-shadow: 1px 1px 2px $text-shadow-color;
+}
+
+#controlbar .button {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.2);
+  color: #F5F5F5;
+  font-weight: normal;
+  margin-top: 0.5em;
+}
+
+#controlbar .button:focus,
+#controlbar .button:hover {
+  background-color: rgba(64, 64, 64, 0.2);
+  color: #F5F5F5;
+}
+
+#board {
+  left: 0;
+  position: relative;
+  top: $controlbar-height + $board-margin;
 }
 
 .pile {
   @include box-sizing(content-box);
   @include border-radius(0.5em);
-  @include single-box-shadow(rgba(0, 0, 0, 0.8), 0, 0, 0.5em, false, true);
+  @include single-box-shadow(rgba(0, 0, 0, 0.8), 0, 0, 0.5em, 0, true);
   background-color: rgba(255, 255, 255, 0.1);
   display: block;
   height: $pile-height;

@@ -10,6 +10,7 @@
 
   <title>Solitario</title>
 
+  <link href='http://fonts.googleapis.com/css?family=Rambla:400,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="css/app.css">
   <script src="src/goog/base.js"></script>
   <script src="src/solitario/deps.js"></script>
@@ -17,1084 +18,1091 @@
   <!-- <script src="js/app.compiled.js"></script> -->
 </head>
 <body>
-  <div class="pile" id="stock"></div>
-  <div class="pile" id="waste"></div>
-
-  <div class="pile foundation" id="foundation-1" data-suit="heart"></div>
-  <div class="pile foundation" id="foundation-2" data-suit="spade"></div>
-  <div class="pile foundation" id="foundation-3" data-suit="diamond"></div>
-  <div class="pile foundation" id="foundation-4" data-suit="club"></div>
-
-  <div class="pile tableu" id="tableu-1"></div>
-  <div class="pile tableu" id="tableu-2"></div>
-  <div class="pile tableu" id="tableu-3"></div>
-  <div class="pile tableu" id="tableu-4"></div>
-  <div class="pile tableu" id="tableu-5"></div>
-  <div class="pile tableu" id="tableu-6"></div>
-  <div class="pile tableu" id="tableu-7"></div>
-
-
-  <div class="card club" id="ca" data-suit="club" data-number="A">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">A</span>
-          <span>♣</span>
-        </div>
-        <span class="suit middle center">♣</span>
-        <div class="corner bottom">
-          <span class="number">A</span>
-          <span>♣</span>
-        </div>
-      </div>
-      <div class="back"></div>
-    </div>
+  <div id="controlbar">
+    <h1>Solitario</h1>
+    <a class="radius small button" href="#">New game</a>
   </div>
 
-  <div class="card club" id="c2" data-suit="club" data-number="2">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">2</span>
-          <span>♣</span>
-        </div>
-        <span class="suit top center">♣</span>
-        <span class="suit bottom center">♣</span>
-        <div class="corner bottom">
-          <span class="number">2</span>
-          <span>♣</span>
-        </div>
-      </div>
-      <div class="back"></div>
-    </div>
-  </div>
+  <div id="board">
+    <div class="pile" id="stock"></div>
+    <div class="pile" id="waste"></div>
 
-  <div class="card club" id="c3" data-suit="club" data-number="3">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">3</span>
-          <span>♣</span>
-        </div>
-        <span class="suit top center">♣</span>
-        <span class="suit middle center">♣</span>
-        <span class="suit bottom center">♣</span>
-        <div class="corner bottom">
-          <span class="number">3</span>
-          <span>♣</span>
-        </div>
-      </div>
-      <div class="back"></div>
-    </div>
-  </div>
+    <div class="pile foundation" id="foundation-1" data-suit="heart"></div>
+    <div class="pile foundation" id="foundation-2" data-suit="spade"></div>
+    <div class="pile foundation" id="foundation-3" data-suit="diamond"></div>
+    <div class="pile foundation" id="foundation-4" data-suit="club"></div>
 
-  <div class="card club" id="c4" data-suit="club" data-number="4">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">4</span>
-          <span>♣</span>
-        </div>
-        <span class="suit top left">♣</span>
-        <span class="suit top right">♣</span>
-        <span class="suit bottom left">♣</span>
-        <span class="suit bottom right">♣</span>
-        <div class="corner bottom">
-          <span class="number">4</span>
-          <span>♣</span>
-        </div>
-      </div>
-      <div class="back"></div>
-    </div>
-  </div>
+    <div class="pile tableu" id="tableu-1"></div>
+    <div class="pile tableu" id="tableu-2"></div>
+    <div class="pile tableu" id="tableu-3"></div>
+    <div class="pile tableu" id="tableu-4"></div>
+    <div class="pile tableu" id="tableu-5"></div>
+    <div class="pile tableu" id="tableu-6"></div>
+    <div class="pile tableu" id="tableu-7"></div>
 
-  <div class="card club" id="c5" data-suit="club" data-number="5">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">5</span>
-          <span>♣</span>
-        </div>
-        <span class="suit top left">♣</span>
-        <span class="suit top right">♣</span>
-        <span class="suit middle center">♣</span>
-        <span class="suit bottom left">♣</span>
-        <span class="suit bottom right">♣</span>
-        <div class="corner bottom">
-          <span class="number">5</span>
-          <span>♣</span>
-        </div>
-      </div>
-      <div class="back"></div>
-    </div>
-  </div>
 
-  <div class="card club" id="c6" data-suit="club" data-number="6">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">6</span>
-          <span>♣</span>
+    <div class="card club" id="ca" data-suit="club" data-number="A">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">A</span>
+            <span>♣</span>
+          </div>
+          <span class="suit middle center">♣</span>
+          <div class="corner bottom">
+            <span class="number">A</span>
+            <span>♣</span>
+          </div>
         </div>
-        <span class="suit top left">♣</span>
-        <span class="suit top right">♣</span>
-        <span class="suit middle left">♣</span>
-        <span class="suit middle right">♣</span>
-        <span class="suit bottom left">♣</span>
-        <span class="suit bottom right">♣</span>
-        <div class="corner bottom">
-          <span class="number">6</span>
-          <span>♣</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card club" id="c7" data-suit="club" data-number="7">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">7</span>
-          <span>♣</span>
+    <div class="card club" id="c2" data-suit="club" data-number="2">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">2</span>
+            <span>♣</span>
+          </div>
+          <span class="suit top center">♣</span>
+          <span class="suit bottom center">♣</span>
+          <div class="corner bottom">
+            <span class="number">2</span>
+            <span>♣</span>
+          </div>
         </div>
-        <span class="suit top left">♣</span>
-        <span class="suit top right">♣</span>
-        <span class="suit under-top center">♣</span>
-        <span class="suit middle left">♣</span>
-        <span class="suit middle right">♣</span>
-        <span class="suit bottom left">♣</span>
-        <span class="suit bottom right">♣</span>
-        <div class="corner bottom">
-          <span class="number">7</span>
-          <span>♣</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card club" id="c8" data-suit="club" data-number="8">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">8</span>
-          <span>♣</span>
+    <div class="card club" id="c3" data-suit="club" data-number="3">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">3</span>
+            <span>♣</span>
+          </div>
+          <span class="suit top center">♣</span>
+          <span class="suit middle center">♣</span>
+          <span class="suit bottom center">♣</span>
+          <div class="corner bottom">
+            <span class="number">3</span>
+            <span>♣</span>
+          </div>
         </div>
-        <span class="suit top left">♣</span>
-        <span class="suit top right">♣</span>
-        <span class="suit under-top center">♣</span>
-        <span class="suit middle left">♣</span>
-        <span class="suit middle right">♣</span>
-        <span class="suit over-bottom center">♣</span>
-        <span class="suit bottom left">♣</span>
-        <span class="suit bottom right">♣</span>
-        <div class="corner bottom">
-          <span class="number">8</span>
-          <span>♣</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card club" id="c9" data-suit="club" data-number="9">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">9</span>
-          <span>♣</span>
+    <div class="card club" id="c4" data-suit="club" data-number="4">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">4</span>
+            <span>♣</span>
+          </div>
+          <span class="suit top left">♣</span>
+          <span class="suit top right">♣</span>
+          <span class="suit bottom left">♣</span>
+          <span class="suit bottom right">♣</span>
+          <div class="corner bottom">
+            <span class="number">4</span>
+            <span>♣</span>
+          </div>
         </div>
-        <span class="suit top left">♣</span>
-        <span class="suit top right">♣</span>
-        <span class="suit under-top center">♣</span>
-        <span class="suit over-middle left">♣</span>
-        <span class="suit over-middle right">♣</span>
-        <span class="suit under-middle left">♣</span>
-        <span class="suit under-middle right">♣</span>
-        <span class="suit bottom left">♣</span>
-        <span class="suit bottom right">♣</span>
-        <div class="corner bottom">
-          <span class="number">9</span>
-          <span>♣</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card club" id="c10" data-suit="club" data-number="10">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">10</span>
-          <span>♣</span>
+    <div class="card club" id="c5" data-suit="club" data-number="5">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">5</span>
+            <span>♣</span>
+          </div>
+          <span class="suit top left">♣</span>
+          <span class="suit top right">♣</span>
+          <span class="suit middle center">♣</span>
+          <span class="suit bottom left">♣</span>
+          <span class="suit bottom right">♣</span>
+          <div class="corner bottom">
+            <span class="number">5</span>
+            <span>♣</span>
+          </div>
         </div>
-        <span class="suit top left">♣</span>
-        <span class="suit top right">♣</span>
-        <span class="suit under-top center">♣</span>
-        <span class="suit over-middle left">♣</span>
-        <span class="suit over-middle right">♣</span>
-        <span class="suit under-middle left">♣</span>
-        <span class="suit under-middle right">♣</span>
-        <span class="suit over-bottom center">♣</span>
-        <span class="suit bottom left">♣</span>
-        <span class="suit bottom right">♣</span>
-        <div class="corner bottom">
-          <span class="number">10</span>
-          <span>♣</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card club" id="cj" data-suit="club" data-number="J">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">J</span>
-          <span>♣</span>
+    <div class="card club" id="c6" data-suit="club" data-number="6">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">6</span>
+            <span>♣</span>
+          </div>
+          <span class="suit top left">♣</span>
+          <span class="suit top right">♣</span>
+          <span class="suit middle left">♣</span>
+          <span class="suit middle right">♣</span>
+          <span class="suit bottom left">♣</span>
+          <span class="suit bottom right">♣</span>
+          <div class="corner bottom">
+            <span class="number">6</span>
+            <span>♣</span>
+          </div>
         </div>
-        <span class="suit middle center">♣</span>
-        <div class="corner bottom">
-          <span class="number">J</span>
-          <span>♣</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card club" id="cq" data-suit="club" data-number="Q">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">Q</span>
-          <span>♣</span>
+    <div class="card club" id="c7" data-suit="club" data-number="7">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">7</span>
+            <span>♣</span>
+          </div>
+          <span class="suit top left">♣</span>
+          <span class="suit top right">♣</span>
+          <span class="suit under-top center">♣</span>
+          <span class="suit middle left">♣</span>
+          <span class="suit middle right">♣</span>
+          <span class="suit bottom left">♣</span>
+          <span class="suit bottom right">♣</span>
+          <div class="corner bottom">
+            <span class="number">7</span>
+            <span>♣</span>
+          </div>
         </div>
-        <span class="suit middle center">♣</span>
-        <div class="corner bottom">
-          <span class="number">Q</span>
-          <span>♣</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card club" id="ck" data-suit="club" data-number="K">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">K</span>
-          <span>♣</span>
+    <div class="card club" id="c8" data-suit="club" data-number="8">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">8</span>
+            <span>♣</span>
+          </div>
+          <span class="suit top left">♣</span>
+          <span class="suit top right">♣</span>
+          <span class="suit under-top center">♣</span>
+          <span class="suit middle left">♣</span>
+          <span class="suit middle right">♣</span>
+          <span class="suit over-bottom center">♣</span>
+          <span class="suit bottom left">♣</span>
+          <span class="suit bottom right">♣</span>
+          <div class="corner bottom">
+            <span class="number">8</span>
+            <span>♣</span>
+          </div>
         </div>
-        <span class="suit middle center">♣</span>
-        <div class="corner bottom">
-          <span class="number">K</span>
-          <span>♣</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card diamond" id="da" data-suit="diamond" data-number="A">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">A</span>
-          <span>♦</span>
+    <div class="card club" id="c9" data-suit="club" data-number="9">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">9</span>
+            <span>♣</span>
+          </div>
+          <span class="suit top left">♣</span>
+          <span class="suit top right">♣</span>
+          <span class="suit under-top center">♣</span>
+          <span class="suit over-middle left">♣</span>
+          <span class="suit over-middle right">♣</span>
+          <span class="suit under-middle left">♣</span>
+          <span class="suit under-middle right">♣</span>
+          <span class="suit bottom left">♣</span>
+          <span class="suit bottom right">♣</span>
+          <div class="corner bottom">
+            <span class="number">9</span>
+            <span>♣</span>
+          </div>
         </div>
-        <span class="suit middle center">♦</span>
-        <div class="corner bottom">
-          <span class="number">A</span>
-          <span>♦</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card diamond" id="d2" data-suit="diamond" data-number="2">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">2</span>
-          <span>♦</span>
+    <div class="card club" id="c10" data-suit="club" data-number="10">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">10</span>
+            <span>♣</span>
+          </div>
+          <span class="suit top left">♣</span>
+          <span class="suit top right">♣</span>
+          <span class="suit under-top center">♣</span>
+          <span class="suit over-middle left">♣</span>
+          <span class="suit over-middle right">♣</span>
+          <span class="suit under-middle left">♣</span>
+          <span class="suit under-middle right">♣</span>
+          <span class="suit over-bottom center">♣</span>
+          <span class="suit bottom left">♣</span>
+          <span class="suit bottom right">♣</span>
+          <div class="corner bottom">
+            <span class="number">10</span>
+            <span>♣</span>
+          </div>
         </div>
-        <span class="suit top center">♦</span>
-        <span class="suit bottom center">♦</span>
-        <div class="corner bottom">
-          <span class="number">2</span>
-          <span>♦</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card diamond" id="d3" data-suit="diamond" data-number="3">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">3</span>
-          <span>♦</span>
+    <div class="card club" id="cj" data-suit="club" data-number="J">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">J</span>
+            <span>♣</span>
+          </div>
+          <span class="suit middle center">♣</span>
+          <div class="corner bottom">
+            <span class="number">J</span>
+            <span>♣</span>
+          </div>
         </div>
-        <span class="suit top center">♦</span>
-        <span class="suit middle center">♦</span>
-        <span class="suit bottom center">♦</span>
-        <div class="corner bottom">
-          <span class="number">3</span>
-          <span>♦</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card diamond" id="d4" data-suit="diamond" data-number="4">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">4</span>
-          <span>♦</span>
+    <div class="card club" id="cq" data-suit="club" data-number="Q">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">Q</span>
+            <span>♣</span>
+          </div>
+          <span class="suit middle center">♣</span>
+          <div class="corner bottom">
+            <span class="number">Q</span>
+            <span>♣</span>
+          </div>
         </div>
-        <span class="suit top left">♦</span>
-        <span class="suit top right">♦</span>
-        <span class="suit bottom left">♦</span>
-        <span class="suit bottom right">♦</span>
-        <div class="corner bottom">
-          <span class="number">4</span>
-          <span>♦</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card diamond" id="d5" data-suit="diamond" data-number="5">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">5</span>
-          <span>♦</span>
+    <div class="card club" id="ck" data-suit="club" data-number="K">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">K</span>
+            <span>♣</span>
+          </div>
+          <span class="suit middle center">♣</span>
+          <div class="corner bottom">
+            <span class="number">K</span>
+            <span>♣</span>
+          </div>
         </div>
-        <span class="suit top left">♦</span>
-        <span class="suit top right">♦</span>
-        <span class="suit middle center">♦</span>
-        <span class="suit bottom left">♦</span>
-        <span class="suit bottom right">♦</span>
-        <div class="corner bottom">
-          <span class="number">5</span>
-          <span>♦</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card diamond" id="d6" data-suit="diamond" data-number="6">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">6</span>
-          <span>♦</span>
+    <div class="card diamond" id="da" data-suit="diamond" data-number="A">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">A</span>
+            <span>♦</span>
+          </div>
+          <span class="suit middle center">♦</span>
+          <div class="corner bottom">
+            <span class="number">A</span>
+            <span>♦</span>
+          </div>
         </div>
-        <span class="suit top left">♦</span>
-        <span class="suit top right">♦</span>
-        <span class="suit middle left">♦</span>
-        <span class="suit middle right">♦</span>
-        <span class="suit bottom left">♦</span>
-        <span class="suit bottom right">♦</span>
-        <div class="corner bottom">
-          <span class="number">6</span>
-          <span>♦</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card diamond" id="d7" data-suit="diamond" data-number="7">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">7</span>
-          <span>♦</span>
+    <div class="card diamond" id="d2" data-suit="diamond" data-number="2">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">2</span>
+            <span>♦</span>
+          </div>
+          <span class="suit top center">♦</span>
+          <span class="suit bottom center">♦</span>
+          <div class="corner bottom">
+            <span class="number">2</span>
+            <span>♦</span>
+          </div>
         </div>
-        <span class="suit top left">♦</span>
-        <span class="suit top right">♦</span>
-        <span class="suit under-top center">♦</span>
-        <span class="suit middle left">♦</span>
-        <span class="suit middle right">♦</span>
-        <span class="suit bottom left">♦</span>
-        <span class="suit bottom right">♦</span>
-        <div class="corner bottom">
-          <span class="number">7</span>
-          <span>♦</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card diamond" id="d8" data-suit="diamond" data-number="8">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">8</span>
-          <span>♦</span>
+    <div class="card diamond" id="d3" data-suit="diamond" data-number="3">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">3</span>
+            <span>♦</span>
+          </div>
+          <span class="suit top center">♦</span>
+          <span class="suit middle center">♦</span>
+          <span class="suit bottom center">♦</span>
+          <div class="corner bottom">
+            <span class="number">3</span>
+            <span>♦</span>
+          </div>
         </div>
-        <span class="suit top left">♦</span>
-        <span class="suit top right">♦</span>
-        <span class="suit under-top center">♦</span>
-        <span class="suit middle left">♦</span>
-        <span class="suit middle right">♦</span>
-        <span class="suit over-bottom center">♦</span>
-        <span class="suit bottom left">♦</span>
-        <span class="suit bottom right">♦</span>
-        <div class="corner bottom">
-          <span class="number">8</span>
-          <span>♦</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card diamond" id="d9" data-suit="diamond" data-number="9">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">9</span>
-          <span>♦</span>
+    <div class="card diamond" id="d4" data-suit="diamond" data-number="4">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">4</span>
+            <span>♦</span>
+          </div>
+          <span class="suit top left">♦</span>
+          <span class="suit top right">♦</span>
+          <span class="suit bottom left">♦</span>
+          <span class="suit bottom right">♦</span>
+          <div class="corner bottom">
+            <span class="number">4</span>
+            <span>♦</span>
+          </div>
         </div>
-        <span class="suit top left">♦</span>
-        <span class="suit top right">♦</span>
-        <span class="suit under-top center">♦</span>
-        <span class="suit over-middle left">♦</span>
-        <span class="suit over-middle right">♦</span>
-        <span class="suit under-middle left">♦</span>
-        <span class="suit under-middle right">♦</span>
-        <span class="suit bottom left">♦</span>
-        <span class="suit bottom right">♦</span>
-        <div class="corner bottom">
-          <span class="number">9</span>
-          <span>♦</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card diamond" id="d10" data-suit="diamond" data-number="10">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">10</span>
-          <span>♦</span>
+    <div class="card diamond" id="d5" data-suit="diamond" data-number="5">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">5</span>
+            <span>♦</span>
+          </div>
+          <span class="suit top left">♦</span>
+          <span class="suit top right">♦</span>
+          <span class="suit middle center">♦</span>
+          <span class="suit bottom left">♦</span>
+          <span class="suit bottom right">♦</span>
+          <div class="corner bottom">
+            <span class="number">5</span>
+            <span>♦</span>
+          </div>
         </div>
-        <span class="suit top left">♦</span>
-        <span class="suit top right">♦</span>
-        <span class="suit under-top center">♦</span>
-        <span class="suit over-middle left">♦</span>
-        <span class="suit over-middle right">♦</span>
-        <span class="suit under-middle left">♦</span>
-        <span class="suit under-middle right">♦</span>
-        <span class="suit over-bottom center">♦</span>
-        <span class="suit bottom left">♦</span>
-        <span class="suit bottom right">♦</span>
-        <div class="corner bottom">
-          <span class="number">10</span>
-          <span>♦</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card diamond" id="dj" data-suit="diamond" data-number="J">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">J</span>
-          <span>♦</span>
+    <div class="card diamond" id="d6" data-suit="diamond" data-number="6">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">6</span>
+            <span>♦</span>
+          </div>
+          <span class="suit top left">♦</span>
+          <span class="suit top right">♦</span>
+          <span class="suit middle left">♦</span>
+          <span class="suit middle right">♦</span>
+          <span class="suit bottom left">♦</span>
+          <span class="suit bottom right">♦</span>
+          <div class="corner bottom">
+            <span class="number">6</span>
+            <span>♦</span>
+          </div>
         </div>
-        <span class="suit middle center">♦</span>
-        <div class="corner bottom">
-          <span class="number">J</span>
-          <span>♦</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card diamond" id="dq" data-suit="diamond" data-number="Q">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">Q</span>
-          <span>♦</span>
+    <div class="card diamond" id="d7" data-suit="diamond" data-number="7">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">7</span>
+            <span>♦</span>
+          </div>
+          <span class="suit top left">♦</span>
+          <span class="suit top right">♦</span>
+          <span class="suit under-top center">♦</span>
+          <span class="suit middle left">♦</span>
+          <span class="suit middle right">♦</span>
+          <span class="suit bottom left">♦</span>
+          <span class="suit bottom right">♦</span>
+          <div class="corner bottom">
+            <span class="number">7</span>
+            <span>♦</span>
+          </div>
         </div>
-        <span class="suit middle center">♦</span>
-        <div class="corner bottom">
-          <span class="number">Q</span>
-          <span>♦</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card diamond" id="dk" data-suit="diamond" data-number="K">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">K</span>
-          <span>♦</span>
+    <div class="card diamond" id="d8" data-suit="diamond" data-number="8">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">8</span>
+            <span>♦</span>
+          </div>
+          <span class="suit top left">♦</span>
+          <span class="suit top right">♦</span>
+          <span class="suit under-top center">♦</span>
+          <span class="suit middle left">♦</span>
+          <span class="suit middle right">♦</span>
+          <span class="suit over-bottom center">♦</span>
+          <span class="suit bottom left">♦</span>
+          <span class="suit bottom right">♦</span>
+          <div class="corner bottom">
+            <span class="number">8</span>
+            <span>♦</span>
+          </div>
         </div>
-        <span class="suit middle center">♦</span>
-        <div class="corner bottom">
-          <span class="number">K</span>
-          <span>♦</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card heart" id="ha" data-suit="heart" data-number="A">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">A</span>
-          <span>♥</span>
+    <div class="card diamond" id="d9" data-suit="diamond" data-number="9">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">9</span>
+            <span>♦</span>
+          </div>
+          <span class="suit top left">♦</span>
+          <span class="suit top right">♦</span>
+          <span class="suit under-top center">♦</span>
+          <span class="suit over-middle left">♦</span>
+          <span class="suit over-middle right">♦</span>
+          <span class="suit under-middle left">♦</span>
+          <span class="suit under-middle right">♦</span>
+          <span class="suit bottom left">♦</span>
+          <span class="suit bottom right">♦</span>
+          <div class="corner bottom">
+            <span class="number">9</span>
+            <span>♦</span>
+          </div>
         </div>
-        <span class="suit middle center">♥</span>
-        <div class="corner bottom">
-          <span class="number">A</span>
-          <span>♥</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card heart" id="h2" data-suit="heart" data-number="2">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">2</span>
-          <span>♥</span>
+    <div class="card diamond" id="d10" data-suit="diamond" data-number="10">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">10</span>
+            <span>♦</span>
+          </div>
+          <span class="suit top left">♦</span>
+          <span class="suit top right">♦</span>
+          <span class="suit under-top center">♦</span>
+          <span class="suit over-middle left">♦</span>
+          <span class="suit over-middle right">♦</span>
+          <span class="suit under-middle left">♦</span>
+          <span class="suit under-middle right">♦</span>
+          <span class="suit over-bottom center">♦</span>
+          <span class="suit bottom left">♦</span>
+          <span class="suit bottom right">♦</span>
+          <div class="corner bottom">
+            <span class="number">10</span>
+            <span>♦</span>
+          </div>
         </div>
-        <span class="suit top center">♥</span>
-        <span class="suit bottom center">♥</span>
-        <div class="corner bottom">
-          <span class="number">2</span>
-          <span>♥</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card heart" id="h3" data-suit="heart" data-number="3">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">3</span>
-          <span>♥</span>
+    <div class="card diamond" id="dj" data-suit="diamond" data-number="J">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">J</span>
+            <span>♦</span>
+          </div>
+          <span class="suit middle center">♦</span>
+          <div class="corner bottom">
+            <span class="number">J</span>
+            <span>♦</span>
+          </div>
         </div>
-        <span class="suit top center">♥</span>
-        <span class="suit middle center">♥</span>
-        <span class="suit bottom center">♥</span>
-        <div class="corner bottom">
-          <span class="number">3</span>
-          <span>♥</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card heart" id="h4" data-suit="heart" data-number="4">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">4</span>
-          <span>♥</span>
+    <div class="card diamond" id="dq" data-suit="diamond" data-number="Q">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">Q</span>
+            <span>♦</span>
+          </div>
+          <span class="suit middle center">♦</span>
+          <div class="corner bottom">
+            <span class="number">Q</span>
+            <span>♦</span>
+          </div>
         </div>
-        <span class="suit top left">♥</span>
-        <span class="suit top right">♥</span>
-        <span class="suit bottom left">♥</span>
-        <span class="suit bottom right">♥</span>
-        <div class="corner bottom">
-          <span class="number">4</span>
-          <span>♥</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card heart" id="h5" data-suit="heart" data-number="5">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">5</span>
-          <span>♥</span>
+    <div class="card diamond" id="dk" data-suit="diamond" data-number="K">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">K</span>
+            <span>♦</span>
+          </div>
+          <span class="suit middle center">♦</span>
+          <div class="corner bottom">
+            <span class="number">K</span>
+            <span>♦</span>
+          </div>
         </div>
-        <span class="suit top left">♥</span>
-        <span class="suit top right">♥</span>
-        <span class="suit middle center">♥</span>
-        <span class="suit bottom left">♥</span>
-        <span class="suit bottom right">♥</span>
-        <div class="corner bottom">
-          <span class="number">5</span>
-          <span>♥</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card heart" id="h6" data-suit="heart" data-number="6">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">6</span>
-          <span>♥</span>
+    <div class="card heart" id="ha" data-suit="heart" data-number="A">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">A</span>
+            <span>♥</span>
+          </div>
+          <span class="suit middle center">♥</span>
+          <div class="corner bottom">
+            <span class="number">A</span>
+            <span>♥</span>
+          </div>
         </div>
-        <span class="suit top left">♥</span>
-        <span class="suit top right">♥</span>
-        <span class="suit middle left">♥</span>
-        <span class="suit middle right">♥</span>
-        <span class="suit bottom left">♥</span>
-        <span class="suit bottom right">♥</span>
-        <div class="corner bottom">
-          <span class="number">6</span>
-          <span>♥</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card heart" id="h7" data-suit="heart" data-number="7">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">7</span>
-          <span>♥</span>
+    <div class="card heart" id="h2" data-suit="heart" data-number="2">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">2</span>
+            <span>♥</span>
+          </div>
+          <span class="suit top center">♥</span>
+          <span class="suit bottom center">♥</span>
+          <div class="corner bottom">
+            <span class="number">2</span>
+            <span>♥</span>
+          </div>
         </div>
-        <span class="suit top left">♥</span>
-        <span class="suit top right">♥</span>
-        <span class="suit under-top center">♥</span>
-        <span class="suit middle left">♥</span>
-        <span class="suit middle right">♥</span>
-        <span class="suit bottom left">♥</span>
-        <span class="suit bottom right">♥</span>
-        <div class="corner bottom">
-          <span class="number">7</span>
-          <span>♥</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card heart" id="h8" data-suit="heart" data-number="8">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">8</span>
-          <span>♥</span>
+    <div class="card heart" id="h3" data-suit="heart" data-number="3">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">3</span>
+            <span>♥</span>
+          </div>
+          <span class="suit top center">♥</span>
+          <span class="suit middle center">♥</span>
+          <span class="suit bottom center">♥</span>
+          <div class="corner bottom">
+            <span class="number">3</span>
+            <span>♥</span>
+          </div>
         </div>
-        <span class="suit top left">♥</span>
-        <span class="suit top right">♥</span>
-        <span class="suit under-top center">♥</span>
-        <span class="suit middle left">♥</span>
-        <span class="suit middle right">♥</span>
-        <span class="suit over-bottom center">♥</span>
-        <span class="suit bottom left">♥</span>
-        <span class="suit bottom right">♥</span>
-        <div class="corner bottom">
-          <span class="number">8</span>
-          <span>♥</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card heart" id="h9" data-suit="heart" data-number="9">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">9</span>
-          <span>♥</span>
+    <div class="card heart" id="h4" data-suit="heart" data-number="4">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">4</span>
+            <span>♥</span>
+          </div>
+          <span class="suit top left">♥</span>
+          <span class="suit top right">♥</span>
+          <span class="suit bottom left">♥</span>
+          <span class="suit bottom right">♥</span>
+          <div class="corner bottom">
+            <span class="number">4</span>
+            <span>♥</span>
+          </div>
         </div>
-        <span class="suit top left">♥</span>
-        <span class="suit top right">♥</span>
-        <span class="suit under-top center">♥</span>
-        <span class="suit over-middle left">♥</span>
-        <span class="suit over-middle right">♥</span>
-        <span class="suit under-middle left">♥</span>
-        <span class="suit under-middle right">♥</span>
-        <span class="suit bottom left">♥</span>
-        <span class="suit bottom right">♥</span>
-        <div class="corner bottom">
-          <span class="number">9</span>
-          <span>♥</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card heart" id="h10" data-suit="heart" data-number="10">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">10</span>
-          <span>♥</span>
+    <div class="card heart" id="h5" data-suit="heart" data-number="5">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">5</span>
+            <span>♥</span>
+          </div>
+          <span class="suit top left">♥</span>
+          <span class="suit top right">♥</span>
+          <span class="suit middle center">♥</span>
+          <span class="suit bottom left">♥</span>
+          <span class="suit bottom right">♥</span>
+          <div class="corner bottom">
+            <span class="number">5</span>
+            <span>♥</span>
+          </div>
         </div>
-        <span class="suit top left">♥</span>
-        <span class="suit top right">♥</span>
-        <span class="suit under-top center">♥</span>
-        <span class="suit over-middle left">♥</span>
-        <span class="suit over-middle right">♥</span>
-        <span class="suit under-middle left">♥</span>
-        <span class="suit under-middle right">♥</span>
-        <span class="suit over-bottom center">♥</span>
-        <span class="suit bottom left">♥</span>
-        <span class="suit bottom right">♥</span>
-        <div class="corner bottom">
-          <span class="number">10</span>
-          <span>♥</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card heart" id="hj" data-suit="heart" data-number="J">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">J</span>
-          <span>♥</span>
+    <div class="card heart" id="h6" data-suit="heart" data-number="6">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">6</span>
+            <span>♥</span>
+          </div>
+          <span class="suit top left">♥</span>
+          <span class="suit top right">♥</span>
+          <span class="suit middle left">♥</span>
+          <span class="suit middle right">♥</span>
+          <span class="suit bottom left">♥</span>
+          <span class="suit bottom right">♥</span>
+          <div class="corner bottom">
+            <span class="number">6</span>
+            <span>♥</span>
+          </div>
         </div>
-        <span class="suit middle center">♥</span>
-        <div class="corner bottom">
-          <span class="number">J</span>
-          <span>♥</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card heart" id="hq" data-suit="heart" data-number="Q">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">Q</span>
-          <span>♥</span>
+    <div class="card heart" id="h7" data-suit="heart" data-number="7">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">7</span>
+            <span>♥</span>
+          </div>
+          <span class="suit top left">♥</span>
+          <span class="suit top right">♥</span>
+          <span class="suit under-top center">♥</span>
+          <span class="suit middle left">♥</span>
+          <span class="suit middle right">♥</span>
+          <span class="suit bottom left">♥</span>
+          <span class="suit bottom right">♥</span>
+          <div class="corner bottom">
+            <span class="number">7</span>
+            <span>♥</span>
+          </div>
         </div>
-        <span class="suit middle center">♥</span>
-        <div class="corner bottom">
-          <span class="number">Q</span>
-          <span>♥</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card heart" id="hk" data-suit="heart" data-number="K">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">K</span>
-          <span>♥</span>
+    <div class="card heart" id="h8" data-suit="heart" data-number="8">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">8</span>
+            <span>♥</span>
+          </div>
+          <span class="suit top left">♥</span>
+          <span class="suit top right">♥</span>
+          <span class="suit under-top center">♥</span>
+          <span class="suit middle left">♥</span>
+          <span class="suit middle right">♥</span>
+          <span class="suit over-bottom center">♥</span>
+          <span class="suit bottom left">♥</span>
+          <span class="suit bottom right">♥</span>
+          <div class="corner bottom">
+            <span class="number">8</span>
+            <span>♥</span>
+          </div>
         </div>
-        <span class="suit middle center">♥</span>
-        <div class="corner bottom">
-          <span class="number">K</span>
-          <span>♥</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card spade" id="sa" data-suit="spade" data-number="A">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">A</span>
-          <span>♠</span>
+    <div class="card heart" id="h9" data-suit="heart" data-number="9">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">9</span>
+            <span>♥</span>
+          </div>
+          <span class="suit top left">♥</span>
+          <span class="suit top right">♥</span>
+          <span class="suit under-top center">♥</span>
+          <span class="suit over-middle left">♥</span>
+          <span class="suit over-middle right">♥</span>
+          <span class="suit under-middle left">♥</span>
+          <span class="suit under-middle right">♥</span>
+          <span class="suit bottom left">♥</span>
+          <span class="suit bottom right">♥</span>
+          <div class="corner bottom">
+            <span class="number">9</span>
+            <span>♥</span>
+          </div>
         </div>
-        <span class="suit middle center">♠</span>
-        <div class="corner bottom">
-          <span class="number">A</span>
-          <span>♠</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card spade" id="s2" data-suit="spade" data-number="2">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">2</span>
-          <span>♠</span>
+    <div class="card heart" id="h10" data-suit="heart" data-number="10">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">10</span>
+            <span>♥</span>
+          </div>
+          <span class="suit top left">♥</span>
+          <span class="suit top right">♥</span>
+          <span class="suit under-top center">♥</span>
+          <span class="suit over-middle left">♥</span>
+          <span class="suit over-middle right">♥</span>
+          <span class="suit under-middle left">♥</span>
+          <span class="suit under-middle right">♥</span>
+          <span class="suit over-bottom center">♥</span>
+          <span class="suit bottom left">♥</span>
+          <span class="suit bottom right">♥</span>
+          <div class="corner bottom">
+            <span class="number">10</span>
+            <span>♥</span>
+          </div>
         </div>
-        <span class="suit top center">♠</span>
-        <span class="suit bottom center">♠</span>
-        <div class="corner bottom">
-          <span class="number">2</span>
-          <span>♠</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card spade" id="s3" data-suit="spade" data-number="3">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">3</span>
-          <span>♠</span>
+    <div class="card heart" id="hj" data-suit="heart" data-number="J">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">J</span>
+            <span>♥</span>
+          </div>
+          <span class="suit middle center">♥</span>
+          <div class="corner bottom">
+            <span class="number">J</span>
+            <span>♥</span>
+          </div>
         </div>
-        <span class="suit top center">♠</span>
-        <span class="suit middle center">♠</span>
-        <span class="suit bottom center">♠</span>
-        <div class="corner bottom">
-          <span class="number">3</span>
-          <span>♠</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card spade" id="s4" data-suit="spade" data-number="4">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">4</span>
-          <span>♠</span>
+    <div class="card heart" id="hq" data-suit="heart" data-number="Q">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">Q</span>
+            <span>♥</span>
+          </div>
+          <span class="suit middle center">♥</span>
+          <div class="corner bottom">
+            <span class="number">Q</span>
+            <span>♥</span>
+          </div>
         </div>
-        <span class="suit top left">♠</span>
-        <span class="suit top right">♠</span>
-        <span class="suit bottom left">♠</span>
-        <span class="suit bottom right">♠</span>
-        <div class="corner bottom">
-          <span class="number">4</span>
-          <span>♠</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card spade" id="s5" data-suit="spade" data-number="5">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">5</span>
-          <span>♠</span>
+    <div class="card heart" id="hk" data-suit="heart" data-number="K">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">K</span>
+            <span>♥</span>
+          </div>
+          <span class="suit middle center">♥</span>
+          <div class="corner bottom">
+            <span class="number">K</span>
+            <span>♥</span>
+          </div>
         </div>
-        <span class="suit top left">♠</span>
-        <span class="suit top right">♠</span>
-        <span class="suit middle center">♠</span>
-        <span class="suit bottom left">♠</span>
-        <span class="suit bottom right">♠</span>
-        <div class="corner bottom">
-          <span class="number">5</span>
-          <span>♠</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card spade" id="s6" data-suit="spade" data-number="6">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">6</span>
-          <span>♠</span>
+    <div class="card spade" id="sa" data-suit="spade" data-number="A">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">A</span>
+            <span>♠</span>
+          </div>
+          <span class="suit middle center">♠</span>
+          <div class="corner bottom">
+            <span class="number">A</span>
+            <span>♠</span>
+          </div>
         </div>
-        <span class="suit top left">♠</span>
-        <span class="suit top right">♠</span>
-        <span class="suit middle left">♠</span>
-        <span class="suit middle right">♠</span>
-        <span class="suit bottom left">♠</span>
-        <span class="suit bottom right">♠</span>
-        <div class="corner bottom">
-          <span class="number">6</span>
-          <span>♠</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card spade" id="s7" data-suit="spade" data-number="7">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">7</span>
-          <span>♠</span>
+    <div class="card spade" id="s2" data-suit="spade" data-number="2">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">2</span>
+            <span>♠</span>
+          </div>
+          <span class="suit top center">♠</span>
+          <span class="suit bottom center">♠</span>
+          <div class="corner bottom">
+            <span class="number">2</span>
+            <span>♠</span>
+          </div>
         </div>
-        <span class="suit top left">♠</span>
-        <span class="suit top right">♠</span>
-        <span class="suit under-top center">♠</span>
-        <span class="suit middle left">♠</span>
-        <span class="suit middle right">♠</span>
-        <span class="suit bottom left">♠</span>
-        <span class="suit bottom right">♠</span>
-        <div class="corner bottom">
-          <span class="number">7</span>
-          <span>♠</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card spade" id="s8" data-suit="spade" data-number="8">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">8</span>
-          <span>♠</span>
+    <div class="card spade" id="s3" data-suit="spade" data-number="3">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">3</span>
+            <span>♠</span>
+          </div>
+          <span class="suit top center">♠</span>
+          <span class="suit middle center">♠</span>
+          <span class="suit bottom center">♠</span>
+          <div class="corner bottom">
+            <span class="number">3</span>
+            <span>♠</span>
+          </div>
         </div>
-        <span class="suit top left">♠</span>
-        <span class="suit top right">♠</span>
-        <span class="suit under-top center">♠</span>
-        <span class="suit middle left">♠</span>
-        <span class="suit middle right">♠</span>
-        <span class="suit over-bottom center">♠</span>
-        <span class="suit bottom left">♠</span>
-        <span class="suit bottom right">♠</span>
-        <div class="corner bottom">
-          <span class="number">8</span>
-          <span>♠</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card spade" id="s9" data-suit="spade" data-number="9">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">9</span>
-          <span>♠</span>
+    <div class="card spade" id="s4" data-suit="spade" data-number="4">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">4</span>
+            <span>♠</span>
+          </div>
+          <span class="suit top left">♠</span>
+          <span class="suit top right">♠</span>
+          <span class="suit bottom left">♠</span>
+          <span class="suit bottom right">♠</span>
+          <div class="corner bottom">
+            <span class="number">4</span>
+            <span>♠</span>
+          </div>
         </div>
-        <span class="suit top left">♠</span>
-        <span class="suit top right">♠</span>
-        <span class="suit under-top center">♠</span>
-        <span class="suit over-middle left">♠</span>
-        <span class="suit over-middle right">♠</span>
-        <span class="suit under-middle left">♠</span>
-        <span class="suit under-middle right">♠</span>
-        <span class="suit bottom left">♠</span>
-        <span class="suit bottom right">♠</span>
-        <div class="corner bottom">
-          <span class="number">9</span>
-          <span>♠</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card spade" id="s10" data-suit="spade" data-number="10">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">10</span>
-          <span>♠</span>
+    <div class="card spade" id="s5" data-suit="spade" data-number="5">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">5</span>
+            <span>♠</span>
+          </div>
+          <span class="suit top left">♠</span>
+          <span class="suit top right">♠</span>
+          <span class="suit middle center">♠</span>
+          <span class="suit bottom left">♠</span>
+          <span class="suit bottom right">♠</span>
+          <div class="corner bottom">
+            <span class="number">5</span>
+            <span>♠</span>
+          </div>
         </div>
-        <span class="suit top left">♠</span>
-        <span class="suit top right">♠</span>
-        <span class="suit under-top center">♠</span>
-        <span class="suit over-middle left">♠</span>
-        <span class="suit over-middle right">♠</span>
-        <span class="suit under-middle left">♠</span>
-        <span class="suit under-middle right">♠</span>
-        <span class="suit over-bottom center">♠</span>
-        <span class="suit bottom left">♠</span>
-        <span class="suit bottom right">♠</span>
-        <div class="corner bottom">
-          <span class="number">10</span>
-          <span>♠</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card spade" id="sj" data-suit="spade" data-number="J">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">J</span>
-          <span>♠</span>
+    <div class="card spade" id="s6" data-suit="spade" data-number="6">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">6</span>
+            <span>♠</span>
+          </div>
+          <span class="suit top left">♠</span>
+          <span class="suit top right">♠</span>
+          <span class="suit middle left">♠</span>
+          <span class="suit middle right">♠</span>
+          <span class="suit bottom left">♠</span>
+          <span class="suit bottom right">♠</span>
+          <div class="corner bottom">
+            <span class="number">6</span>
+            <span>♠</span>
+          </div>
         </div>
-        <span class="suit middle center">♠</span>
-        <div class="corner bottom">
-          <span class="number">J</span>
-          <span>♠</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card spade" id="sq" data-suit="spade" data-number="Q">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">Q</span>
-          <span>♠</span>
+    <div class="card spade" id="s7" data-suit="spade" data-number="7">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">7</span>
+            <span>♠</span>
+          </div>
+          <span class="suit top left">♠</span>
+          <span class="suit top right">♠</span>
+          <span class="suit under-top center">♠</span>
+          <span class="suit middle left">♠</span>
+          <span class="suit middle right">♠</span>
+          <span class="suit bottom left">♠</span>
+          <span class="suit bottom right">♠</span>
+          <div class="corner bottom">
+            <span class="number">7</span>
+            <span>♠</span>
+          </div>
         </div>
-        <span class="suit middle center">♠</span>
-        <div class="corner bottom">
-          <span class="number">Q</span>
-          <span>♠</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
     </div>
-  </div>
 
-  <div class="card spade" id="sk" data-suit="spade" data-number="K">
-    <div class="flipper">
-      <div class="front">
-        <div class="corner top">
-          <span class="number">K</span>
-          <span>♠</span>
+    <div class="card spade" id="s8" data-suit="spade" data-number="8">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">8</span>
+            <span>♠</span>
+          </div>
+          <span class="suit top left">♠</span>
+          <span class="suit top right">♠</span>
+          <span class="suit under-top center">♠</span>
+          <span class="suit middle left">♠</span>
+          <span class="suit middle right">♠</span>
+          <span class="suit over-bottom center">♠</span>
+          <span class="suit bottom left">♠</span>
+          <span class="suit bottom right">♠</span>
+          <div class="corner bottom">
+            <span class="number">8</span>
+            <span>♠</span>
+          </div>
         </div>
-        <span class="suit middle center">♠</span>
-        <div class="corner bottom">
-          <span class="number">K</span>
-          <span>♠</span>
-        </div>
+        <div class="back"></div>
       </div>
-      <div class="back"></div>
+    </div>
+
+    <div class="card spade" id="s9" data-suit="spade" data-number="9">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">9</span>
+            <span>♠</span>
+          </div>
+          <span class="suit top left">♠</span>
+          <span class="suit top right">♠</span>
+          <span class="suit under-top center">♠</span>
+          <span class="suit over-middle left">♠</span>
+          <span class="suit over-middle right">♠</span>
+          <span class="suit under-middle left">♠</span>
+          <span class="suit under-middle right">♠</span>
+          <span class="suit bottom left">♠</span>
+          <span class="suit bottom right">♠</span>
+          <div class="corner bottom">
+            <span class="number">9</span>
+            <span>♠</span>
+          </div>
+        </div>
+        <div class="back"></div>
+      </div>
+    </div>
+
+    <div class="card spade" id="s10" data-suit="spade" data-number="10">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">10</span>
+            <span>♠</span>
+          </div>
+          <span class="suit top left">♠</span>
+          <span class="suit top right">♠</span>
+          <span class="suit under-top center">♠</span>
+          <span class="suit over-middle left">♠</span>
+          <span class="suit over-middle right">♠</span>
+          <span class="suit under-middle left">♠</span>
+          <span class="suit under-middle right">♠</span>
+          <span class="suit over-bottom center">♠</span>
+          <span class="suit bottom left">♠</span>
+          <span class="suit bottom right">♠</span>
+          <div class="corner bottom">
+            <span class="number">10</span>
+            <span>♠</span>
+          </div>
+        </div>
+        <div class="back"></div>
+      </div>
+    </div>
+
+    <div class="card spade" id="sj" data-suit="spade" data-number="J">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">J</span>
+            <span>♠</span>
+          </div>
+          <span class="suit middle center">♠</span>
+          <div class="corner bottom">
+            <span class="number">J</span>
+            <span>♠</span>
+          </div>
+        </div>
+        <div class="back"></div>
+      </div>
+    </div>
+
+    <div class="card spade" id="sq" data-suit="spade" data-number="Q">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">Q</span>
+            <span>♠</span>
+          </div>
+          <span class="suit middle center">♠</span>
+          <div class="corner bottom">
+            <span class="number">Q</span>
+            <span>♠</span>
+          </div>
+        </div>
+        <div class="back"></div>
+      </div>
+    </div>
+
+    <div class="card spade" id="sk" data-suit="spade" data-number="K">
+      <div class="flipper">
+        <div class="front">
+          <div class="corner top">
+            <span class="number">K</span>
+            <span>♠</span>
+          </div>
+          <span class="suit middle center">♠</span>
+          <div class="corner bottom">
+            <span class="number">K</span>
+            <span>♠</span>
+          </div>
+        </div>
+        <div class="back"></div>
+      </div>
     </div>
   </div>
 

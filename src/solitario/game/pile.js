@@ -50,7 +50,7 @@ solitario.game.Pile.INTERCARD_ZINDEX = 10;
  */
 solitario.game.Pile.prototype.getPosition_ = function() {
   return solitario.game.utils.toRelativeUnits(
-      goog.style.getClientPosition(this.element_));
+      goog.style.getPosition(this.element_));
 };
 
 
