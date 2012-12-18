@@ -8,7 +8,9 @@
 
 goog.provide('solitario.game.Pile');
 
+goog.require('goog.events.EventTarget');
 goog.require('goog.style');
+goog.require('solitario.game.constants');
 goog.require('solitario.game.utils');
 
 
@@ -17,8 +19,12 @@ goog.require('solitario.game.utils');
  *
  * @param {!Element} el DOM element to represent the pile.
  * @constructor
+ * @extends {goog.events.EventTarget}
  */
 solitario.game.Pile = function(el) {
+  // Call superclass constructor.
+  goog.base(this);
+
   /**
    * DOM element with the card contents.
    * @type {Element}
@@ -33,6 +39,7 @@ solitario.game.Pile = function(el) {
    */
   this.pile_ = [];
 };
+goog.inherits(solitario.game.Pile, goog.events.EventTarget);
 
 
 /**
@@ -64,13 +71,35 @@ solitario.game.Pile.prototype.getZIndex_ = function() {
   return parseInt(goog.style.getComputedZIndex(this.element_));
 };
 
+
 /**
- * Pushes a new card in the pile.
+ * Returns the top-most card without removing it from the pile, unlike pop().
+ *
+ * @return {solitario.game.Card} The card on top of the pile.
+ * @protected
+ */
+solitario.game.Pile.prototype.getTopCard_ = function() {
+  return this.pile_[this.pile_.length - 1];
+};
+
+
+/**
+ * Pushes a new card in the pile and sets its position to the corresponding
+ * place in the pile.
  *
  * @param {solitario.game.Card} card The card to be pushed.
  */
 solitario.game.Pile.prototype.push = function(card) {
   this.pile_.push(card);
+  // Set the card on top of everything.
+  card.setZIndex(solitario.game.constants.MAX_ZINDEX);
+  card.setPosition(this.getPosition_());
+  // Trigger zindex update at end of position change (after 300ms).
+  var cardZIndex = this.getZIndex_() +
+                   (this.pile_.length * solitario.game.Pile.INTERCARD_ZINDEX);
+  window.setTimeout(function() {
+    card.setZIndex(cardZIndex);
+  }, 300);
 };
 
 

@@ -10,6 +10,7 @@ goog.provide('solitario.game.Card');
 
 goog.require('goog.dom.classes');
 goog.require('goog.dom.dataset');
+goog.require('goog.events');
 goog.require('goog.style');
 goog.require('solitario.game.utils');
 
@@ -176,4 +177,28 @@ solitario.game.Card.prototype.setPosition = function(position) {
   var leftEms = solitario.game.utils.getEmStyleValue(position.x);
   var topEms = solitario.game.utils.getEmStyleValue(position.y);
   goog.style.setPosition(this.element_, leftEms, topEms);
+};
+
+/**
+ * Adds a listener function for the specified event type.
+ *
+ * @param {string} type Event type.
+ * @param {Function} listener Callback method.
+ * @return {number} Unique key for the listener
+ */
+solitario.game.Card.prototype.addEventListener = function(type, listener) {
+  return goog.events.listen(this.element_, type, goog.bind(listener, this));
+};
+
+
+/**
+ * Removes a listener function for the specified key.
+ *
+ * @param {number} key The key returned by addEventListener() for this event
+ *     listener.
+ * @return {boolean} Indicating whether the listener was there to remove.
+ */
+solitario.game.Card.prototype.removeEventListenerByKey =
+    function(key) {
+  return goog.events.unlistenByKey(key);
 };

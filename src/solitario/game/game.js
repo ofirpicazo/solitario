@@ -9,7 +9,9 @@
 goog.provide('solitario.game.Game');
 
 goog.require('goog.dom');
+goog.require('goog.events.EventHandler');
 goog.require('solitario.game.Card');
+goog.require('solitario.game.constants');
 goog.require('solitario.game.Foundation');
 goog.require('solitario.game.Stock');
 goog.require('solitario.game.Tableu');
@@ -20,8 +22,13 @@ goog.require('solitario.game.Waste');
  * Game logic controller.
  *
  * @constructor
+ * @extends {goog.events.EventHandler}
  */
 solitario.game.Game = function() {
+  // Calls the superclass constructor. The seconds 'this' refers to the
+  // opt_handler parameter of the EventHandler's class constructor.
+  goog.base(this, this);
+
   /**
    * Array of card objects for the game.
    * @type {Array.<solitario.game.Card>}
@@ -68,6 +75,7 @@ solitario.game.Game = function() {
   // Initialize the elements of the game.
   this.init_();
 };
+goog.inherits(solitario.game.Game, goog.events.EventHandler);
 
 
 /**
@@ -156,5 +164,17 @@ solitario.game.Game.prototype.start = function() {
   // Sets cards for stock
   var cardsForStock = this.cards_.slice(endIndex);
   this.stock_.initialize(cardsForStock);
+
+  // Sets up listeners for the game events.
+  this.listen(this.stock_, solitario.game.constants.Events.STOCK_TAKEN,
+              this.handleStockTaken_);
 };
 
+
+solitario.game.Game.prototype.handleStockTaken_ = function() {
+  // Remove card from stock.
+  var card = this.stock_.pop();
+
+  // Add card to waste.
+  this.waste_.push(card);
+};

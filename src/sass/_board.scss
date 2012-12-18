@@ -74,7 +74,7 @@ body {
   height: $pile-height;
   position: absolute;
   width: $pile-width;
-  z-index: 1;
+  z-index: 10;
 }
 
 %top-row {

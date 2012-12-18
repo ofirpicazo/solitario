@@ -51,7 +51,7 @@ solitario.App = function() {
    // Trigger initial viewport calculation.
    this.resizeBoard_();
 
-   this.game_.start();
+   window.setTimeout(goog.bind(this.game_.start, this.game_), 2000);
 };
 goog.addSingletonGetter(solitario.App);
 

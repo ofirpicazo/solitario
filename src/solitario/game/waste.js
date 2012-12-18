@@ -23,3 +23,16 @@ solitario.game.Waste = function(el) {
   goog.base(this, el);
 };
 goog.inherits(solitario.game.Waste, solitario.game.Pile);
+
+
+/**
+ * Adds a new card on top of the waste.
+ *
+ * @param {solitario.game.Card} card Card to be pushed.
+ * @override
+ */
+solitario.game.Waste.prototype.push = function(card) {
+  solitario.game.Waste.superClass_.push.call(this, card);
+  // Reveal all cards added to the waste.
+  card.reveal();
+};
