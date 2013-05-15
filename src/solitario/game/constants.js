@@ -15,8 +15,17 @@ goog.provide('solitario.game.constants');
  * @const
  */
 solitario.game.constants.Events = {
+  DRAG_START: 'dragStart',
   STOCK_TAKEN: 'stockTaken'
 };
+
+
+/**
+ * Constant for distance threshold, in pixels, an element has to be moved to
+ * initiate a drag operation.
+ * @type {number}
+ */
+solitario.game.constants.INIT_DRAG_DISTANCE_THRESHOLD = 5;
 
 
 /**

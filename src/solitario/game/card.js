@@ -12,6 +12,7 @@ goog.require('goog.dom.classes');
 goog.require('goog.dom.dataset');
 goog.require('goog.events');
 goog.require('goog.style');
+goog.require('solitario.game.constants');
 goog.require('solitario.game.utils');
 
 
@@ -28,6 +29,14 @@ solitario.game.Card = function(el) {
    * @private
    */
   this.element_ = el;
+
+  /**
+   * Recorded position of the place where the mouse down event occured.
+   * Needed to calculate threshold for triggering dragging.
+   * @type {goog.math.Coordinate}
+   * @private
+   */
+  this.mouseDownPosition_;
 
   /**
    * Unique identifier for this card.
@@ -57,6 +66,13 @@ solitario.game.Card = function(el) {
   this.color = (this.suit === solitario.game.Card.Suits_.HEART ||
                 this.suit === solitario.game.Card.Suits_.DIAMOND) ?
                 'red' : 'black';
+
+  /**
+   * Enables or disables dragging behaviour on this card.
+   * Defaults to false.
+   * @type {Boolean}
+   */
+  this.isDraggable = false;
 };
 
 
@@ -100,6 +116,121 @@ solitario.game.Card.Suits_ = {
 
 
 /**
+ * Event handler for mouse down.
+ *
+ * @param {goog.events.BrowserEvent} event Mouse down event.
+ * @private
+ */
+solitario.game.Card.prototype.mouseDown_ = function(event) {
+  if (!event.isMouseActionButton() || !this.isDraggable) {
+    return;
+  }
+
+  goog.events.listen(this.element_, goog.events.EventType.MOUSEMOVE,
+                     this.mouseMove_, false, this);
+  goog.events.listen(this.element_, goog.events.EventType.MOUSEOUT,
+                     this.mouseMove_, false, this);
+  goog.events.listen(this.element_, goog.events.EventType.MOUSEUP,
+                     this.mouseUp_, false, this);
+
+  this.mouseDownPosition_ = new goog.math.Coordinate(
+      event.clientX, event.clientY);
+
+  event.preventDefault();
+};
+
+
+/**
+ * Event handler for mouse move. Starts drag operation if moved more than the
+ * threshold value.
+ *
+ * @param {goog.events.BrowserEvent} event Mouse move or mouse out event.
+ * @private
+ */
+solitario.game.Card.prototype.mouseMove_ = function(event) {
+  var distance = Math.abs(event.clientX - this.mouseDownPosition_.x) +
+      Math.abs(event.clientY - this.mouseDownPosition_.y);
+  // Fire dragStart event if the drag distance exceeds the threshold or if the
+  // mouse leave the dragged element.
+  var distanceAboveThreshold =
+      distance > solitario.game.constants.INIT_DRAG_DISTANCE_THRESHOLD;
+  var mouseOutOnDragElement = event.type == goog.events.EventType.MOUSEOUT &&
+      event.target == this.element_;
+  if (distanceAboveThreshold || mouseOutOnDragElement) {
+    goog.events.unlisten(currentDragElement, goog.events.EventType.MOUSEMOVE,
+                         this.mouseMove_, false, this);
+    goog.events.unlisten(currentDragElement, goog.events.EventType.MOUSEOUT,
+                         this.mouseMove_, false, this);
+    goog.events.unlisten(currentDragElement, goog.events.EventType.MOUSEUP,
+                         this.mouseUp_, false, this);
+
+    this.startDrag_(event, this);
+  }
+};
+
+
+/**
+ * Event handler for mouse up. Removes mouse move, mouse out and mouse up event
+ * handlers.
+ *
+ * @param {goog.events.BrowserEvent} event Mouse up event.
+ * @private
+ */
+solitario.game.Card.prototype.mouseUp_ = function(event) {
+  goog.events.unlisten(this.element_, goog.events.EventType.MOUSEMOVE,
+                       this.mouseMove_, false, this);
+  goog.events.unlisten(this.element_, goog.events.EventType.MOUSEOUT,
+                       this.mouseMove_, false, this);
+  goog.events.unlisten(this.element_, goog.events.EventType.MOUSEUP,
+                       this.mouseUp_, false, this);
+  this.mouseDownPosition_ = null;
+};
+
+
+/**
+ * Event handler that's used to start drag.
+ *
+ * @param {goog.events.BrowserEvent} event Mouse move event.
+ * @private
+ */
+solitario.game.Card.prototype.startDrag_ = function(event) {
+  // Dispatch DRAGSTART event
+  var dragStartEvent = new goog.events.Event(
+      solitario.game.constants.Events.DRAG_START, this);
+  goog.events.dispatchEvent(this, dragStartEvent);
+
+  // Get the source element and create a drag element for it.
+  var el = item.getCurrentDragElement();
+  this.dragEl_ = this.createDragElement(el);
+  var doc = goog.dom.getOwnerDocument(el);
+  doc.body.appendChild(this.dragEl_);
+
+  this.dragger_ = this.createDraggerFor(el, this.dragEl_, event);
+  this.dragger_.setScrollTarget(this.scrollTarget_);
+
+  goog.events.listen(this.dragger_, goog.fx.Dragger.EventType.DRAG,
+                     this.moveDrag_, false, this);
+
+  goog.events.listen(this.dragger_, goog.fx.Dragger.EventType.END,
+                     this.endDrag, false, this);
+
+  // IE may issue a 'selectstart' event when dragging over an iframe even when
+  // default mousemove behavior is suppressed. If the default selectstart
+  // behavior is not suppressed, elements dragged over will show as selected.
+  goog.events.listen(doc.body, goog.events.EventType.SELECTSTART,
+                     this.suppressSelect_);
+
+  this.recalculateDragTargets();
+  this.recalculateScrollableContainers();
+  this.activeTarget_ = null;
+  this.initScrollableContainerListeners_();
+  this.dragger_.startDrag(event);
+
+  event.preventDefault();
+};
+
+
+/**
  * Obtains the current z-index of this card.
  *
  * @return {number} The z-index as an integer.
@@ -116,12 +247,6 @@ solitario.game.Card.prototype.getZIndex = function() {
  */
 solitario.game.Card.prototype.setZIndex = function(zIndex) {
   this.element_.style.zIndex = zIndex + '';  // explicit string cast.
-};
-
-
-/** @inheritDoc */
-solitario.game.Card.prototype.isDraggable = function() {
-
 };
 
 
