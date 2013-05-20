@@ -74,12 +74,11 @@ solitario.game.Stock.prototype.dispatchStockTakenEvent_ = function(evt) {
 solitario.game.Stock.prototype.pop = function() {
   var card = solitario.game.Stock.superClass_.pop.call(this);
   // Removes listener from the popped card.
-  card.removeEventListenerByKey(this.topCardClickListenerKey_);
+  card.removeEventListenersByType(goog.events.EventType.CLICK);
   // Adds listener to the top-most card.
   var topCard = this.getTopCard_();
   if (topCard) {
-    this.topCardClickListenerKey_ = topCard.addEventListener(
-        goog.events.EventType.CLICK,
+    topCard.addEventListener(goog.events.EventType.CLICK,
         goog.bind(this.dispatchStockTakenEvent_, this));
   }
   return card;

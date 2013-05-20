@@ -21,6 +21,13 @@ goog.require('solitario.game.Pile');
  */
 solitario.game.Waste = function(el) {
   goog.base(this, el);
+
+  /**
+   * Unique key to identify the listener for the top card click event.
+   * @type {number}
+   * @private
+   */
+  this.topCardClickListenerKey_;
 };
 goog.inherits(solitario.game.Waste, solitario.game.Pile);
 
@@ -32,7 +39,14 @@ goog.inherits(solitario.game.Waste, solitario.game.Pile);
  * @override
  */
 solitario.game.Waste.prototype.push = function(card) {
+  // Remove listener for previous top card.
+  var topCard = this.getTopCard_();
+  if (topCard && this.topCardClickListenerKey_) {
+    topCard.removeEventListenerByKey(this.topCardClickListenerKey_);
+  }
+
   solitario.game.Waste.superClass_.push.call(this, card);
   // Reveal all cards added to the waste.
   card.reveal();
+  card.isDraggable = true;
 };

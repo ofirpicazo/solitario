@@ -6,6 +6,8 @@
  * @author ofirpicazo@gmail.com (Ofir Picazo)
  */
 
+@import "compass/css3/user-interface";
+
 $board-margin: 1em;
 $controlbar-height: 3em;
 $pile-height: 14em;
@@ -15,6 +17,21 @@ $text-shadow-color: #333;
 
 * {
   @include box-sizing(border-box);
+  @include user-select(none);
+  cursor: default;
+}
+
+@font-face {
+  font-family: "Rambla";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Rambla"), local("Rambla-Regular"), font-url("rambla.woff") format("woff");
+}
+@font-face {
+  font-family: "Rambla";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Rambla Bold"), local("Rambla-Bold"), font-url("rambla_bold.woff") format("woff");
 }
 
 body {

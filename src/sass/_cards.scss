@@ -6,8 +6,6 @@
  * @author ofirpicazo@gmail.com (Ofir Picazo)
  */
 
-@import "compass/css3/user-interface";
-
 $card-border-color: #666;
 $card-color: #F5F5F5;
 $card-height: 14em;
@@ -22,8 +20,6 @@ $card-width: 10em;
   @include transition-property(left, top);
   @include transition-duration(0.3s, 0.3s);
   @include transition-timing-function(ease-in-out, ease-in-out);
-  @include user-select(none);
-  cursor: default;
   font-family: "Suit", "Helvetica Neue", Helvetica, Arial, sans-serif;
   height: $card-height;
   left: 1em;
@@ -170,4 +166,8 @@ $card-width: 10em;
     border: 0.25em solid $card-shadow-color;
     z-index: 30;
   }
+}
+
+.no-animation {
+  @include transition-duration(0s, 0s);
 }
