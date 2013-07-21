@@ -11,6 +11,7 @@ goog.provide('solitario.game.Card');
 goog.require('goog.dom.classes');
 goog.require('goog.dom.dataset');
 goog.require('goog.events');
+goog.require('goog.events.EventTarget');
 goog.require('goog.style');
 goog.require('solitario.game.constants');
 goog.require('solitario.game.utils');
@@ -21,6 +22,7 @@ goog.require('solitario.game.utils');
  *
  * @param {!Element} el DOM element with the card contents.
  * @constructor
+ * @extends {goog.events.EventTarget}
  */
 solitario.game.Card = function(el) {
   /**
@@ -37,7 +39,6 @@ solitario.game.Card = function(el) {
    * @private
    */
   this.mouseDownPosition_;
-
 
   /**
    * A map of event type to a list of event listener keys for that type
@@ -85,6 +86,7 @@ solitario.game.Card = function(el) {
   // Initialize listeners.
   this.addEventListener(goog.events.EventType.MOUSEDOWN, this.mouseDown_);
 };
+goog.inherits(solitario.game.Card, goog.events.EventTarget);
 
 
 /**
@@ -151,6 +153,10 @@ solitario.game.Card.prototype.mouseDown_ = function(event) {
       event.clientX - currentPosition.x,
       event.clientY - currentPosition.y);
   event.preventDefault();
+
+  var dragStartEvent = new goog.events.Event(
+      solitario.game.constants.Events.DRAG_START, this);
+  goog.events.dispatchEvent(this. dragStartEvent);
 };
 
 
@@ -168,6 +174,10 @@ solitario.game.Card.prototype.mouseMove_ = function(event) {
       (x < 0) ? 0 : x,
       (y < 0) ? 0 : y);
   this.setAbsolutePosition(newLocation);
+
+  var dragMoveEvent = new goog.events.Event(
+      solitario.game.constants.Events.DRAG_MOVE, this);
+  goog.events.dispatchEvent(this. dragMoveEvent);
 };
 
 
@@ -187,6 +197,10 @@ solitario.game.Card.prototype.mouseUp_ = function(event) {
   goog.dom.classes.remove(this.element_,
       solitario.game.Card.ClassNames_.NO_ANIMATION);
   this.mouseDownPosition_ = null;
+
+  var dragEndEvent = new goog.events.Event(
+      solitario.game.constants.Events.DRAG_END, this);
+  goog.events.dispatchEvent(this. dragEndEvent);
 };
 
 

@@ -15,6 +15,8 @@ goog.provide('solitario.game.constants');
  * @const
  */
 solitario.game.constants.Events = {
+  DRAG_END: 'dragEnd',
+  DRAG_MOVE: 'dragMove',
   DRAG_START: 'dragStart',
   STOCK_TAKEN: 'stockTaken'
 };

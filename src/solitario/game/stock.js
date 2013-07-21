@@ -59,9 +59,9 @@ solitario.game.Stock.prototype.initialize = function(cards) {
 
 
 solitario.game.Stock.prototype.dispatchStockTakenEvent_ = function(evt) {
-  var stockTakenEvt = new goog.events.Event(
+  var stockTakenEvent = new goog.events.Event(
       solitario.game.constants.Events.STOCK_TAKEN, this);
-  goog.events.dispatchEvent(this, stockTakenEvt);
+  goog.events.dispatchEvent(this, stockTakenEvent);
 };
 
 

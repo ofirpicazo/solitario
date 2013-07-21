@@ -75,11 +75,11 @@ solitario.game.Pile.prototype.getZIndex_ = function() {
 /**
  * Returns the top-most card without removing it from the pile, unlike pop().
  *
- * @return {solitario.game.Card} The card on top of the pile.
+ * @return {?solitario.game.Card} The card on top of the pile.
  * @protected
  */
 solitario.game.Pile.prototype.getTopCard_ = function() {
-  return this.pile_[this.pile_.length - 1];
+  return this.pile_[this.pile_.length - 1] || null;
 };
 
 
