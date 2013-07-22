@@ -8,6 +8,7 @@
 
 goog.provide('solitario.game.Pile');
 
+goog.require('goog.events');
 goog.require('goog.events.EventTarget');
 goog.require('goog.style');
 goog.require('solitario.game.constants');
@@ -84,6 +85,20 @@ solitario.game.Pile.prototype.getTopCard_ = function() {
 
 
 /**
+ * Handles when a playable card ends being dragged.
+ *
+ * @param {goog.events.Event} evnt The event object passed.
+ * @private
+ */
+solitario.game.Pile.prototype.handleCardDragEnd_ = function(evnt) {
+  var card = evnt.target;
+  // Return the card to the original position in the pile, as it wasn't popped
+  // after end drag ended.
+  card.returnToPile();
+};
+
+
+/**
  * Pushes a new card in the pile and sets its position to the corresponding
  * place in the pile.
  *
@@ -93,13 +108,21 @@ solitario.game.Pile.prototype.push = function(card) {
   this.pile_.push(card);
   // Set the card on top of everything.
   card.setZIndex(solitario.game.constants.MAX_ZINDEX);
-  card.setPosition(this.getPosition_());
-  // Trigger zindex update at end of position change (after 300ms).
+  var position = this.getPosition_();
+  card.setPosition(position);
+  card.positionInPile = position;
+
+  // Trigger final zindex update at end of position change (after 300ms) to
+  // allow time for animations to finish.
   var cardZIndex = this.getZIndex_() +
                    (this.pile_.length * solitario.game.Pile.INTERCARD_ZINDEX);
   window.setTimeout(function() {
     card.setZIndex(cardZIndex);
   }, 300);
+
+  // Add listeners for card.
+  goog.events.listen(card, solitario.game.constants.Events.DRAG_END,
+                     this.handleCardDragEnd_);
 };
 
 
@@ -109,5 +132,9 @@ solitario.game.Pile.prototype.push = function(card) {
  * @return {solitario.game.Card} The card popped from the pile.
  */
 solitario.game.Pile.prototype.pop = function() {
-  return this.pile_.pop();
+  var card = this.pile_.pop();
+  // Remove listeners from the card.
+  goog.events.unlisten(card, solitario.game.constants.Events.DRAG_END,
+                       this.handleCardDragEnd_);
+  return card;
 };

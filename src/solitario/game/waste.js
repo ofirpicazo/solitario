@@ -32,7 +32,7 @@ goog.inherits(solitario.game.Waste, solitario.game.Pile);
  * @override
  */
 solitario.game.Waste.prototype.push = function(card) {
-  // Remove listener for previous top card.
+  // Remove dragging for previous top card.
   var topCard = this.getTopCard_();
   if (topCard) {
     topCard.isDraggable = false;

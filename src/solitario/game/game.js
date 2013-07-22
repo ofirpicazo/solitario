@@ -9,7 +9,7 @@
 goog.provide('solitario.game.Game');
 
 goog.require('goog.dom');
-goog.require('goog.events.EventHandler');
+goog.require('goog.events');
 goog.require('solitario.game.Card');
 goog.require('solitario.game.constants');
 goog.require('solitario.game.Foundation');
@@ -22,13 +22,8 @@ goog.require('solitario.game.Waste');
  * Game logic controller.
  *
  * @constructor
- * @extends {goog.events.EventHandler}
  */
 solitario.game.Game = function() {
-  // Calls the superclass constructor. The seconds 'this' refers to the
-  // opt_handler parameter of the EventHandler's class constructor.
-  goog.base(this, this);
-
   /**
    * Array of card objects for the game.
    * @type {Array.<solitario.game.Card>}
@@ -75,7 +70,7 @@ solitario.game.Game = function() {
   // Initialize the elements of the game.
   this.init_();
 };
-goog.inherits(solitario.game.Game, goog.events.EventHandler);
+// goog.inherits(solitario.game.Game, goog.events.EventHandler);
 
 
 /**
@@ -99,27 +94,27 @@ solitario.game.Game.ClassNames_ = {
  * @private
  */
 solitario.game.Game.prototype.init_ = function() {
-  // Assign the card deck.
+  // Get the card deck.
   var cardElements = goog.dom.getElementsByClass(
       solitario.game.Game.ClassNames_.CARD);
   for (var i = 0; i < cardElements.length; i++) {
     this.cards_.push(new solitario.game.Card(cardElements[i]));
   }
 
-  // Assign stock and waste.
+  // Get stock and waste.
   this.stock_ = new solitario.game.Stock(goog.dom.getElement(
       solitario.game.Game.ClassNames_.STOCK));
   this.waste_ = new solitario.game.Waste(goog.dom.getElement(
       solitario.game.Game.ClassNames_.WASTE));
 
-  // Assign foundations.
+  // Get foundations.
   var foundationElements = goog.dom.getElementsByClass(
       solitario.game.Game.ClassNames_.FOUNDATION);
   for (var i = 0; i < foundationElements.length; i++) {
     this.foundations_[i] = new solitario.game.Foundation(foundationElements[i]);
   }
 
-  // Assign tableux.
+  // Get tableux.
   var tableuElements = goog.dom.getElementsByClass(
       solitario.game.Game.ClassNames_.TABLEU);
   for (var i = 0; i < tableuElements.length; i++) {
@@ -149,6 +144,16 @@ solitario.game.Game.prototype.start = function() {
   // Shuffles the cards.
   this.shuffleCards_();
 
+  // Sets up listeners for cards' events.
+  for (var i = this.cards_.length - 1; i >= 0; i--) {
+    goog.events.listen(this.cards_[i],
+        solitario.game.constants.Events.DRAG_START, this.handleCardDragStart_);
+    goog.events.listen(this.cards_[i],
+        solitario.game.constants.Events.DRAG_MOVE, this.handleCardDragMove_);
+    goog.events.listen(this.cards_[i],
+        solitario.game.constants.Events.DRAG_END, this.handleCardDragEnd_);
+  }
+
   // Sets cards for tableux.
   var numCardsForTableu = 0;
   var startIndex, endIndex = 0;
@@ -165,16 +170,49 @@ solitario.game.Game.prototype.start = function() {
   var cardsForStock = this.cards_.slice(endIndex);
   this.stock_.initialize(cardsForStock);
 
-  // Sets up listeners for the game events.
-  this.listen(this.stock_, solitario.game.constants.Events.STOCK_TAKEN,
-              this.handleStockTaken_);
+  // Sets up listeners for other the game events.
+  goog.events.listen(this.stock_, solitario.game.constants.Events.STOCK_TAKEN,
+                     goog.bind(this.handleStockTaken_, this));
 };
 
 
-solitario.game.Game.prototype.handleStockTaken_ = function() {
+solitario.game.Game.prototype.handleStockTaken_ = function(evnt) {
   // Remove card from stock.
   var card = this.stock_.pop();
 
   // Add card to waste.
   this.waste_.push(card);
+};
+
+
+/**
+ * Handles when a playable card starts being dragged.
+ *
+ * @param {goog.events.Event} evnt The event object passed.
+ * @private
+ */
+solitario.game.Game.prototype.handleCardDragStart_ = function(evnt) {
+  // window.console.log('handleCardDragStart_: ' + evnt.target.pile);
+};
+
+
+/**
+ * Handles when a card being dragged moves.
+ *
+ * @param {goog.events.Event} evnt The event object passed.
+ * @private
+ */
+solitario.game.Game.prototype.handleCardDragMove_ = function(evnt) {
+  // window.console.log('handleCardDragMove_: ' + evnt.target.pile);
+};
+
+
+/**
+ * Handles when a playable card ends being dragged.
+ *
+ * @param {goog.events.Event} evnt The event object passed.
+ * @private
+ */
+solitario.game.Game.prototype.handleCardDragEnd_ = function(evnt) {
+
 };

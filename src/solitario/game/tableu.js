@@ -44,6 +44,7 @@ solitario.game.Tableu.INTERCARD_DISTANCE_ = 0.8;
  * @param {Array.<solitario.game.Card>} cards Cards to be stacked in the tableu.
  */
 solitario.game.Tableu.prototype.initialize = function(cards) {
+  // TODO(ofir): Move card positioning to overriden push() method.
   var currentPosition = this.getPosition_();
   var currentZindex = this.getZIndex_();
 

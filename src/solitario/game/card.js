@@ -25,6 +25,9 @@ goog.require('solitario.game.utils');
  * @extends {goog.events.EventTarget}
  */
 solitario.game.Card = function(el) {
+  // Calls the superclass constructor.
+  goog.base(this);
+
   /**
    * DOM element with the card contents.
    * @type {Element}
@@ -33,19 +36,18 @@ solitario.game.Card = function(el) {
   this.element_ = el;
 
   /**
+   * A map of event type to a list of event listener keys for that type
+   * @type {Object.<string, Array>}
+   */
+  this.eventListenerKeys_ = {};
+
+  /**
    * Recorded position of the place where the mouse down event occured.
    * Needed to calculate grab point for dragging.
    * @type {goog.math.Coordinate}
    * @private
    */
   this.mouseDownPosition_;
-
-  /**
-   * A map of event type to a list of event listener keys for that type
-   *
-   * @type {Object.<string, Array>}
-   */
-  this.eventListenerKeys_ = {};
 
   /**
    * Unique identifier for this card.
@@ -59,6 +61,13 @@ solitario.game.Card = function(el) {
    */
   this.number = goog.dom.dataset.get(
       this.element_, solitario.game.Card.DataAttrs_.NUMBER);
+
+  /**
+   * Recorded position of the location of the card as assigned by the containing
+   * pile.
+   * @type {?goog.math.Coordinate}
+   */
+  this.positionInPile = null;
 
   /**
    * Suit this card belongs to (club, diamond, heart, spade).
@@ -149,6 +158,7 @@ solitario.game.Card.prototype.mouseDown_ = function(event) {
                      this.mouseMove_, false, this);
 
   var currentPosition = this.getAbsolutePosition();
+  this.originalPosition_ = currentPosition;
   this.mouseDownPosition_ = new goog.math.Coordinate(
       event.clientX - currentPosition.x,
       event.clientY - currentPosition.y);
@@ -156,7 +166,7 @@ solitario.game.Card.prototype.mouseDown_ = function(event) {
 
   var dragStartEvent = new goog.events.Event(
       solitario.game.constants.Events.DRAG_START, this);
-  goog.events.dispatchEvent(this. dragStartEvent);
+  goog.events.dispatchEvent(this, dragStartEvent);
 };
 
 
@@ -173,11 +183,11 @@ solitario.game.Card.prototype.mouseMove_ = function(event) {
   var newLocation = new goog.math.Coordinate(
       (x < 0) ? 0 : x,
       (y < 0) ? 0 : y);
-  this.setAbsolutePosition(newLocation);
+  this.setPosition(solitario.game.utils.toRelativeUnits(newLocation));
 
   var dragMoveEvent = new goog.events.Event(
       solitario.game.constants.Events.DRAG_MOVE, this);
-  goog.events.dispatchEvent(this. dragMoveEvent);
+  goog.events.dispatchEvent(this, dragMoveEvent);
 };
 
 
@@ -200,7 +210,7 @@ solitario.game.Card.prototype.mouseUp_ = function(event) {
 
   var dragEndEvent = new goog.events.Event(
       solitario.game.constants.Events.DRAG_END, this);
-  goog.events.dispatchEvent(this. dragEndEvent);
+  goog.events.dispatchEvent(this, dragEndEvent);
 };
 
 
@@ -221,7 +231,7 @@ solitario.game.Card.prototype.addEventListener = function(type, listener) {
 /**
  * Gets the absolute position of the card in the viewport, in px.
  *
- * @return {goog.math.Coordinate} The bbsolute position of the card.
+ * @return {goog.math.Coordinate} The absolute position of the card.
  */
 solitario.game.Card.prototype.getAbsolutePosition = function() {
   return goog.style.getPosition(this.element_);
@@ -269,6 +279,16 @@ solitario.game.Card.prototype.removeEventListenersByType = function(type) {
   };
 };
 
+
+/**
+ * If the card belongs to a pile, return to its original position, otherwise
+ * do nothing.
+ */
+solitario.game.Card.prototype.returnToPile = function() {
+  if (this.positionInPile) {
+    this.setPosition(this.positionInPile);
+  }
+};
 
 /**
  * Reveals the card.

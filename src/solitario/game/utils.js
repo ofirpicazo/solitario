@@ -38,8 +38,8 @@ solitario.game.utils.toRelativeUnits = function(arg1, opt_arg2) {
     topPx = opt_arg2;
   }
 
-  leftEm = Math.round(leftPx / relativeFontSize);
-  topEm = Math.round(topPx / relativeFontSize);
+  leftEm = leftPx / relativeFontSize;
+  topEm = topPx / relativeFontSize;
 
   return new goog.math.Coordinate(leftEm, topEm);
 };

@@ -23,13 +23,6 @@ goog.require('solitario.game.Pile');
  */
 solitario.game.Stock = function(el) {
   goog.base(this, el);
-
-  /**
-   * Unique key to identify the listener for the top card click event.
-   * @type {number}
-   * @private
-   */
-  this.topCardClickListenerKey_;
 };
 goog.inherits(solitario.game.Stock, solitario.game.Pile);
 
@@ -45,12 +38,6 @@ solitario.game.Stock.prototype.initialize = function(cards) {
   goog.array.forEach(cards, function(card) {
     this.push(card);
   }, this);
-
-  // Adds listener to the top-most card.
-  var topCard = this.getTopCard_();
-  this.topCardClickListenerKey_ = topCard.addEventListener(
-      goog.events.EventType.CLICK,
-      goog.bind(this.dispatchStockTakenEvent_, this));
 
   // Slant the second and third last cards to create stack effect.
   //this.pile_[1].slantLeft();
@@ -82,4 +69,24 @@ solitario.game.Stock.prototype.pop = function() {
         goog.bind(this.dispatchStockTakenEvent_, this));
   }
   return card;
+};
+
+
+/**
+ * Adds a new card on top of the stock.
+ *
+ * @param {solitario.game.Card} card Card to be pushed.
+ * @override
+ */
+solitario.game.Stock.prototype.push = function(card) {
+  // Remove click listener for previous top card.
+  var topCard = this.getTopCard_();
+  if (topCard) {
+    topCard.removeEventListenersByType(goog.events.EventType.CLICK);
+  }
+
+  solitario.game.Stock.superClass_.push.call(this, card);
+  // Adds listeners to.
+  card.addEventListener(goog.events.EventType.CLICK,
+      goog.bind(this.dispatchStockTakenEvent_, this));
 };
