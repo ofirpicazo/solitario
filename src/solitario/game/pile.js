@@ -108,6 +108,7 @@ solitario.game.Pile.prototype.push = function(card) {
   this.pile_.push(card);
   // Set the card on top of everything.
   card.setZIndex(solitario.game.constants.MAX_ZINDEX);
+  // Position card at 0,0 relative to the pile.
   var position = this.getPosition_();
   card.setPosition(position);
   card.positionInPile = position;
@@ -120,7 +121,7 @@ solitario.game.Pile.prototype.push = function(card) {
     card.setZIndex(cardZIndex);
   }, 300);
 
-  // Add listeners for card.
+  // Add listeners for card dragging.
   goog.events.listen(card, solitario.game.constants.Events.DRAG_END,
                      this.handleCardDragEnd_);
 };

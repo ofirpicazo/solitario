@@ -86,7 +86,8 @@ solitario.game.Stock.prototype.push = function(card) {
   }
 
   solitario.game.Stock.superClass_.push.call(this, card);
-  // Adds listeners to.
+
+  // Adds stock taken listeners to top card.
   card.addEventListener(goog.events.EventType.CLICK,
       goog.bind(this.dispatchStockTakenEvent_, this));
 };

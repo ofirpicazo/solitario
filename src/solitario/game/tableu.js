@@ -44,26 +44,32 @@ solitario.game.Tableu.INTERCARD_DISTANCE_ = 0.8;
  * @param {Array.<solitario.game.Card>} cards Cards to be stacked in the tableu.
  */
 solitario.game.Tableu.prototype.initialize = function(cards) {
-  // TODO(ofir): Move card positioning to overriden push() method.
-  var currentPosition = this.getPosition_();
-  var currentZindex = this.getZIndex_();
-
-  // Set position and z-index for each card.
-  goog.array.forEach(cards, function(card) {
-    this.push(card);
-    card.setPosition(currentPosition);
-    card.setZIndex(currentZindex);
-    currentPosition.y += solitario.game.Tableu.INTERCARD_DISTANCE_;
-    currentZindex += solitario.game.Pile.INTERCARD_ZINDEX;
-  }, this);
-
-  // Reveal the card at the top.
-  // TODO(ofir): Improve this.
-  this.pile_[this.pile_.length - 1].reveal();
+  for (var i = cards.length - 1; i >= 0; i--) {
+    this.push(cards[i]);
+  }
+  // Reveal the top card.
+  cards[0].reveal();
 };
 
 
 /** @inheritDoc */
 solitario.game.Tableu.prototype.isDroppable = function(droppedObj) {
 
+};
+
+
+/**
+ * Adds a new card to the tableu.
+ *
+ * @param {solitario.game.Card} card Card to be pushed.
+ * @override
+ */
+solitario.game.Tableu.prototype.push = function(card) {
+  solitario.game.Tableu.superClass_.push.call(this, card);
+  // Fan down the card.
+  var cardPosition = this.getPosition_();
+  cardPosition.y += (this.pile_.length - 1) *
+      solitario.game.Tableu.INTERCARD_DISTANCE_;
+  card.setPosition(cardPosition);
+  card.positionInPile = cardPosition;
 };
