@@ -1,0 +1,8 @@
+{
+  "name": "Solitario",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies" : {
+    "closurecompiler" : "1.1.4"
+  }
+}
