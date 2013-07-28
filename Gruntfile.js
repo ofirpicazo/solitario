@@ -15,6 +15,16 @@ module.exports = function(grunt) {
         }
       }
     },
+    closureDepsWriter: {
+      dev : {
+        options:
+          closureLibraryPath: ''
+        }
+      }
+    },
+    closureCompiler: {
+
+    },
     watch: {
       files: ['src/**/*.scss'],
       tasks: ['compass']
