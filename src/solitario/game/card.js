@@ -44,10 +44,10 @@ solitario.game.Card = function(el) {
   /**
    * Recorded position of the place where the mouse down event occured.
    * Needed to calculate grab point for dragging.
-   * @type {goog.math.Coordinate}
+   * @type {?goog.math.Coordinate}
    * @private
    */
-  this.mouseDownPosition_;
+  this.mouseDownPosition_ = null;
 
   /**
    * Unique identifier for this card.
@@ -132,6 +132,24 @@ solitario.game.Card.DataAttrs_ = {
   NUMBER: 'number',
   SUIT: 'suit'
 };
+
+
+/**
+ * The height of the card in ems.
+ * @type {number}
+ * @const
+ * @private
+ */
+solitario.game.Card.RelativeHeight_ = 14;
+
+
+/**
+ * The width of the card in ems.
+ * @type {number}
+ * @const
+ * @private
+ */
+solitario.game.Card.RelativeWidth_ = 10;
 
 
 /**
@@ -248,6 +266,31 @@ solitario.game.Card.prototype.addEventListener = function(type, listener) {
  */
 solitario.game.Card.prototype.getAbsolutePosition = function() {
   return goog.style.getPosition(this.element_);
+};
+
+
+/**
+ * Returns the absolute size of the card in px.
+ *
+ * @return {goog.math.Size} The size of the card.
+ */
+solitario.game.Card.prototype.getAbsoluteSize = function() {
+  var absDimensions = solitario.game.utils.toAbsoluteUnits(
+      solitario.game.Card.RelativeWidth_, solitario.game.Card.RelativeHeight_);
+  return new goog.math.Size(absDimensions.x, absDimensions.y);
+};
+
+
+/**
+ * Returns the rectangular region this card is currently occupying.
+ * Note that this will have the same width and height for all cards.
+ *
+ * @return {goog.math.Rect} The rectangular region.
+ */
+solitario.game.Card.prototype.getRect = function() {
+  var position = this.getAbsolutePosition();
+  var size = this.getAbsoluteSize();
+  return new goog.math.Rect(position.x, position.y, size.width, size.height);
 };
 
 
