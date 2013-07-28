@@ -70,6 +70,12 @@ solitario.game.Card = function(el) {
   this.positionInPile = null;
 
   /**
+   * Recorded z-index of the card as assigned by the containing pile.
+   * @type {?number}
+   */
+  this.zIndexInPile = null;
+
+  /**
    * Suit this card belongs to (club, diamond, heart, spade).
    * @type {string}
    */
@@ -94,6 +100,10 @@ solitario.game.Card = function(el) {
 
   // Initialize listeners.
   this.addEventListener(goog.events.EventType.MOUSEDOWN, this.mouseDown_);
+  this.addEventListener(goog.events.EventType.TRANSITIONEND, function(evnt) {
+    // Bubble up the transitionend event on this.element_.
+    goog.events.dispatchEvent(this, evnt);
+  });
 };
 goog.inherits(solitario.game.Card, goog.events.EventTarget);
 
@@ -163,6 +173,9 @@ solitario.game.Card.prototype.mouseDown_ = function(event) {
       event.clientX - currentPosition.x,
       event.clientY - currentPosition.y);
   event.preventDefault();
+
+  // Set the card above everything else.
+  this.setZIndex(solitario.game.constants.MAX_ZINDEX);
 
   var dragStartEvent = new goog.events.Event(
       solitario.game.constants.Events.DRAG_START, this);
@@ -288,7 +301,16 @@ solitario.game.Card.prototype.returnToPile = function() {
   if (this.positionInPile) {
     this.setPosition(this.positionInPile);
   }
+  if (this.zIndexInPile) {
+    // Trigger final z-index update at end of position change to allow time for
+    // animations to finish.
+    goog.events.listenOnce(this.element_, goog.events.EventType.TRANSITIONEND,
+        function(evnt) {
+          this.setZIndex(this.zIndexInPile);
+        }, false, this);
+    }
 };
+
 
 /**
  * Reveals the card.

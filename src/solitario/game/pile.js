@@ -106,20 +106,22 @@ solitario.game.Pile.prototype.handleCardDragEnd_ = function(evnt) {
  */
 solitario.game.Pile.prototype.push = function(card) {
   this.pile_.push(card);
-  // Set the card on top of everything.
+  // Set the card on top of everything during the change of position.
   card.setZIndex(solitario.game.constants.MAX_ZINDEX);
   // Position card at 0,0 relative to the pile.
   var position = this.getPosition_();
   card.setPosition(position);
   card.positionInPile = position;
 
-  // Trigger final zindex update at end of position change (after 300ms) to
-  // allow time for animations to finish.
-  var cardZIndex = this.getZIndex_() +
-                   (this.pile_.length * solitario.game.Pile.INTERCARD_ZINDEX);
-  window.setTimeout(function() {
-    card.setZIndex(cardZIndex);
-  }, 300);
+  // Trigger final z-index update at end of position change to allow time for
+  // animations to finish.
+  var cardZIndex = this.getZIndex_() + (this.pile_.length *
+      solitario.game.Pile.INTERCARD_ZINDEX);
+  goog.events.listenOnce(card, goog.events.EventType.TRANSITIONEND,
+      function(evnt) {
+        card.setZIndex(cardZIndex);
+        card.zIndexInPile = cardZIndex;
+      }, false, this);
 
   // Add listeners for card dragging.
   goog.events.listen(card, solitario.game.constants.Events.DRAG_END,

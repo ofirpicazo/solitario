@@ -47,8 +47,14 @@ solitario.game.Tableu.prototype.initialize = function(cards) {
   for (var i = cards.length - 1; i >= 0; i--) {
     this.push(cards[i]);
   }
-  // Reveal the top card.
-  cards[0].reveal();
+  // Reveal the top card when the transitions are finished.
+  goog.events.listenOnce(cards[0], goog.events.EventType.TRANSITIONEND,
+      function(evnt) {
+        cards[0].reveal();
+        var readyEvent = new goog.events.Event(
+            solitario.game.constants.Events.READY, this);
+        goog.events.dispatchEvent(this, readyEvent);
+      }, false, this);
 };
 
 

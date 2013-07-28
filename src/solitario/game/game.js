@@ -10,6 +10,7 @@ goog.provide('solitario.game.Game');
 
 goog.require('goog.dom');
 goog.require('goog.events');
+goog.require('goog.events.EventTarget');
 goog.require('solitario.game.Card');
 goog.require('solitario.game.constants');
 goog.require('solitario.game.Foundation');
@@ -22,8 +23,12 @@ goog.require('solitario.game.Waste');
  * Game logic controller.
  *
  * @constructor
+ * @extends {goog.events.EventTarget}
  */
 solitario.game.Game = function() {
+  // Calls the superclass constructor.
+  goog.base(this);
+
   /**
    * Array of card objects for the game.
    * @type {Array.<solitario.game.Card>}
@@ -70,7 +75,7 @@ solitario.game.Game = function() {
   // Initialize the elements of the game.
   this.init_();
 };
-// goog.inherits(solitario.game.Game, goog.events.EventHandler);
+goog.inherits(solitario.game.Game, goog.events.EventTarget);
 
 
 /**
@@ -147,20 +152,33 @@ solitario.game.Game.prototype.start = function() {
   // Sets up listeners for cards' events.
   for (var i = this.cards_.length - 1; i >= 0; i--) {
     goog.events.listen(this.cards_[i],
-        solitario.game.constants.Events.DRAG_START, this.handleCardDragStart_);
+        solitario.game.constants.Events.DRAG_START, this.onCardDragStart_);
     goog.events.listen(this.cards_[i],
-        solitario.game.constants.Events.DRAG_MOVE, this.handleCardDragMove_);
+        solitario.game.constants.Events.DRAG_MOVE, this.onCardDragMove_);
     goog.events.listen(this.cards_[i],
-        solitario.game.constants.Events.DRAG_END, this.handleCardDragEnd_);
+        solitario.game.constants.Events.DRAG_END, this.onCardDragEnd_);
   }
 
   // Sets cards for tableux.
   var numCardsForTableu = 0;
   var startIndex, endIndex = 0;
+  var numTableuxInitialized = 0;
   goog.array.forEach(this.tableux_, function(tableu, index) {
     numCardsForTableu = index + 1;
     startIndex = endIndex;
     endIndex += numCardsForTableu;
+
+    // Trigger a READY event when all tableux are ready.
+    goog.events.listen(tableu, solitario.game.constants.Events.READY,
+        function(evnt) {
+          numTableuxInitialized++;
+          if (numTableuxInitialized == this.tableux_.length) {
+            // All tableux are ready, dispatch ready event.
+            var readyEvent = new goog.events.Event(
+                solitario.game.constants.Events.READY, this);
+            goog.events.dispatchEvent(this, readyEvent);
+          }
+        }, false, this);
 
     var tableuCards = this.cards_.slice(startIndex, endIndex);
     tableu.initialize(tableuCards);
@@ -172,11 +190,11 @@ solitario.game.Game.prototype.start = function() {
 
   // Sets up listeners for other the game events.
   goog.events.listen(this.stock_, solitario.game.constants.Events.STOCK_TAKEN,
-                     goog.bind(this.handleStockTaken_, this));
+                     goog.bind(this.onStockTaken_, this));
 };
 
 
-solitario.game.Game.prototype.handleStockTaken_ = function(evnt) {
+solitario.game.Game.prototype.onStockTaken_ = function(evnt) {
   // Remove card from stock.
   var card = this.stock_.pop();
 
@@ -191,8 +209,7 @@ solitario.game.Game.prototype.handleStockTaken_ = function(evnt) {
  * @param {goog.events.Event} evnt The event object passed.
  * @private
  */
-solitario.game.Game.prototype.handleCardDragStart_ = function(evnt) {
-  // window.console.log('handleCardDragStart_: ' + evnt.target.pile);
+solitario.game.Game.prototype.onCardDragStart_ = function(evnt) {
 };
 
 
@@ -202,8 +219,7 @@ solitario.game.Game.prototype.handleCardDragStart_ = function(evnt) {
  * @param {goog.events.Event} evnt The event object passed.
  * @private
  */
-solitario.game.Game.prototype.handleCardDragMove_ = function(evnt) {
-  // window.console.log('handleCardDragMove_: ' + evnt.target.pile);
+solitario.game.Game.prototype.onCardDragMove_ = function(evnt) {
 };
 
 
@@ -213,6 +229,6 @@ solitario.game.Game.prototype.handleCardDragMove_ = function(evnt) {
  * @param {goog.events.Event} evnt The event object passed.
  * @private
  */
-solitario.game.Game.prototype.handleCardDragEnd_ = function(evnt) {
+solitario.game.Game.prototype.onCardDragEnd_ = function(evnt) {
 
 };

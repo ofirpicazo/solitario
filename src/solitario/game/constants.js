@@ -18,6 +18,7 @@ solitario.game.constants.Events = {
   DRAG_END: 'dragEnd',
   DRAG_MOVE: 'dragMove',
   DRAG_START: 'dragStart',
+  READY: 'ready',
   STOCK_TAKEN: 'stockTaken'
 };
 
