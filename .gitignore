@@ -1,3 +1,4 @@
 /vendor/closure-compiler
 .sass-cache
-/build
+src/solitario/deps.js
+build/css
