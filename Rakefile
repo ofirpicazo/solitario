@@ -22,3 +22,18 @@ namespace :setup do
     `rm vendor/compiler.tar.gz`
   end
 end
+
+namespace :build do
+  desc 'Compiles the CSS!'
+  task :css do
+	`compass compile \
+	  --css-dir="build/css" \
+	  --javascripts-dir="js" \
+	  --images-dir="static/images" \
+	  --sass-dir="src/sass" \
+	  --fonts-dir="static/fonts" \
+	  --force \
+	  --relative-assets \
+	  --output-style=expanded`
+  end
+end
