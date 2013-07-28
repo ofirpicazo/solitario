@@ -20,21 +20,32 @@ namespace :setup do
     next if File.exists? compiler_dir
     `mkdir #{compiler_dir}`
     url = 'http://dl.google.com/closure-compiler/compiler-latest.tar.gz'
-    `wget #{url} --output-document=vendor/compiler.tar.gz`
+    `curl --progress-bar -o vendor/compiler.tar.gz #{url}`
     `tar -zxvf vendor/compiler.tar.gz -C #{compiler_dir}`
     `rm vendor/compiler.tar.gz`
   end
 end
 
 namespace :build do
+  desc 'Clean the previous build'
+  task :clean do
+    `rm -rf #{Dir.pwd}/build`
+    `mkdir -p #{Dir.pwd}/build/js`
+  end
+
+  desc 'Copy static files'
+  task :copy_static do
+    `cp -r #{Dir.pwd}/static/ #{Dir.pwd}/build/`
+  end
+
   desc 'Compiles the CSS!'
   task :css do
 	`compass compile \
 	  --css-dir="build/css" \
-	  --javascripts-dir="js" \
-	  --images-dir="static/images" \
+	  --javascripts-dir="build/js" \
+	  --images-dir="build/images" \
 	  --sass-dir="src/sass" \
-	  --fonts-dir="static/fonts" \
+	  --fonts-dir="build/fonts" \
 	  --force \
 	  --relative-assets \
 	  --output-style=expanded`
@@ -43,23 +54,18 @@ namespace :build do
   desc 'Writes closure dependencies'
   task :deps do
     `python #{tools_dir}/depswriter.py \
-    --root_with_prefix="#{Dir.pwd} ../" \
+    --root_with_prefix="#{Dir.pwd}/src/solitario ../solitario" \
     --output_file=src/solitario/deps.js`
   end
 
-  desc 'Copy static files'
-  task :copy_static do
-    `cp -r #{Dir.pwd}/static/ #{Dir.pwd}/build/`
+  desc 'Creates symlinks needed for development'
+  task :dev_js do
+    `ln -s #{closure_dir}/closure/goog #{Dir.pwd}/build/js/goog`
+    `ln -s #{Dir.pwd}/src/solitario #{Dir.pwd}/build/js/solitario`
   end
 
-  desc 'Delete the build folder'
-  task :delete do
-    `rm -rf #{Dir.pwd}/build`
-    `mkdir -p #{Dir.pwd}/build/js`
-  end
-
-  desc 'Compiles the game'
-  task :compile do
+  desc 'Compiles the JavaScript of the game'
+  task :js do
     `python #{tools_dir}/closurebuilder.py \
     --root=#{closure_dir} \
     --root=#{Dir.pwd}/src/ \
@@ -71,6 +77,9 @@ namespace :build do
     `
   end
 
-  desc 'Clean build'
-  task :clean => [:delete, :copy_static, :css, :deps, :compile]
+  desc 'Build the project for development'
+  task :dev => [:clean, :copy_static, :css, :deps, :dev_js]
+
+  desc 'Build the project for deployment'
+  task :deploy => [:clean, :copy_static, :css, :deps, :js]
 end
