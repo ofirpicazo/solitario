@@ -42,9 +42,20 @@ namespace :build do
 
   desc 'Writes closure dependencies'
   task :deps do
-    `python #{tools_dir}depswriter.py \
+    `python #{tools_dir}/depswriter.py \
     --root_with_prefix="#{Dir.pwd} ../" \
     --output_file=src/solitario/deps.js`
+  end
+
+  desc 'Copy static files'
+  task :copy_static do
+    `cp -r #{Dir.pwd}/static/ #{Dir.pwd}/build/`
+  end
+
+  desc 'Delete the build folder'
+  task :delete do
+    `rm -rf #{Dir.pwd}/build`
+    `mkdir -p #{Dir.pwd}/build/js`
   end
 
   desc 'Compiles the game'
@@ -59,4 +70,7 @@ namespace :build do
     --output_file=#{Dir.pwd}/build/js/app.compiled.js
     `
   end
+
+  desc 'Clean build'
+  task :clean => [:delete, :copy_static, :css, :deps, :compile]
 end
