@@ -115,6 +115,8 @@ goog.inherits(solitario.game.Card, goog.events.EventTarget);
  * @private
  */
 solitario.game.Card.ClassNames_ = {
+  DRAGGING: 'dragging',
+  DROP_TARGET: 'droptarget',
   NO_ANIMATION: 'no-animation',
   REVEALED: 'revealed',
   SLANT_LEFT: 'slanted-left',
@@ -160,6 +162,7 @@ solitario.game.Card.prototype.mouseDown_ = function(event) {
   }
 
   goog.dom.classes.add(this.element_,
+      solitario.game.Card.ClassNames_.DRAGGING,
       solitario.game.Card.ClassNames_.NO_ANIMATION);
   this.addEventListener(goog.events.EventType.MOUSEUP, this.mouseUp_);
   goog.events.listen(goog.dom.getDocument(), goog.events.EventType.MOUSEMOVE,
@@ -218,6 +221,7 @@ solitario.game.Card.prototype.mouseUp_ = function(event) {
                        this.mouseMove_, false, this);
   this.removeEventListenersByType(goog.events.EventType.MOUSEUP);
   goog.dom.classes.remove(this.element_,
+      solitario.game.Card.ClassNames_.DRAGGING,
       solitario.game.Card.ClassNames_.NO_ANIMATION);
   this.mouseDownPosition_ = null;
 
@@ -238,6 +242,24 @@ solitario.game.Card.prototype.addEventListener = function(type, listener) {
   var key = goog.events.listen(this.element_, type, goog.bind(listener, this));
   this.eventListenerKeys_[type] = this.eventListenerKeys_[type] || [];
   this.eventListenerKeys_[type].push(key);
+};
+
+
+/**
+ * Disables the visual clue marking the card as a droppable region.
+ */
+solitario.game.Card.prototype.disableDroppableIndicator = function() {
+  goog.dom.classes.remove(this.element_,
+      solitario.game.Pile.ClassNames_.DROP_TARGET);
+};
+
+
+/**
+ * Enables the visual clue marking the card as a droppable region.
+ */
+solitario.game.Card.prototype.enableDroppableIndicator = function() {
+  goog.dom.classes.add(this.element_,
+      solitario.game.Pile.ClassNames_.DROP_TARGET);
 };
 
 

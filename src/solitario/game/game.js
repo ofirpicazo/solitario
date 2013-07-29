@@ -196,6 +196,9 @@ solitario.game.Game.prototype.onCardDragMove_ = function(evnt) {
   var card = evnt.target;
   var cardRect = card.getRect();
   // Reset the drop target.
+  if (this.dropTarget_) {
+    this.dropTarget_.pile.disableDroppableIndicator();
+  }
   this.dropTarget_ = null;
   var largestAreaIntersected = 0;
 
@@ -210,8 +213,7 @@ solitario.game.Game.prototype.onCardDragMove_ = function(evnt) {
   }
 
   if (this.dropTarget_) {
-    // TODO(ofir): Give a hint to the user that he can drop the card at this
-    // target.
+    this.dropTarget_.pile.enableDroppableIndicator();
   }
 };
 
@@ -227,7 +229,8 @@ solitario.game.Game.prototype.onCardDragEnd_ = function(evnt) {
 
   // A drop target was found, move the card here.
   if (this.dropTarget_) {
-    // TODO(ofir): Implement this.
+    // TODO(ofir): Implement receiving drop.
+    this.dropTarget_.pile.disableDroppableIndicator();
     this.dropTarget_ = null;
   } else {
     card.returnToPile();

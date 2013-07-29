@@ -45,6 +45,17 @@ goog.inherits(solitario.game.Pile, goog.events.EventTarget);
 
 
 /**
+ * Class names used in the pile object.
+ * @enum {string}
+ * @const
+ * @private
+ */
+solitario.game.Pile.ClassNames_ = {
+  DROP_TARGET: 'droptarget'
+};
+
+
+/**
  * The z-index difference between each card in the Pile.
  * @type {number}
  */
@@ -115,6 +126,41 @@ solitario.game.Pile.prototype.getDroppableRegion = function() {
   }
 
   return new solitario.game.DroppableRegion(rect, this);
+};
+
+
+
+/**
+ * Disables the visual clue indicating the droppable region of the pile can
+ * receive a drop.
+ */
+solitario.game.Pile.prototype.disableDroppableIndicator = function() {
+  var topCard = this.getTopCard_();
+  // If the pile has cards, remove indicator from the top card, otherwise use
+  // the pile itself.
+  if (topCard) {
+    topCard.disableDroppableIndicator();
+  } else {
+    goog.dom.classes.remove(this.element_,
+        solitario.game.Pile.ClassNames_.DROP_TARGET);
+  }
+};
+
+
+/**
+ * Enables the visual clue indicating the droppable region of the pile can
+ * receive a drop.
+ */
+solitario.game.Pile.prototype.enableDroppableIndicator = function() {
+  var topCard = this.getTopCard_();
+  // If the pile has cards, add the indicator top the top card, otherwise use
+  // the pile itself.
+  if (topCard) {
+    topCard.enableDroppableIndicator();
+  } else {
+    goog.dom.classes.add(this.element_,
+        solitario.game.Pile.ClassNames_.DROP_TARGET);
+  }
 };
 
 

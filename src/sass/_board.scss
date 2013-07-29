@@ -92,6 +92,10 @@ body {
   position: absolute;
   width: $pile-width;
   z-index: 10;
+
+  &.droptarget {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
 }
 
 %top-row {
