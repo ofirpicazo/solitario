@@ -135,24 +135,6 @@ solitario.game.Card.DataAttrs_ = {
 
 
 /**
- * The height of the card in ems.
- * @type {number}
- * @const
- * @private
- */
-solitario.game.Card.RelativeHeight_ = 14;
-
-
-/**
- * The width of the card in ems.
- * @type {number}
- * @const
- * @private
- */
-solitario.game.Card.RelativeWidth_ = 10;
-
-
-/**
  * Constants for the card suits.
  * @enum {string}
  * @const
@@ -276,7 +258,8 @@ solitario.game.Card.prototype.getAbsolutePosition = function() {
  */
 solitario.game.Card.prototype.getAbsoluteSize = function() {
   var absDimensions = solitario.game.utils.toAbsoluteUnits(
-      solitario.game.Card.RelativeWidth_, solitario.game.Card.RelativeHeight_);
+      solitario.game.constants.Card.WIDTH,
+      solitario.game.constants.Card.HEIGHT);
   return new goog.math.Size(absDimensions.x, absDimensions.y);
 };
 

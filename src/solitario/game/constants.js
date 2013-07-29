@@ -10,6 +10,17 @@ goog.provide('solitario.game.constants');
 
 
 /**
+ * Constants for card sizes.
+ * @enum {number}
+ * @const
+ */
+solitario.game.constants.Card = {
+  HEIGHT: 14,
+  WIDTH: 10
+};
+
+
+/**
  * Custom events used in the game.
  * @enum {string}
  * @const
