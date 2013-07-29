@@ -9,7 +9,6 @@
 goog.provide('solitario.game.DroppableRegion');
 
 goog.require('solitario.game.Card');
-goog.require('solitario.game.Pile');
 
 
 /**
