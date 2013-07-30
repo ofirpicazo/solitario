@@ -75,7 +75,7 @@ $card-width: 10em;
   }
 
   &.droptarget .front {
-    @include background-image(linear-gradient(right bottom, $card-color 50%, $card-shadow-color 100%));
+    @include background-image(linear-gradient(right top, white 50%, $card-shadow-color 100%));
   }
 
   .front {
