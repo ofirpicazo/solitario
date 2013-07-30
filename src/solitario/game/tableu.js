@@ -10,7 +10,6 @@ goog.provide('solitario.game.Tableu');
 
 goog.require('goog.array');
 goog.require('solitario.game.Card');
-goog.require('solitario.game.Droppable');
 goog.require('solitario.game.Pile');
 goog.require('solitario.game.utils');
 
@@ -21,7 +20,6 @@ goog.require('solitario.game.utils');
  * @param {!Element} el DOM element representing the tableu.
  * @constructor
  * @extends {solitario.game.Pile}
- * @implements {solitario.game.Droppable}
  */
 solitario.game.Tableu = function(el) {
   goog.base(this, el);
@@ -55,12 +53,6 @@ solitario.game.Tableu.prototype.initialize = function(cards) {
             solitario.game.constants.Events.READY, this);
         goog.events.dispatchEvent(this, readyEvent);
       }, false, this);
-};
-
-
-/** @inheritDoc */
-solitario.game.Tableu.prototype.isDroppable = function(droppedObj) {
-
 };
 
 

@@ -10,7 +10,6 @@ goog.provide('solitario.game.Foundation');
 
 goog.require('goog.dom.dataset');
 goog.require('solitario.game.Card');
-goog.require('solitario.game.Droppable');
 goog.require('solitario.game.Pile');
 
 
@@ -20,7 +19,6 @@ goog.require('solitario.game.Pile');
  * @param {!Element} el DOM element representing the foundation.
  * @constructor
  * @extends {solitario.game.Pile}
- * @implements {solitario.game.Droppable}
  */
 solitario.game.Foundation = function(el) {
   goog.base(this, el);
@@ -44,10 +42,4 @@ goog.inherits(solitario.game.Foundation, solitario.game.Pile);
  */
 solitario.game.Foundation.DataAttrs_ = {
   SUIT: 'suit'
-};
-
-
-/** @inheritDoc */
-solitario.game.Foundation.prototype.isDroppable = function(droppedObj) {
-
 };

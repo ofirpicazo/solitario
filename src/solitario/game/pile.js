@@ -12,7 +12,6 @@ goog.require('goog.events');
 goog.require('goog.events.EventTarget');
 goog.require('goog.style');
 goog.require('solitario.game.constants');
-goog.require('solitario.game.DroppableRegion');
 goog.require('solitario.game.utils');
 
 
@@ -26,6 +25,14 @@ goog.require('solitario.game.utils');
 solitario.game.Pile = function(el) {
   // Call superclass constructor.
   goog.base(this);
+
+  /**
+   * Rectangular region of the pile where cards can be dropped on to.
+   * This value is cached, because calculating it is expensive as it causes
+   * a repaint.
+   * @type {goog.math.Rect}
+   */
+  this.droppableRegion_ = null;
 
   /**
    * DOM element with the card contents.
@@ -107,27 +114,23 @@ solitario.game.Pile.prototype.getTopCard_ = function() {
 
 
 /**
- * Returns the droppable region of this pile.
- *
- * @return {solitario.game.DroppableRegion} The droppable region of this card.
+ * Calculates the region where cards can be dropped on to this pile.
  */
-solitario.game.Pile.prototype.getDroppableRegion = function() {
+solitario.game.Pile.prototype.calculateDroppableRegion = function() {
   var topCard = this.getTopCard_();
   // If the pile has cards, use the region of the top card, otherwise calculate
   // the region of the empty pile.
   if (topCard) {
-    var rect = topCard.getRect();
+    this.droppableRegion_ = topCard.getRect();
   } else {
     var position = this.getAbsolutePosition_();
     var size = solitario.game.utils.toAbsoluteUnits(
         solitario.game.constants.Card.WIDTH,
         solitario.game.constants.Card.HEIGHT);
-    var rect = new goog.math.Rect(position.x, position.y, size.x, size.y);
+    this.droppableRegion_ = new goog.math.Rect(position.x, position.y, size.x,
+        size.y);
   }
-
-  return new solitario.game.DroppableRegion(rect, this);
 };
-
 
 
 /**
@@ -161,6 +164,16 @@ solitario.game.Pile.prototype.enableDroppableIndicator = function() {
     goog.dom.classes.add(this.element_,
         solitario.game.Pile.ClassNames_.DROP_TARGET);
   }
+};
+
+
+/**
+ * Returns the rectangular region where a card can be dropped on this pile.
+ *
+ * @return {goog.math.Rect} The rectangular droppable region of this card.
+ */
+solitario.game.Pile.prototype.getDroppableRegion = function() {
+  return this.droppableRegion_;
 };
 
 

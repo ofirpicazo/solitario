@@ -13,7 +13,6 @@ goog.require('goog.events');
 goog.require('goog.events.EventTarget');
 goog.require('solitario.game.Card');
 goog.require('solitario.game.constants');
-goog.require('solitario.game.DroppableRegion');
 goog.require('solitario.game.Foundation');
 goog.require('solitario.game.Stock');
 goog.require('solitario.game.Tableu');
@@ -38,18 +37,11 @@ solitario.game.Game = function() {
   this.cards_ = [];
 
   /**
-   * Cache of the droppable regions at a given moment.
-   * @type {Array.<solitario.game.DroppableRegion>}
-   * @private
-   */
-  this.droppableRegions_ = [];
-
-  /**
    * Target pile to be used on a card's dragend event.
    * @type {?solitario.game.Pile}
    * @private
    */
-  this.dropTarget_ = null;
+  this.dropPile_ = null;
 
   /**
    * Array of foundations, ordered from left to right.
@@ -144,24 +136,6 @@ solitario.game.Game.prototype.init_ = function() {
 
 
 /**
- * Sets a list of regions where the player can currently drop a card.
- *
- * @private
- */
-solitario.game.Game.prototype.setDroppableRegions_ = function() {
-  // Set foundation regions.
-  for (var i = 0; i < this.foundations_.length; i++) {
-    this.droppableRegions_.push(this.foundations_[i].getDroppableRegion());
-  }
-
-  // Set tableux regions.
-  for (var i = 0; i < this.tableux_.length; i++) {
-    this.droppableRegions_.push(this.tableux_[i].getDroppableRegion());
-  }
-};
-
-
-/**
  * Event handler for when a card is taken from the stock.
  *
  * @param {goog.events.Event} evnt The event object passed.
@@ -182,7 +156,11 @@ solitario.game.Game.prototype.onStockTaken_ = function(evnt) {
  * @private
  */
 solitario.game.Game.prototype.onCardDragStart_ = function(evnt) {
-  this.setDroppableRegions_();
+  // Calculate droppable regions for all the piles.
+  var piles = goog.array.concat(this.foundations_, this.tableux_);
+  for (var i = 0; i < piles.length; i++) {
+    piles[i].calculateDroppableRegion();
+  }
 };
 
 
@@ -193,27 +171,31 @@ solitario.game.Game.prototype.onCardDragStart_ = function(evnt) {
  * @private
  */
 solitario.game.Game.prototype.onCardDragMove_ = function(evnt) {
+  // Reset the drop target pile.
+  if (this.dropPile_) {
+    this.dropPile_.disableDroppableIndicator();
+    this.dropPile_ = null;
+  }
+
   var card = evnt.target;
   var cardRect = card.getRect();
-  // Reset the drop target.
-  if (this.dropTarget_) {
-    this.dropTarget_.pile.disableDroppableIndicator();
-  }
-  this.dropTarget_ = null;
+  var intersection = null
   var largestAreaIntersected = 0;
+  var piles = goog.array.concat(this.foundations_, this.tableux_);
 
-  for (var i = 0; i < this.droppableRegions_.length; i++) {
-    var intersection = goog.math.Rect.intersection(cardRect,
-        this.droppableRegions_[i].rect);
-    if (intersection && (!this.dropTarget_ ||
+  // Find drop target pile.
+  for (var i = 0; i < piles.length; i++) {
+    intersection = goog.math.Rect.intersection(cardRect,
+        piles[i].getDroppableRegion());
+    if (intersection && (!this.dropPile_ ||
         intersection.getSize().area() > largestAreaIntersected)) {
-      this.dropTarget_ = this.droppableRegions_[i];
+      this.dropPile_ = piles[i];
       largestAreaIntersected = intersection.getSize().area();
     }
   }
 
-  if (this.dropTarget_) {
-    this.dropTarget_.pile.enableDroppableIndicator();
+  if (this.dropPile_) {
+    this.dropPile_.enableDroppableIndicator();
   }
 };
 
@@ -228,16 +210,13 @@ solitario.game.Game.prototype.onCardDragEnd_ = function(evnt) {
   var card = evnt.target;
 
   // A drop target was found, move the card here.
-  if (this.dropTarget_) {
+  if (this.dropPile_) {
     // TODO(ofir): Implement receiving drop.
-    this.dropTarget_.pile.disableDroppableIndicator();
-    this.dropTarget_ = null;
+    this.dropPile_.disableDroppableIndicator();
+    this.dropPile_ = null;
   } else {
     card.returnToPile();
   }
-
-  // Clear droppable regions.
-  this.droppableRegions_ = [];
 };
 
 
