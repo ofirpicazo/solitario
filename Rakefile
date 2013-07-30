@@ -8,21 +8,30 @@ compiler_dir = "#{Dir.pwd}/vendor/closure-compiler"
 
 namespace :setup do
   desc 'Runs a full setup'
-  task :full => [:git_submodules, :install_compiler]
+  task :full => [:git_submodules, :install_compiler, :install_linter]
 
   desc 'Inits git submodules and pulls them'
   task :git_submodules do
     `git submodule init && git submodule update`
   end
 
-  desc 'Checks existance downloads and extracts Closure Compiler'
+  desc 'Checks existance, downloads and extracts Closure Compiler'
   task :install_compiler do
     next if File.exists? compiler_dir
+    puts 'Installing Closure Compiler...'
     `mkdir #{compiler_dir}`
     url = 'http://dl.google.com/closure-compiler/compiler-latest.tar.gz'
     `curl --progress-bar -o vendor/compiler.tar.gz #{url}`
     `tar -zxvf vendor/compiler.tar.gz -C #{compiler_dir}`
     `rm vendor/compiler.tar.gz`
+  end
+
+  desc 'Installs Closure Linter if not installed'
+  task :install_linter do
+    if !system('which gjslint > /dev/null 2>&1')
+      puts 'Installing Closure Linter...'
+      `sudo easy_install http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz 2>&1`
+    end
   end
 end
 
