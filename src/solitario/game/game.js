@@ -12,11 +12,11 @@ goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.events.EventTarget');
 goog.require('solitario.game.Card');
-goog.require('solitario.game.constants');
 goog.require('solitario.game.Foundation');
 goog.require('solitario.game.Stock');
 goog.require('solitario.game.Tableu');
 goog.require('solitario.game.Waste');
+goog.require('solitario.game.constants');
 
 
 /**
@@ -179,7 +179,7 @@ solitario.game.Game.prototype.onCardDragMove_ = function(evnt) {
 
   var card = evnt.target;
   var cardRect = card.getRect();
-  var intersection = null
+  var intersection = null;
   var largestAreaIntersected = 0;
   var piles = goog.array.concat(this.foundations_, this.tableux_);
 

@@ -31,6 +31,7 @@ solitario.game.Pile = function(el) {
    * This value is cached, because calculating it is expensive as it causes
    * a repaint.
    * @type {goog.math.Rect}
+   * @private
    */
   this.droppableRegion_ = null;
 

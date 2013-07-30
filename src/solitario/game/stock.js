@@ -10,8 +10,8 @@ goog.provide('solitario.game.Stock');
 
 goog.require('goog.events.EventType');
 goog.require('solitario.game.Card');
-goog.require('solitario.game.constants');
 goog.require('solitario.game.Pile');
+goog.require('solitario.game.constants');
 
 
 /**
@@ -44,7 +44,12 @@ solitario.game.Stock.prototype.initialize = function(cards) {
   //this.pile_[2].slantRight();
 };
 
-
+/**
+ * Dispatches an event indicating the user has taken a card from the stock.
+ *
+ * @param {goog.event.Event} evt The event dispatched.
+ * @private
+ */
 solitario.game.Stock.prototype.dispatchStockTakenEvent_ = function(evt) {
   var stockTakenEvent = new goog.events.Event(
       solitario.game.constants.Events.STOCK_TAKEN, this);

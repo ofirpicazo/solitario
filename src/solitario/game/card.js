@@ -38,6 +38,7 @@ solitario.game.Card = function(el) {
   /**
    * A map of event type to a list of event listener keys for that type
    * @type {Object.<string, Array>}
+   * @private
    */
   this.eventListenerKeys_ = {};
 
@@ -236,7 +237,6 @@ solitario.game.Card.prototype.mouseUp_ = function(event) {
  *
  * @param {string} type Event type.
  * @param {Function} listener Callback method.
- * @return {number} Unique key for the listener
  */
 solitario.game.Card.prototype.addEventListener = function(type, listener) {
   var key = goog.events.listen(this.element_, type, goog.bind(listener, this));
@@ -337,7 +337,7 @@ solitario.game.Card.prototype.removeEventListenersByType = function(type) {
   }
   for (var i = 0; i < this.eventListenerKeys_[type].length; i++) {
     goog.events.unlistenByKey(this.eventListenerKeys_[type][i]);
-  };
+  }
 };
 
 
