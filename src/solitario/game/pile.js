@@ -27,6 +27,15 @@ solitario.game.Pile = function(el) {
   goog.base(this);
 
   /**
+   * Rectangular region of the pile where cards can be dropped on to.
+   * This value is cached, because calculating it is expensive as it causes
+   * a repaint.
+   * @type {goog.math.Rect}
+   * @private
+   */
+  this.droppableRegion_ = null;
+
+  /**
    * DOM element with the card contents.
    * @type {Element}
    * @private
@@ -44,10 +53,32 @@ goog.inherits(solitario.game.Pile, goog.events.EventTarget);
 
 
 /**
+ * Class names used in the pile object.
+ * @enum {string}
+ * @const
+ * @private
+ */
+solitario.game.Pile.ClassNames_ = {
+  DROP_TARGET: 'droptarget'
+};
+
+
+/**
  * The z-index difference between each card in the Pile.
  * @type {number}
  */
 solitario.game.Pile.INTERCARD_ZINDEX = 10;
+
+
+/**
+ * Gets the absolute position of the pile in the viewport, in px.
+ *
+ * @return {goog.math.Coordinate} The absolute position of the pile.
+ * @private
+ */
+solitario.game.Pile.prototype.getAbsolutePosition_ = function() {
+  return goog.style.getPosition(this.element_);
+};
 
 
 /**
@@ -57,8 +88,7 @@ solitario.game.Pile.INTERCARD_ZINDEX = 10;
  * @protected
  */
 solitario.game.Pile.prototype.getPosition_ = function() {
-  return solitario.game.utils.toRelativeUnits(
-      goog.style.getPosition(this.element_));
+  return solitario.game.utils.toRelativeUnits(this.getAbsolutePosition_());
 };
 
 
@@ -85,16 +115,66 @@ solitario.game.Pile.prototype.getTopCard_ = function() {
 
 
 /**
- * Handles when a playable card ends being dragged.
- *
- * @param {goog.events.Event} evnt The event object passed.
- * @private
+ * Calculates the region where cards can be dropped on to this pile.
  */
-solitario.game.Pile.prototype.handleCardDragEnd_ = function(evnt) {
-  var card = evnt.target;
-  // Return the card to the original position in the pile, as it wasn't popped
-  // after end drag ended.
-  card.returnToPile();
+solitario.game.Pile.prototype.calculateDroppableRegion = function() {
+  var topCard = this.getTopCard_();
+  // If the pile has cards, use the region of the top card, otherwise calculate
+  // the region of the empty pile.
+  if (topCard) {
+    this.droppableRegion_ = topCard.getRect();
+  } else {
+    var position = this.getAbsolutePosition_();
+    var size = solitario.game.utils.toAbsoluteUnits(
+        solitario.game.constants.Card.WIDTH,
+        solitario.game.constants.Card.HEIGHT);
+    this.droppableRegion_ = new goog.math.Rect(position.x, position.y, size.x,
+        size.y);
+  }
+};
+
+
+/**
+ * Disables the visual clue indicating the droppable region of the pile can
+ * receive a drop.
+ */
+solitario.game.Pile.prototype.disableDroppableIndicator = function() {
+  var topCard = this.getTopCard_();
+  // If the pile has cards, remove indicator from the top card, otherwise use
+  // the pile itself.
+  if (topCard) {
+    topCard.disableDroppableIndicator();
+  } else {
+    goog.dom.classes.remove(this.element_,
+        solitario.game.Pile.ClassNames_.DROP_TARGET);
+  }
+};
+
+
+/**
+ * Enables the visual clue indicating the droppable region of the pile can
+ * receive a drop.
+ */
+solitario.game.Pile.prototype.enableDroppableIndicator = function() {
+  var topCard = this.getTopCard_();
+  // If the pile has cards, add the indicator top the top card, otherwise use
+  // the pile itself.
+  if (topCard) {
+    topCard.enableDroppableIndicator();
+  } else {
+    goog.dom.classes.add(this.element_,
+        solitario.game.Pile.ClassNames_.DROP_TARGET);
+  }
+};
+
+
+/**
+ * Returns the rectangular region where a card can be dropped on this pile.
+ *
+ * @return {goog.math.Rect} The rectangular droppable region of this card.
+ */
+solitario.game.Pile.prototype.getDroppableRegion = function() {
+  return this.droppableRegion_;
 };
 
 
@@ -122,10 +202,6 @@ solitario.game.Pile.prototype.push = function(card) {
         card.setZIndex(cardZIndex);
         card.zIndexInPile = cardZIndex;
       }, false, this);
-
-  // Add listeners for card dragging.
-  goog.events.listen(card, solitario.game.constants.Events.DRAG_END,
-                     this.handleCardDragEnd_);
 };
 
 
@@ -135,9 +211,5 @@ solitario.game.Pile.prototype.push = function(card) {
  * @return {solitario.game.Card} The card popped from the pile.
  */
 solitario.game.Pile.prototype.pop = function() {
-  var card = this.pile_.pop();
-  // Remove listeners from the card.
-  goog.events.unlisten(card, solitario.game.constants.Events.DRAG_END,
-                       this.handleCardDragEnd_);
-  return card;
+  return this.pile_.pop();
 };
