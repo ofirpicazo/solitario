@@ -15,6 +15,7 @@ goog.require('solitario.game.constants');
 goog.require('solitario.game.utils');
 
 
+
 /**
  * Class to represent a pile of cards.
  *
@@ -42,12 +43,12 @@ solitario.game.Pile = function(el) {
    */
   this.element_ = el;
 
-    /**
+  /**
    * Pile of cards stacked in this tableu.
    * @type {Array.<solitario.game.Card>}
    * @protected
    */
-  this.pile_ = [];
+  this.pile = [];
 };
 goog.inherits(solitario.game.Pile, goog.events.EventTarget);
 
@@ -87,7 +88,7 @@ solitario.game.Pile.prototype.getAbsolutePosition_ = function() {
  * @return {goog.math.Coordinate} Relative position of the pile in the viewport.
  * @protected
  */
-solitario.game.Pile.prototype.getPosition_ = function() {
+solitario.game.Pile.prototype.getPosition = function() {
   return solitario.game.utils.toRelativeUnits(this.getAbsolutePosition_());
 };
 
@@ -98,7 +99,7 @@ solitario.game.Pile.prototype.getPosition_ = function() {
  * @return {number} z-index of the card element.
  * @protected
  */
-solitario.game.Pile.prototype.getZIndex_ = function() {
+solitario.game.Pile.prototype.getZIndex = function() {
   return parseInt(goog.style.getComputedZIndex(this.element_));
 };
 
@@ -109,8 +110,8 @@ solitario.game.Pile.prototype.getZIndex_ = function() {
  * @return {?solitario.game.Card} The card on top of the pile.
  * @protected
  */
-solitario.game.Pile.prototype.getTopCard_ = function() {
-  return this.pile_[this.pile_.length - 1] || null;
+solitario.game.Pile.prototype.getTopCard = function() {
+  return this.pile[this.pile.length - 1] || null;
 };
 
 
@@ -118,7 +119,7 @@ solitario.game.Pile.prototype.getTopCard_ = function() {
  * Calculates the region where cards can be dropped on to this pile.
  */
 solitario.game.Pile.prototype.calculateDroppableRegion = function() {
-  var topCard = this.getTopCard_();
+  var topCard = this.getTopCard();
   // If the pile has cards, use the region of the top card, otherwise calculate
   // the region of the empty pile.
   if (topCard) {
@@ -139,7 +140,7 @@ solitario.game.Pile.prototype.calculateDroppableRegion = function() {
  * receive a drop.
  */
 solitario.game.Pile.prototype.disableDroppableIndicator = function() {
-  var topCard = this.getTopCard_();
+  var topCard = this.getTopCard();
   // If the pile has cards, remove indicator from the top card, otherwise use
   // the pile itself.
   if (topCard) {
@@ -156,7 +157,7 @@ solitario.game.Pile.prototype.disableDroppableIndicator = function() {
  * receive a drop.
  */
 solitario.game.Pile.prototype.enableDroppableIndicator = function() {
-  var topCard = this.getTopCard_();
+  var topCard = this.getTopCard();
   // If the pile has cards, add the indicator top the top card, otherwise use
   // the pile itself.
   if (topCard) {
@@ -185,17 +186,17 @@ solitario.game.Pile.prototype.getDroppableRegion = function() {
  * @param {solitario.game.Card} card The card to be pushed.
  */
 solitario.game.Pile.prototype.push = function(card) {
-  this.pile_.push(card);
+  this.pile.push(card);
   // Set the card on top of everything during the change of position.
   card.setZIndex(solitario.game.constants.MAX_ZINDEX);
   // Position card at 0,0 relative to the pile.
-  var position = this.getPosition_();
+  var position = this.getPosition();
   card.setPosition(position);
   card.positionInPile = position;
 
   // Trigger final z-index update at end of position change to allow time for
   // animations to finish.
-  var cardZIndex = this.getZIndex_() + (this.pile_.length *
+  var cardZIndex = this.getZIndex() + (this.pile.length *
       solitario.game.Pile.INTERCARD_ZINDEX);
   goog.events.listenOnce(card, goog.events.EventType.TRANSITIONEND,
       function(evnt) {
@@ -211,5 +212,5 @@ solitario.game.Pile.prototype.push = function(card) {
  * @return {solitario.game.Card} The card popped from the pile.
  */
 solitario.game.Pile.prototype.pop = function() {
-  return this.pile_.pop();
+  return this.pile.pop();
 };

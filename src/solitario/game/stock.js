@@ -14,6 +14,7 @@ goog.require('solitario.game.Pile');
 goog.require('solitario.game.constants');
 
 
+
 /**
  * Class to represent the stock of cards in the game.
  *
@@ -38,11 +39,8 @@ solitario.game.Stock.prototype.initialize = function(cards) {
   goog.array.forEach(cards, function(card) {
     this.push(card);
   }, this);
-
-  // Slant the second and third last cards to create stack effect.
-  //this.pile_[1].slantLeft();
-  //this.pile_[2].slantRight();
 };
+
 
 /**
  * Dispatches an event indicating the user has taken a card from the stock.
@@ -68,7 +66,7 @@ solitario.game.Stock.prototype.pop = function() {
   // Removes listener from the popped card.
   card.removeEventListenersByType(goog.events.EventType.CLICK);
   // Adds listener to the top-most card.
-  var topCard = this.getTopCard_();
+  var topCard = this.getTopCard();
   if (topCard) {
     topCard.addEventListener(goog.events.EventType.CLICK,
         goog.bind(this.dispatchStockTakenEvent_, this));
@@ -85,7 +83,7 @@ solitario.game.Stock.prototype.pop = function() {
  */
 solitario.game.Stock.prototype.push = function(card) {
   // Remove click listener for previous top card.
-  var topCard = this.getTopCard_();
+  var topCard = this.getTopCard();
   if (topCard) {
     topCard.removeEventListenersByType(goog.events.EventType.CLICK);
   }

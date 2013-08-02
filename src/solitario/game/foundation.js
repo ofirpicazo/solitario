@@ -13,6 +13,7 @@ goog.require('solitario.game.Card');
 goog.require('solitario.game.Pile');
 
 
+
 /**
  * Class to represent a foundation in the game.
  *

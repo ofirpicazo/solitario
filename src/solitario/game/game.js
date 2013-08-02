@@ -19,6 +19,7 @@ goog.require('solitario.game.Waste');
 goog.require('solitario.game.constants');
 
 
+
 /**
  * Game logic controller.
  *
@@ -221,7 +222,6 @@ solitario.game.Game.prototype.onCardDragEnd_ = function(evnt) {
     card.returnToPile();
   }
 };
-
 
 
 /**

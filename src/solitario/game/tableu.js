@@ -14,6 +14,7 @@ goog.require('solitario.game.Pile');
 goog.require('solitario.game.utils');
 
 
+
 /**
  * Class to represent a tableu in the game.
  *
@@ -65,8 +66,8 @@ solitario.game.Tableu.prototype.initialize = function(cards) {
 solitario.game.Tableu.prototype.push = function(card) {
   solitario.game.Tableu.superClass_.push.call(this, card);
   // Fan down the card.
-  var cardPosition = this.getPosition_();
-  cardPosition.y += (this.pile_.length - 1) *
+  var cardPosition = this.getPosition();
+  cardPosition.y += (this.pile.length - 1) *
       solitario.game.Tableu.INTERCARD_DISTANCE_;
   card.setPosition(cardPosition);
   card.positionInPile = cardPosition;

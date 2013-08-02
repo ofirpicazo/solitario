@@ -17,6 +17,7 @@ goog.require('solitario.game.constants');
 goog.require('solitario.game.utils');
 
 
+
 /**
  * Class to represent a card in the game.
  *
@@ -89,8 +90,7 @@ solitario.game.Card = function(el) {
    * @type {string}
    */
   this.color = (this.suit === solitario.game.Card.Suits_.HEART ||
-                this.suit === solitario.game.Card.Suits_.DIAMOND) ?
-                'red' : 'black';
+      this.suit === solitario.game.Card.Suits_.DIAMOND) ? 'red' : 'black';
 
   /**
    * Enables or disables dragging behaviour on this card.
@@ -355,7 +355,7 @@ solitario.game.Card.prototype.returnToPile = function() {
         function(evnt) {
           this.setZIndex(this.zIndexInPile);
         }, false, this);
-    }
+  }
 };
 
 

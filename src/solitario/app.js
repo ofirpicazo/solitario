@@ -24,6 +24,7 @@ solitario.init = function() {
 };
 
 
+
 /**
  * Singleton class for the Solitario app.
  *
@@ -42,16 +43,16 @@ solitario.App = function() {
    * @type {goog.dom.ViewportSizeMonitor}
    * @private
    */
-   this.viewportMonitor_ = new goog.dom.BufferedViewportSizeMonitor(
-       new goog.dom.ViewportSizeMonitor(), 50);
+  this.viewportMonitor_ = new goog.dom.BufferedViewportSizeMonitor(
+      new goog.dom.ViewportSizeMonitor(), 50);
 
-   // Listen for viewport changes.
-   goog.events.listen(this.viewportMonitor_, goog.events.EventType.RESIZE,
-                      this.resizeBoard_, false, this);
-   // Trigger initial viewport calculation.
-   this.resizeBoard_();
+  // Listen for viewport changes.
+  goog.events.listen(this.viewportMonitor_, goog.events.EventType.RESIZE,
+                     this.resizeBoard_, false, this);
+  // Trigger initial viewport calculation.
+  this.resizeBoard_();
 
-   this.game_.start();
+  this.game_.start();
 };
 goog.addSingletonGetter(solitario.App);
 
