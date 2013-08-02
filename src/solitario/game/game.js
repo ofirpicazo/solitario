@@ -161,6 +161,8 @@ solitario.game.Game.prototype.onCardDragStart_ = function(evnt) {
   for (var i = 0; i < piles.length; i++) {
     piles[i].calculateDroppableRegion();
   }
+  var card = /** @type {game.solitario.Card} */ (evnt.target);
+  card.slant();
 };
 
 
@@ -207,7 +209,8 @@ solitario.game.Game.prototype.onCardDragMove_ = function(evnt) {
  * @private
  */
 solitario.game.Game.prototype.onCardDragEnd_ = function(evnt) {
-  var card = evnt.target;
+  var card = /** @type {game.solitario.Card} */ (evnt.target);
+  card.straighten();
 
   // A drop target was found, move the card here.
   if (this.dropPile_) {

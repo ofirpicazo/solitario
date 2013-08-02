@@ -120,8 +120,7 @@ solitario.game.Card.ClassNames_ = {
   DROP_TARGET: 'droptarget',
   NO_ANIMATION: 'no-animation',
   REVEALED: 'revealed',
-  SLANT_LEFT: 'slanted-left',
-  SLANT_RIGHT: 'slanted-right'
+  SLANTED: 'slanted'
 };
 
 
@@ -401,18 +400,17 @@ solitario.game.Card.prototype.setPosition = function(position) {
 
 
 /**
- * Rotates the card slightly to the left.
+ * Rotates the card slightly to the right.
  */
-solitario.game.Card.prototype.slantLeft = function() {
-  goog.dom.classes.add(this.element_,
-                       solitario.game.Card.ClassNames_.SLANT_LEFT);
+solitario.game.Card.prototype.slant = function() {
+  goog.dom.classes.add(this.element_, solitario.game.Card.ClassNames_.SLANTED);
 };
 
 
 /**
- * Rotates the card slightly to the right.
+ * Removes any rotation on the card.
  */
-solitario.game.Card.prototype.slantRight = function() {
-  goog.dom.classes.add(this.element_,
-                       solitario.game.Card.ClassNames_.SLANT_RIGHT);
+solitario.game.Card.prototype.straighten = function() {
+  goog.dom.classes.remove(this.element_,
+      solitario.game.Card.ClassNames_.SLANTED);
 };

@@ -28,14 +28,9 @@ $card-width: 10em;
   width: $card-width;
   z-index: 10;
 
-  &.slanted-left {
-    @include rotate(-3deg);
-    @include transform-origin(15%, 100%);
-  }
-
-  &.slanted-right {
+  &.slanted {
     @include rotate(3deg);
-    @include transform-origin(100%, 15%);
+    @include transform-origin(50%, 50%);
   }
 
   &.revealed .flipper {
