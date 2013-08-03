@@ -83,39 +83,6 @@ solitario.game.Pile.prototype.getAbsolutePosition_ = function() {
 
 
 /**
- * Gets the relative (ems) position of the Pile in the viewport.
- *
- * @return {goog.math.Coordinate} Relative position of the pile in the viewport.
- * @protected
- */
-solitario.game.Pile.prototype.getPosition = function() {
-  return solitario.game.utils.toRelativeUnits(this.getAbsolutePosition_());
-};
-
-
-/**
- * Gets the current z-index of the pile element.
- *
- * @return {number} z-index of the card element.
- * @protected
- */
-solitario.game.Pile.prototype.getZIndex = function() {
-  return parseInt(goog.style.getComputedZIndex(this.element_));
-};
-
-
-/**
- * Returns the top-most card without removing it from the pile, unlike pop().
- *
- * @return {?solitario.game.Card} The card on top of the pile.
- * @protected
- */
-solitario.game.Pile.prototype.getTopCard = function() {
-  return this.pile[this.pile.length - 1] || null;
-};
-
-
-/**
  * Calculates the region where cards can be dropped on to this pile.
  */
 solitario.game.Pile.prototype.calculateDroppableRegion = function() {
@@ -180,6 +147,39 @@ solitario.game.Pile.prototype.getDroppableRegion = function() {
 
 
 /**
+ * Gets the relative (ems) position of the Pile in the viewport.
+ *
+ * @return {goog.math.Coordinate} Relative position of the pile in the viewport.
+ * @protected
+ */
+solitario.game.Pile.prototype.getPosition = function() {
+  return solitario.game.utils.toRelativeUnits(this.getAbsolutePosition_());
+};
+
+
+/**
+ * Returns the top-most card without removing it from the pile, unlike pop().
+ *
+ * @return {?solitario.game.Card} The card on top of the pile.
+ * @protected
+ */
+solitario.game.Pile.prototype.getTopCard = function() {
+  return this.pile[this.pile.length - 1] || null;
+};
+
+
+/**
+ * Gets the current z-index of the pile element.
+ *
+ * @return {number} z-index of the card element.
+ * @protected
+ */
+solitario.game.Pile.prototype.getZIndex = function() {
+  return parseInt(goog.style.getComputedZIndex(this.element_));
+};
+
+
+/**
  * Pushes a new card in the pile and sets its position to the corresponding
  * place in the pile.
  *
@@ -187,6 +187,7 @@ solitario.game.Pile.prototype.getDroppableRegion = function() {
  */
 solitario.game.Pile.prototype.push = function(card) {
   this.pile.push(card);
+  card.pile = this;
   // Set the card on top of everything during the change of position.
   card.setZIndex(solitario.game.constants.MAX_ZINDEX);
   // Position card at 0,0 relative to the pile.

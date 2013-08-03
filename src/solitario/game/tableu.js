@@ -29,11 +29,19 @@ goog.inherits(solitario.game.Tableu, solitario.game.Pile);
 
 
 /**
- * The relative distance (ems) between each card in the Tableu.
+ * The relative distance (ems) between each hidden card in the Tableu.
  * @type {number}
  * @private
  */
-solitario.game.Tableu.INTERCARD_DISTANCE_ = 0.8;
+solitario.game.Tableu.INTERCARD_DISTANCE_HIDDEN_ = 0.8;
+
+
+/**
+ * The relative distance (ems) between each revealed card in the Tableu.
+ * @type {number}
+ * @private
+ */
+solitario.game.Tableu.INTERCARD_DISTANCE_REVEALED_ = 2;
 
 
 /**
@@ -43,10 +51,7 @@ solitario.game.Tableu.INTERCARD_DISTANCE_ = 0.8;
  * @param {Array.<solitario.game.Card>} cards Cards to be stacked in the tableu.
  */
 solitario.game.Tableu.prototype.initialize = function(cards) {
-  for (var i = cards.length - 1; i >= 0; i--) {
-    this.push(cards[i]);
-  }
-  // Reveal the top card when the transitions are finished.
+  // Reveal the top card when its the transition is finished.
   goog.events.listenOnce(cards[0], goog.events.EventType.TRANSITIONEND,
       function(evnt) {
         cards[0].reveal();
@@ -54,6 +59,14 @@ solitario.game.Tableu.prototype.initialize = function(cards) {
             solitario.game.constants.Events.READY, this);
         goog.events.dispatchEvent(this, readyEvent);
       }, false, this);
+
+  // Creates a delay for pushing each card to the tableu, in order to create
+  // a progressive effect.
+  var delay = 300;
+  for (var i = cards.length - 1; i >= 0; i--) {
+    window.setTimeout(goog.bind(this.push, this), delay, cards[i]);
+    delay += 80;
+  }
 };
 
 
@@ -64,11 +77,21 @@ solitario.game.Tableu.prototype.initialize = function(cards) {
  * @override
  */
 solitario.game.Tableu.prototype.push = function(card) {
+  // The position of the pushed card is relative to the previous card's position
+  // and status (revealed/hidden).
+  var previousCard = this.getTopCard();
+
   solitario.game.Tableu.superClass_.push.call(this, card);
-  // Fan down the card.
-  var cardPosition = this.getPosition();
-  cardPosition.y += (this.pile.length - 1) *
-      solitario.game.Tableu.INTERCARD_DISTANCE_;
-  card.setPosition(cardPosition);
-  card.positionInPile = cardPosition;
+
+  if (previousCard) {
+    var intercardDistance = (previousCard.isRevealed()) ?
+        solitario.game.Tableu.INTERCARD_DISTANCE_REVEALED_ :
+        solitario.game.Tableu.INTERCARD_DISTANCE_HIDDEN_;
+
+    // Fan down the card.
+    var cardPosition = previousCard.positionInPile;
+    cardPosition.y += intercardDistance;
+    card.setPosition(cardPosition);
+    card.positionInPile = cardPosition;
+  }
 };

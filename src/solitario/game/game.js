@@ -215,8 +215,9 @@ solitario.game.Game.prototype.onCardDragEnd_ = function(evnt) {
 
   // A drop target was found, move the card here.
   if (this.dropPile_) {
-    // TODO(ofir): Implement receiving drop.
     this.dropPile_.disableDroppableIndicator();
+    card.detachFromPile();
+    this.dropPile_.push(card);
     this.dropPile_ = null;
   } else {
     card.returnToPile();
