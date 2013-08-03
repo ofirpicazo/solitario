@@ -1,5 +1,5 @@
 #!/usr/bin/env rake
-# Copyright 2012 Carlos Mondragon and Ofir Picazo. All Rights Reserved.
+# Copyright 2013 Carlos Mondragon and Ofir Picazo. All Rights Reserved.
 #
 # Rakefile to build, test and lint the solitaire game.
 closure_dir  = "#{Dir.pwd}/vendor/closure-library"
