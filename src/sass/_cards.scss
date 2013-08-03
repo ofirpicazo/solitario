@@ -6,7 +6,7 @@
  * @author ofirpicazo@gmail.com (Ofir Picazo)
  */
 
-$card-border-color: #666;
+$card-border-color: #999;
 $card-color: #F5F5F5;
 $card-height: 14em;
 $card-shadow-color: #DDD;
@@ -28,14 +28,9 @@ $card-width: 10em;
   width: $card-width;
   z-index: 10;
 
-  &.slanted-left {
-    @include rotate(-3deg);
-    @include transform-origin(15%, 100%);
-  }
-
-  &.slanted-right {
+  &.slanted {
     @include rotate(3deg);
-    @include transform-origin(100%, 15%);
+    @include transform-origin(50%, 50%);
   }
 
   &.revealed .flipper {
@@ -54,11 +49,15 @@ $card-width: 10em;
     color: #df0000;
   }
 
+  &.droptarget {
+    @include single-box-shadow($card-shadow-color, 0, 0, 0.5em);
+  }
+
   %card-side {
     @include backface-visibility(hidden);
     @include border-radius(0.5em);
     // This shadow creates an outline for the card.
-    @include single-box-shadow($card-border-color, 0, 0, 0, 1px);
+    @include single-box-shadow($card-border-color, 0, 0, 0, 0.1em);
     height: $card-height;
     left: 0;
     position: absolute;
@@ -66,8 +65,12 @@ $card-width: 10em;
     width: $card-width;
   }
 
-  &.ui-draggable-dragging %card-side {
+  &.dragging %card-side {
     @include single-box-shadow(rgba(0, 0, 0, 0.5), 0, 0, 0.5em);
+  }
+
+  &.droptarget .front {
+    @include background-image(linear-gradient(right top, white 50%, $card-shadow-color 100%));
   }
 
   .front {

@@ -16,6 +16,7 @@ goog.require('solitario.game.utils');
 
 goog.setTestOnly('Tests for utils module');
 
+
 /** @type {goog.testing.PropertyReplacer} */
 var stubs;
 
@@ -25,6 +26,7 @@ setUp = function() {
     return { 'body': { 'style': { 'fontSize': '16.9px' } } };
   });
 };
+
 
 /**
  * Tests the conversion from px to em using a goog.math.Coordinate object.
@@ -37,6 +39,7 @@ testToRelativeUnitsUsingCoordinate = function() {
   var expectedCoordinate = new goog.math.Coordinate(37, 18);
   assertObjectEquals(expectedCoordinate, relativeCoordinate);
 };
+
 
 /**
  * Tests the conversion from px to em using 2 arguments (top, left).

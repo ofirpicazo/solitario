@@ -12,6 +12,7 @@ goog.require('solitario.game.Card');
 goog.require('solitario.game.Pile');
 
 
+
 /**
  * Class to represent the waste for cards in the game.
  *
@@ -33,7 +34,7 @@ goog.inherits(solitario.game.Waste, solitario.game.Pile);
  */
 solitario.game.Waste.prototype.push = function(card) {
   // Remove dragging for previous top card.
-  var topCard = this.getTopCard_();
+  var topCard = this.getTopCard();
   if (topCard) {
     topCard.isDraggable = false;
   }

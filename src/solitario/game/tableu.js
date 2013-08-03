@@ -10,9 +10,9 @@ goog.provide('solitario.game.Tableu');
 
 goog.require('goog.array');
 goog.require('solitario.game.Card');
-goog.require('solitario.game.Droppable');
 goog.require('solitario.game.Pile');
 goog.require('solitario.game.utils');
+
 
 
 /**
@@ -21,7 +21,6 @@ goog.require('solitario.game.utils');
  * @param {!Element} el DOM element representing the tableu.
  * @constructor
  * @extends {solitario.game.Pile}
- * @implements {solitario.game.Droppable}
  */
 solitario.game.Tableu = function(el) {
   goog.base(this, el);
@@ -58,12 +57,6 @@ solitario.game.Tableu.prototype.initialize = function(cards) {
 };
 
 
-/** @inheritDoc */
-solitario.game.Tableu.prototype.isDroppable = function(droppedObj) {
-
-};
-
-
 /**
  * Adds a new card to the tableu.
  *
@@ -73,8 +66,8 @@ solitario.game.Tableu.prototype.isDroppable = function(droppedObj) {
 solitario.game.Tableu.prototype.push = function(card) {
   solitario.game.Tableu.superClass_.push.call(this, card);
   // Fan down the card.
-  var cardPosition = this.getPosition_();
-  cardPosition.y += (this.pile_.length - 1) *
+  var cardPosition = this.getPosition();
+  cardPosition.y += (this.pile.length - 1) *
       solitario.game.Tableu.INTERCARD_DISTANCE_;
   card.setPosition(cardPosition);
   card.positionInPile = cardPosition;
