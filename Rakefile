@@ -12,14 +12,14 @@ linter_url = "http://closure-linter.googlecode.com/files/closure_linter-latest.t
 namespace :setup do
   desc "Inits git submodules and pulls them"
   task :git_submodules do
-    title "Fetching git submodules"
+    title "Fetching git submodules", true
     system("git submodule init && git submodule update") or exit!(1)
   end
 
   desc "Checks existance, downloads and extracts Closure Compiler"
   task :install_compiler do
     next if File.exists? compiler_dir
-    title "Installing Closure Compiler..."
+    title "Installing Closure Compiler", true
     system("mkdir #{compiler_dir}") or exit!(1)
     system("curl --progress-bar -o vendor/compiler.tar.gz #{compiler_url}") or exit!(1)
     system("tar -zxvf vendor/compiler.tar.gz -C #{compiler_dir}") or exit!(1)
@@ -28,8 +28,13 @@ namespace :setup do
 
   desc "Installs Closure Linter if not installed"
   task :install_linter do
+    title "Installing Closure Linter", true
+    if !system("which easy_install > /dev/null 2>&1")
+      error "You don't have easy_install in your path, please make sure you " +
+            "have it installed and try again."
+      exit!(1)
+    end
     if !system("which gjslint > /dev/null 2>&1")
-      title "Installing Closure Linter..."
       system("sudo easy_install #{linter_url} 2>&1") or exit!(1)
     end
   end
@@ -42,7 +47,7 @@ task :setup => ["setup:git_submodules", "setup:install_compiler",
 # Build tasks used in dev and deploy.
 desc "Runs JSLinter"
 task :linter do
-  title "Running JSLinter"
+  title "Running JSLinter", true
   system("gjslint -r #{Dir.pwd}/src/solitario --strict") or exit!(1)
 end
 
@@ -51,6 +56,7 @@ task :clean do
   title "Cleaning previous build"
   system("rm -rf #{Dir.pwd}/build") or exit!(1)
   system("mkdir -p #{Dir.pwd}/build/js") or exit!(1)
+  success
 end
 
 desc "Writes closure dependencies"
@@ -59,19 +65,21 @@ task :deps do
   system("python #{tools_dir}/depswriter.py \
           --root_with_prefix='#{Dir.pwd}/src/solitario ../solitario' \
           --output_file=src/solitario/deps.js") or exit!(1)
+  success
 end
 
 desc "Copy static files"
 task :static_files do
   title "Copying static files"
   system("cp -r #{Dir.pwd}/static/ #{Dir.pwd}/build/") or exit!(1)
+  success
 end
 
 # Tasks only for dev.
 namespace :dev do
   desc "Compiles the CSS"
   task :css do
-    title "Compiling CSS"
+    title "Compiling CSS", true
     system("compass compile \
       --css-dir='build/css' \
       --javascripts-dir='build/js' \
@@ -88,6 +96,7 @@ namespace :dev do
     title "Creating JS symlinks"
     system("ln -s #{closure_dir}/closure/goog #{Dir.pwd}/build/js/goog") or exit!(1)
     system("ln -s #{Dir.pwd}/src/solitario #{Dir.pwd}/build/js/solitario") or exit!(1)
+    success
   end
 end
 
@@ -95,7 +104,7 @@ end
 namespace :deploy do
   desc "Compiles the CSS"
   task :css do
-    title "Compiling CSS"
+    title "Compiling CSS", true
     system("compass compile \
       --css-dir='build/css' \
       --javascripts-dir='build/js' \
@@ -109,7 +118,7 @@ namespace :deploy do
 
   desc "Compiles the JavaScript of the game"
   task :js do
-    title "Compiling JS"
+    title "Compiling JS", true
     system("python #{tools_dir}/closurebuilder.py \
            --root=#{closure_dir} \
            --root=#{Dir.pwd}/src/ \
@@ -128,6 +137,19 @@ desc "Build the project for deployment"
 task :deploy => [:linter, :clean, :static_files, :deps, "deploy:css",
                  "deploy:js"]
 
-def title(text)
-  puts "\e[1;36m#{text}\e[0m"
+def title(text, new_line=false)
+  out = "\e[0;36m#{text}\e[0m..."
+  if new_line
+    puts out
+  else
+    print out
+  end
+end
+
+def success()
+  puts "\e[0;32mOK\e[0m"
+end
+
+def error(text)
+  puts "\e[0;31m#{text}\e[0m"
 end
