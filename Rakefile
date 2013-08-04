@@ -80,7 +80,7 @@ namespace :dev do
   desc "Compiles the CSS"
   task :css do
     title "Compiling CSS", true
-    system("compass compile \
+    system("bundle exec compass compile \
       --css-dir='build/css' \
       --javascripts-dir='build/js' \
       --images-dir='build/images' \
