@@ -335,12 +335,6 @@ solitario.game.Card.prototype.getZIndex = function() {
 };
 
 
-/** @inheritDoc */
-solitario.game.Card.prototype.isDroppable = function() {
-
-};
-
-
 /**
  * Returns whether or not the card is revealed.
  *
@@ -372,6 +366,9 @@ solitario.game.Card.prototype.removeEventListenersByType = function(type) {
  * do nothing.
  */
 solitario.game.Card.prototype.returnToPile = function() {
+  if (this.pile) {
+    this.pile.disableDroppableIndicator();
+  }
   if (this.positionInPile) {
     this.setPosition(this.positionInPile);
   }
@@ -391,6 +388,11 @@ solitario.game.Card.prototype.returnToPile = function() {
  */
 solitario.game.Card.prototype.reveal = function() {
   goog.dom.classes.add(this.element_, solitario.game.Card.ClassNames_.REVEALED);
+  // Make it draggable when the animation finishes.
+  goog.events.listenOnce(this.element_, goog.events.EventType.TRANSITIONEND,
+      function(evnt) {
+        this.isDraggable = true;
+      }, false, this);
 };
 
 

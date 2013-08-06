@@ -71,6 +71,23 @@ solitario.game.Tableu.prototype.initialize = function(cards) {
 
 
 /**
+ * Pops a card from the Tableu.
+ *
+ * @return {?solitario.game.Card} The card popped from the tableu.
+ * @override
+ */
+solitario.game.Tableu.prototype.pop = function() {
+  var poppedCard = solitario.game.Tableu.superClass_.pop.call(this);
+  // Reveal the new top card if there is one.
+  var topCard = this.getTopCard();
+  if (topCard) {
+    topCard.reveal();
+  }
+  return poppedCard;
+};
+
+
+/**
  * Adds a new card to the tableu.
  *
  * @param {solitario.game.Card} card Card to be pushed.
@@ -89,7 +106,7 @@ solitario.game.Tableu.prototype.push = function(card) {
         solitario.game.Tableu.INTERCARD_DISTANCE_HIDDEN_;
 
     // Fan down the card.
-    var cardPosition = previousCard.positionInPile;
+    var cardPosition = previousCard.positionInPile.clone();
     cardPosition.y += intercardDistance;
     card.setPosition(cardPosition);
     card.positionInPile = cardPosition;
