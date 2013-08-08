@@ -124,7 +124,7 @@ goog.inherits(solitario.game.Card, goog.events.EventTarget);
 solitario.game.Card.ClassNames_ = {
   DRAGGING: 'dragging',
   DROP_TARGET: 'droptarget',
-  NO_ANIMATION: 'no-animaevtion',
+  NO_ANIMATION: 'no-animation',
   REVEALED: 'revealed',
   SLANTED: 'slanted'
 };
