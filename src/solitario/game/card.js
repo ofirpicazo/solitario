@@ -124,7 +124,7 @@ goog.inherits(solitario.game.Card, goog.events.EventTarget);
 solitario.game.Card.ClassNames_ = {
   DRAGGING: 'dragging',
   DROP_TARGET: 'droptarget',
-  NO_ANIMATION: 'no-animation',
+  NO_ANIMATION: 'no-animaevtion',
   REVEALED: 'revealed',
   SLANTED: 'slanted'
 };
@@ -159,13 +159,15 @@ solitario.game.Card.Suits_ = {
 /**
  * Event handler for mouse down.
  *
- * @param {goog.events.BrowserEvent} event Mouse down event.
+ * @param {goog.events.BrowserEvent} evnt Mouse down event.
  * @private
  */
-solitario.game.Card.prototype.mouseDown_ = function(event) {
-  if (!event.isMouseActionButton() || !this.isDraggable) {
+solitario.game.Card.prototype.mouseDown_ = function(evnt) {
+  if (!evnt.isMouseActionButton() || !this.isDraggable) {
     return;
   }
+  evnt.preventDefault();
+  evnt.stopPropagation();
 
   goog.dom.classes.add(this.element_,
       solitario.game.Card.ClassNames_.DRAGGING,
@@ -179,9 +181,8 @@ solitario.game.Card.prototype.mouseDown_ = function(event) {
   var currentPosition = this.getAbsolutePosition();
   this.originalPosition_ = currentPosition;
   this.mouseDownPosition_ = new goog.math.Coordinate(
-      event.clientX - currentPosition.x,
-      event.clientY - currentPosition.y);
-  event.preventDefault();
+      evnt.clientX - currentPosition.x,
+      evnt.clientY - currentPosition.y);
 
   // Set the card above everything else.
   this.setZIndex(solitario.game.constants.MAX_ZINDEX);
@@ -196,12 +197,12 @@ solitario.game.Card.prototype.mouseDown_ = function(event) {
  * Event handler for mouse move. Starts drag operation if moved more than the
  * threshold value.
  *
- * @param {goog.events.BrowserEvent} event Mouse move or mouse out event.
+ * @param {goog.events.BrowserEvent} evnt Mouse move or mouse out event.
  * @private
  */
-solitario.game.Card.prototype.mouseMove_ = function(event) {
-  var x = event.clientX - this.mouseDownPosition_.x;
-  var y = event.clientY - this.mouseDownPosition_.y;
+solitario.game.Card.prototype.mouseMove_ = function(evnt) {
+  var x = evnt.clientX - this.mouseDownPosition_.x;
+  var y = evnt.clientY - this.mouseDownPosition_.y;
   var newLocation = new goog.math.Coordinate(
       (x < 0) ? 0 : x,
       (y < 0) ? 0 : y);
@@ -217,10 +218,10 @@ solitario.game.Card.prototype.mouseMove_ = function(event) {
  * Event handler for mouse up. Removes mouse move, mouse out and mouse up event
  * handlers.
  *
- * @param {goog.events.BrowserEvent} event Mouse up event.
+ * @param {goog.events.BrowserEvent} evnt Mouse up event.
  * @private
  */
-solitario.game.Card.prototype.mouseUp_ = function(event) {
+solitario.game.Card.prototype.mouseUp_ = function(evnt) {
   goog.events.unlisten(goog.dom.getDocument(), goog.events.EventType.MOUSEMOVE,
                        this.mouseMove_, false, this);
   goog.events.unlisten(goog.dom.getDocument(), goog.events.EventType.MOUSEOUT,
@@ -244,7 +245,7 @@ solitario.game.Card.prototype.mouseUp_ = function(event) {
  * @param {Function} listener Callback method.
  */
 solitario.game.Card.prototype.addEventListener = function(type, listener) {
-  var key = goog.events.listen(this.element_, type, goog.bind(listener, this));
+  var key = goog.events.listen(this.element_, type, listener, false, this);
   this.eventListenerKeys_[type] = this.eventListenerKeys_[type] || [];
   this.eventListenerKeys_[type].push(key);
 };

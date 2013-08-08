@@ -57,7 +57,7 @@ $card-width: 10em;
     @include backface-visibility(hidden);
     @include border-radius(0.5em);
     // This shadow creates an outline for the card.
-    @include single-box-shadow($card-border-color, 0, 0, 0, 0.1em);
+    @include single-box-shadow($card-border-color, 0, 0, 0, 1px);
     height: $card-height;
     left: 0;
     position: absolute;
