@@ -124,6 +124,7 @@ goog.inherits(solitario.game.Card, goog.events.EventTarget);
 solitario.game.Card.ClassNames_ = {
   DRAGGING: 'dragging',
   DROP_TARGET: 'droptarget',
+  GROUPER: 'grouper',
   NO_ANIMATION: 'no-animation',
   REVEALED: 'revealed',
   SLANTED: 'slanted'
@@ -168,6 +169,11 @@ solitario.game.Card.prototype.mouseDown_ = function(evnt) {
   }
   evnt.preventDefault();
   evnt.stopPropagation();
+
+  if (this.isGrouper()) {
+    // TODO(ofirp): Dispatch group drag event.
+    return;
+  }
 
   goog.dom.classes.add(this.element_,
       solitario.game.Card.ClassNames_.DRAGGING,
@@ -252,15 +258,6 @@ solitario.game.Card.prototype.addEventListener = function(type, listener) {
 
 
 /**
- * Disables the visual clue marking the card as a droppable region.
- */
-solitario.game.Card.prototype.disableDroppableIndicator = function() {
-  goog.dom.classes.remove(this.element_,
-      solitario.game.Pile.ClassNames_.DROP_TARGET);
-};
-
-
-/**
  * Detaches the card from its holding pile.
  */
 solitario.game.Card.prototype.detachFromPile = function() {
@@ -272,11 +269,38 @@ solitario.game.Card.prototype.detachFromPile = function() {
 
 
 /**
+ * Disables the visual clue marking the card as a droppable region.
+ */
+solitario.game.Card.prototype.disableDroppableIndicator = function() {
+  goog.dom.classes.remove(this.element_,
+      solitario.game.Card.ClassNames_.DROP_TARGET);
+};
+
+
+/**
+ * Disables this card from forming a group of fanned cards when draged.
+ */
+solitario.game.Card.prototype.disableGrouper = function() {
+  goog.dom.classes.remove(this.element_,
+      solitario.game.Card.ClassNames_.GROUPER);
+};
+
+
+/**
  * Enables the visual clue marking the card as a droppable region.
  */
 solitario.game.Card.prototype.enableDroppableIndicator = function() {
   goog.dom.classes.add(this.element_,
-      solitario.game.Pile.ClassNames_.DROP_TARGET);
+      solitario.game.Card.ClassNames_.DROP_TARGET);
+};
+
+
+/**
+ * Enables this card to form a group of fanned cards when dragged.
+ */
+solitario.game.Card.prototype.enableGrouper = function() {
+  goog.dom.classes.add(this.element_,
+      solitario.game.Card.ClassNames_.GROUPER);
 };
 
 
@@ -337,13 +361,24 @@ solitario.game.Card.prototype.getZIndex = function() {
 
 
 /**
+ * Returns whether this card can form a group of fanned cards when dragged.
+ *
+ * @return {boolean} True if the card can from a group.
+ */
+solitario.game.Card.prototype.isGrouper = function() {
+  return goog.dom.classes.has(this.element_,
+      solitario.game.Card.ClassNames_.GROUPER);
+};
+
+
+/**
  * Returns whether or not the card is revealed.
  *
  * @return {boolean} True if revealed.
  */
 solitario.game.Card.prototype.isRevealed = function() {
-  return goog.dom.classes.has(
-      this.element_, solitario.game.Card.ClassNames_.REVEALED);
+  return goog.dom.classes.has(this.element_,
+      solitario.game.Card.ClassNames_.REVEALED);
 };
 
 

@@ -82,6 +82,8 @@ solitario.game.Tableu.prototype.pop = function() {
   var topCard = this.getTopCard();
   if (topCard) {
     topCard.reveal();
+    // If the previous card was a grouper, disable it.
+    topCard.disableGrouper();
   }
   return poppedCard;
 };
@@ -101,9 +103,13 @@ solitario.game.Tableu.prototype.push = function(card) {
   solitario.game.Tableu.superClass_.push.call(this, card);
 
   if (previousCard) {
-    var intercardDistance = (previousCard.isRevealed()) ?
-        solitario.game.Tableu.INTERCARD_DISTANCE_REVEALED_ :
-        solitario.game.Tableu.INTERCARD_DISTANCE_HIDDEN_;
+    var intercardDistance = solitario.game.Tableu.INTERCARD_DISTANCE_HIDDEN_;
+
+    if (previousCard.isRevealed()) {
+      intercardDistance = solitario.game.Tableu.INTERCARD_DISTANCE_REVEALED_;
+      // The previous revealed card can lead groups now.
+      previousCard.enableGrouper();
+    }
 
     // Fan down the card.
     var cardPosition = previousCard.positionInPile.clone();
