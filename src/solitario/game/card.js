@@ -171,7 +171,9 @@ solitario.game.Card.prototype.mouseDown_ = function(evnt) {
   evnt.stopPropagation();
 
   if (this.isGrouper()) {
-    // TODO(ofirp): Dispatch group drag event.
+    var groupDragEvent = new goog.events.Event(
+        solitario.game.constants.Events.GROUP_DRAG_START, this);
+    goog.events.dispatchEvent(this, groupDragEvent);
     return;
   }
 

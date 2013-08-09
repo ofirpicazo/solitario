@@ -232,6 +232,19 @@ solitario.game.Game.prototype.onCardDragEnd_ = function(evnt) {
 
 
 /**
+ * Handles when a card is dragged to form a group.
+ *
+ * @param {goog.events.Event} evnt The event object passed.
+ * @private
+ */
+solitario.game.Game.prototype.onGroupDragStart_ = function(evnt) {
+  var card = /** @type {solitario.game.Card} */ (evnt.target);
+  var tableu = /** @type {solitario.game.Tableu} */ (card.pile);
+  var cardGroup = tableu.getGroupFrom(card);
+};
+
+
+/**
  * Shuffles the cards in random order.
  * @private
  */
@@ -263,6 +276,9 @@ solitario.game.Game.prototype.start = function() {
     goog.events.listen(this.cards_[i],
         solitario.game.constants.Events.DRAG_END, this.onCardDragEnd_,
         false, this);
+    goog.events.listen(this.cards_[i],
+        solitario.game.constants.Events.GROUP_DRAG_START,
+        this.onGroupDragStart_, false, this);
   }
 
   // Sets cards for tableux.

@@ -10,6 +10,7 @@ goog.provide('solitario.game.Tableu');
 
 goog.require('goog.array');
 goog.require('solitario.game.Card');
+goog.require('solitario.game.CardGroup');
 goog.require('solitario.game.Pile');
 goog.require('solitario.game.utils');
 
@@ -42,6 +43,33 @@ solitario.game.Tableu.INTERCARD_DISTANCE_HIDDEN_ = 0.8;
  * @private
  */
 solitario.game.Tableu.INTERCARD_DISTANCE_REVEALED_ = 2;
+
+
+/**
+ * Returns a CardGroup from the given card, inclusive.
+ *
+ * @param {solitario.game.Card} card Card from which the group should be
+ *     constructed from.
+ *
+ * @return {solitario.game.CardGroup} A group whose top card is the given one.
+ */
+solitario.game.Tableu.prototype.getGroupFrom = function(card) {
+  var listOfCards = [];
+  var cardFound = false;
+  for (var i = 0; i < this.pile.length; i++) {
+    if (this.pile[i].id == card.id) {
+      cardFound = true;
+    }
+    // Build list of cards from the point where we found the given card.
+    if (cardFound) {
+      listOfCards.push(this.pile[i]);
+    }
+  }
+  if (!cardFound) {
+    throw new Error('Specified card not found in Tableu!');
+  }
+  return new solitario.game.CardGroup(listOfCards);
+};
 
 
 /**
