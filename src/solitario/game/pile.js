@@ -103,42 +103,6 @@ solitario.game.Pile.prototype.calculateDroppableRegion = function() {
 
 
 /**
- * Disables the visual clue indicating the droppable region of the pile can
- * receive a drop.
- */
-solitario.game.Pile.prototype.disableDroppableIndicator = function() {
-  // If the pile has cards, remove indicator from every card, otherwise use
-  // the pile itself.
-  if (this.pile.length) {
-    for (var i = this.pile.length - 1; i >= 0; i--) {
-      this.pile[i].disableDroppableIndicator();
-    }
-  } else {
-    goog.dom.classes.remove(this.element_,
-        solitario.game.Pile.ClassNames_.DROP_TARGET);
-  }
-};
-
-
-/**
- * Enables the visual clue indicating the droppable region of the pile can
- * receive a drop.
- */
-solitario.game.Pile.prototype.enableDroppableIndicator = function() {
-  // If the pile has cards, add the indicator to every card, otherwise use
-  // the pile itself.
-  if (this.pile.length) {
-    for (var i = this.pile.length - 1; i >= 0; i--) {
-      this.pile[i].enableDroppableIndicator();
-    }
-  } else {
-    goog.dom.classes.add(this.element_,
-        solitario.game.Pile.ClassNames_.DROP_TARGET);
-  }
-};
-
-
-/**
  * Returns the rectangular region where a card can be dropped on this pile.
  *
  * @return {goog.math.Rect} The rectangular droppable region of this card.
@@ -182,6 +146,24 @@ solitario.game.Pile.prototype.getZIndex = function() {
 
 
 /**
+ * Disables the visual clue indicating the droppable region of the pile can
+ * receive a drop.
+ */
+solitario.game.Pile.prototype.hideDroppableIndicator = function() {
+  // If the pile has cards, remove indicator from every card, otherwise use
+  // the pile itself.
+  if (this.pile.length) {
+    for (var i = this.pile.length - 1; i >= 0; i--) {
+      this.pile[i].hideDroppableIndicator();
+    }
+  } else {
+    goog.dom.classes.remove(this.element_,
+        solitario.game.Pile.ClassNames_.DROP_TARGET);
+  }
+};
+
+
+/**
  * Pops a new card from the pile.
  *
  * @return {?solitario.game.Card} The card popped from the pile.
@@ -216,4 +198,22 @@ solitario.game.Pile.prototype.push = function(card) {
         card.setZIndex(cardZIndex);
         card.zIndexInPile = cardZIndex;
       }, false, this);
+};
+
+
+/**
+ * Enables the visual clue indicating the droppable region of the pile can
+ * receive a drop.
+ */
+solitario.game.Pile.prototype.showDroppableIndicator = function() {
+  // If the pile has cards, add the indicator to every card, otherwise use
+  // the pile itself.
+  if (this.pile.length) {
+    for (var i = this.pile.length - 1; i >= 0; i--) {
+      this.pile[i].showDroppableIndicator();
+    }
+  } else {
+    goog.dom.classes.add(this.element_,
+        solitario.game.Pile.ClassNames_.DROP_TARGET);
+  }
 };

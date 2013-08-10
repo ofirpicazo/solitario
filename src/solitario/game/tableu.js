@@ -12,6 +12,7 @@ goog.require('goog.array');
 goog.require('solitario.game.Card');
 goog.require('solitario.game.CardGroup');
 goog.require('solitario.game.Pile');
+goog.require('solitario.game.constants');
 goog.require('solitario.game.utils');
 
 
@@ -27,22 +28,6 @@ solitario.game.Tableu = function(el) {
   goog.base(this, el);
 };
 goog.inherits(solitario.game.Tableu, solitario.game.Pile);
-
-
-/**
- * The relative distance (ems) between each hidden card in the Tableu.
- * @type {number}
- * @private
- */
-solitario.game.Tableu.INTERCARD_DISTANCE_HIDDEN_ = 0.8;
-
-
-/**
- * The relative distance (ems) between each revealed card in the Tableu.
- * @type {number}
- * @private
- */
-solitario.game.Tableu.INTERCARD_DISTANCE_REVEALED_ = 2;
 
 
 /**
@@ -131,10 +116,12 @@ solitario.game.Tableu.prototype.push = function(card) {
   solitario.game.Tableu.superClass_.push.call(this, card);
 
   if (previousCard) {
-    var intercardDistance = solitario.game.Tableu.INTERCARD_DISTANCE_HIDDEN_;
+    var intercardDistance =
+        solitario.game.constants.TABLEU_INTERCARD_DISTANCE_HIDDEN;
 
     if (previousCard.isRevealed()) {
-      intercardDistance = solitario.game.Tableu.INTERCARD_DISTANCE_REVEALED_;
+      intercardDistance =
+          solitario.game.constants.TABLEU_INTERCARD_DISTANCE_REVEALED;
       // The previous revealed card can lead groups now.
       previousCard.enableGrouper();
     }

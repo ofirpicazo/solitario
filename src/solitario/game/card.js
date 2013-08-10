@@ -122,10 +122,8 @@ goog.inherits(solitario.game.Card, goog.events.EventTarget);
  * @private
  */
 solitario.game.Card.ClassNames_ = {
-  DRAGGING: 'dragging',
   DROP_TARGET: 'droptarget',
   GROUPER: 'grouper',
-  NO_ANIMATION: 'no-animation',
   REVEALED: 'revealed',
   SLANTED: 'slanted'
 };
@@ -170,6 +168,11 @@ solitario.game.Card.prototype.mouseDown_ = function(evnt) {
   evnt.preventDefault();
   evnt.stopPropagation();
 
+  var currentPosition = this.getAbsolutePosition();
+  this.mouseDownPosition_ = new goog.math.Coordinate(
+      evnt.clientX - currentPosition.x,
+      evnt.clientY - currentPosition.y);
+
   if (this.isGrouper()) {
     var groupDragEvent = new goog.events.Event(
         solitario.game.constants.Events.GROUP_DRAG_START, this);
@@ -177,20 +180,13 @@ solitario.game.Card.prototype.mouseDown_ = function(evnt) {
     return;
   }
 
-  goog.dom.classes.add(this.element_,
-      solitario.game.Card.ClassNames_.DRAGGING,
-      solitario.game.Card.ClassNames_.NO_ANIMATION);
+  this.disableAnimation();
+  this.showDraggingIndicator();
   this.addEventListener(goog.events.EventType.MOUSEUP, this.mouseUp_);
   goog.events.listen(goog.dom.getDocument(), goog.events.EventType.MOUSEMOVE,
                      this.mouseMove_, false, this);
   goog.events.listen(goog.dom.getDocument(), goog.events.EventType.MOUSEOUT,
                      this.mouseMove_, false, this);
-
-  var currentPosition = this.getAbsolutePosition();
-  this.originalPosition_ = currentPosition;
-  this.mouseDownPosition_ = new goog.math.Coordinate(
-      evnt.clientX - currentPosition.x,
-      evnt.clientY - currentPosition.y);
 
   // Set the card above everything else.
   this.setZIndex(solitario.game.constants.MAX_ZINDEX);
@@ -236,8 +232,8 @@ solitario.game.Card.prototype.mouseUp_ = function(evnt) {
                        this.mouseMove_, false, this);
   this.removeEventListenersByType(goog.events.EventType.MOUSEUP);
   goog.dom.classes.remove(this.element_,
-      solitario.game.Card.ClassNames_.DRAGGING,
-      solitario.game.Card.ClassNames_.NO_ANIMATION);
+      solitario.game.constants.ClassNames.DRAGGING,
+      solitario.game.constants.ClassNames.NO_ANIMATION);
   this.mouseDownPosition_ = null;
 
   var dragEndEvent = new goog.events.Event(
@@ -271,11 +267,11 @@ solitario.game.Card.prototype.detachFromPile = function() {
 
 
 /**
- * Disables the visual clue marking the card as a droppable region.
+ * Disables the CSS3 animation settings on the card.
  */
-solitario.game.Card.prototype.disableDroppableIndicator = function() {
-  goog.dom.classes.remove(this.element_,
-      solitario.game.Card.ClassNames_.DROP_TARGET);
+solitario.game.Card.prototype.disableAnimation = function() {
+  goog.dom.classes.add(this.element_,
+      solitario.game.constants.ClassNames.NO_ANIMATION);
 };
 
 
@@ -289,11 +285,11 @@ solitario.game.Card.prototype.disableGrouper = function() {
 
 
 /**
- * Enables the visual clue marking the card as a droppable region.
+ * Enables the CSS3 animation settings on the card.
  */
-solitario.game.Card.prototype.enableDroppableIndicator = function() {
-  goog.dom.classes.add(this.element_,
-      solitario.game.Card.ClassNames_.DROP_TARGET);
+solitario.game.Card.prototype.enableAnimation = function() {
+  goog.dom.classes.remove(this.element_,
+      solitario.game.constants.ClassNames.NO_ANIMATION);
 };
 
 
@@ -330,6 +326,18 @@ solitario.game.Card.prototype.getAbsoluteSize = function() {
 
 
 /**
+ * Returns the absolute position (in px) where the mouse was last clicked on
+ * this card.
+ *
+ * @return {?goog.math.Coordinate} The absolute position of the mouse down
+ *     event.
+ */
+solitario.game.Card.prototype.getMouseDownPosition = function() {
+  return this.mouseDownPosition_;
+};
+
+
+/**
  * Gets the relative position of the card in the viewport, in ems.
  *
  * @return {goog.math.Coordinate} The relative position of the card.
@@ -359,6 +367,24 @@ solitario.game.Card.prototype.getRect = function() {
  */
 solitario.game.Card.prototype.getZIndex = function() {
   return parseInt(this.element_.style.zIndex);
+};
+
+
+/**
+ * Disables the visual clue indicating the card is being dragged.
+ */
+solitario.game.Card.prototype.hideDraggingIndicator = function() {
+  goog.dom.classes.remove(this.element_,
+      solitario.game.constants.ClassNames.DRAGGING);
+};
+
+
+/**
+ * Disables the visual clue marking the card as a droppable region.
+ */
+solitario.game.Card.prototype.hideDroppableIndicator = function() {
+  goog.dom.classes.remove(this.element_,
+      solitario.game.Card.ClassNames_.DROP_TARGET);
 };
 
 
@@ -405,7 +431,7 @@ solitario.game.Card.prototype.removeEventListenersByType = function(type) {
  */
 solitario.game.Card.prototype.returnToPile = function() {
   if (this.pile) {
-    this.pile.disableDroppableIndicator();
+    this.pile.hideDroppableIndicator();
   }
   if (this.positionInPile) {
     this.setPosition(this.positionInPile);
@@ -463,6 +489,24 @@ solitario.game.Card.prototype.setPosition = function(position) {
   var leftEms = solitario.game.utils.getEmStyleValue(position.x);
   var topEms = solitario.game.utils.getEmStyleValue(position.y);
   goog.style.setPosition(this.element_, leftEms, topEms);
+};
+
+
+/**
+ * Enables a visual clue indicating the card is being dragged.
+ */
+solitario.game.Card.prototype.showDraggingIndicator = function() {
+  goog.dom.classes.add(this.element_,
+      solitario.game.constants.ClassNames.DRAGGING);
+};
+
+
+/**
+ * Enables a visual clue marking the card as a droppable region.
+ */
+solitario.game.Card.prototype.showDroppableIndicator = function() {
+  goog.dom.classes.add(this.element_,
+      solitario.game.Card.ClassNames_.DROP_TARGET);
 };
 
 

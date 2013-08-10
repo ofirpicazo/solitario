@@ -182,7 +182,7 @@ solitario.game.Game.prototype.onCardDragStart_ = function(evnt) {
 solitario.game.Game.prototype.onCardDragMove_ = function(evnt) {
   // Reset the drop target pile.
   if (this.dropPile_) {
-    this.dropPile_.disableDroppableIndicator();
+    this.dropPile_.hideDroppableIndicator();
     this.dropPile_ = null;
   }
 
@@ -204,7 +204,7 @@ solitario.game.Game.prototype.onCardDragMove_ = function(evnt) {
   }
 
   if (this.dropPile_) {
-    this.dropPile_.enableDroppableIndicator();
+    this.dropPile_.showDroppableIndicator();
   }
 };
 
@@ -221,7 +221,7 @@ solitario.game.Game.prototype.onCardDragEnd_ = function(evnt) {
 
   // A drop target was found, move the card here.
   if (this.dropPile_ && this.dropPile_ != card.pile) {
-    this.dropPile_.disableDroppableIndicator();
+    this.dropPile_.hideDroppableIndicator();
     card.detachFromPile();
     this.dropPile_.push(card);
     this.dropPile_ = null;
@@ -246,6 +246,7 @@ solitario.game.Game.prototype.onGroupDragStart_ = function(evnt) {
 
 /**
  * Shuffles the cards in random order.
+ *
  * @private
  */
 solitario.game.Game.prototype.shuffleCards_ = function() {
