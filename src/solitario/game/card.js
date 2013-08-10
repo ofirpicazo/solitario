@@ -65,6 +65,12 @@ solitario.game.Card = function(el) {
       this.element_, solitario.game.Card.DataAttrs_.NUMBER);
 
   /**
+   * Reference to the pile that currently hold this card.
+   * @type {?solitario.game.Pile}
+   */
+  this.pile = null;
+
+  /**
    * Recorded position of the location of the card as assigned by the containing
    * pile.
    * @type {?goog.math.Coordinate}
@@ -254,6 +260,17 @@ solitario.game.Card.prototype.disableDroppableIndicator = function() {
 
 
 /**
+ * Detaches the card from its holding pile.
+ */
+solitario.game.Card.prototype.detachFromPile = function() {
+  if (this.pile) {
+    this.pile.pop();
+    this.pile = null;
+  }
+};
+
+
+/**
  * Enables the visual clue marking the card as a droppable region.
  */
 solitario.game.Card.prototype.enableDroppableIndicator = function() {
@@ -286,6 +303,16 @@ solitario.game.Card.prototype.getAbsoluteSize = function() {
 
 
 /**
+ * Gets the relative position of the card in the viewport, in ems.
+ *
+ * @return {goog.math.Coordinate} The relative position of the card.
+ */
+solitario.game.Card.prototype.getPosition = function() {
+  return solitario.game.utils.toRelativeUnits(this.getAbsolutePosition());
+};
+
+
+/**
  * Returns the rectangular region this card is currently occupying.
  * Note that this will have the same width and height for all cards.
  *
@@ -305,12 +332,6 @@ solitario.game.Card.prototype.getRect = function() {
  */
 solitario.game.Card.prototype.getZIndex = function() {
   return parseInt(this.element_.style.zIndex);
-};
-
-
-/** @inheritDoc */
-solitario.game.Card.prototype.isDroppable = function() {
-
 };
 
 
@@ -345,6 +366,9 @@ solitario.game.Card.prototype.removeEventListenersByType = function(type) {
  * do nothing.
  */
 solitario.game.Card.prototype.returnToPile = function() {
+  if (this.pile) {
+    this.pile.disableDroppableIndicator();
+  }
   if (this.positionInPile) {
     this.setPosition(this.positionInPile);
   }
@@ -364,6 +388,11 @@ solitario.game.Card.prototype.returnToPile = function() {
  */
 solitario.game.Card.prototype.reveal = function() {
   goog.dom.classes.add(this.element_, solitario.game.Card.ClassNames_.REVEALED);
+  // Make it draggable when the animation finishes.
+  goog.events.listenOnce(this.element_, goog.events.EventType.TRANSITIONEND,
+      function(evnt) {
+        this.isDraggable = true;
+      }, false, this);
 };
 
 
