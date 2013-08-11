@@ -49,9 +49,36 @@ solitario.game.CardGroup = function(group) {
    */
   this.topCard_ = this.group_[0];
 
+  /**
+   * Absolute size from top to bottom card of this group in pixels.
+   * @type {goog.math.Size}
+   * @private
+   */
+  this.size_ = this.getAbsoluteSize_();
+
   this.initialize_();
 };
 goog.inherits(solitario.game.CardGroup, goog.events.EventTarget);
+
+
+/**
+ * Returns the absolute size of the card group in pixels.
+ * Calculating this is expensive, so we cache its value.
+ *
+ * @return {goog.math.Size} The size of the group.
+ */
+solitario.game.CardGroup.prototype.getAbsoluteSize_ = function() {
+  if (!this.size_) {
+    var cardSize = this.topCard_.getAbsoluteSize();
+    var absoluteIntercardDistance = solitario.game.utils.toAbsoluteUnits(
+        solitario.game.constants.TABLEU_INTERCARD_DISTANCE_REVEALED);
+    var tableuHeight = cardSize.height + ((this.group_.length - 1) *
+        absoluteIntercardDistance);
+    this.size_ = new goog.math.Size(cardSize.width, tableuHeight);
+  }
+
+  return this.size_;
+};
 
 
 /**
@@ -144,6 +171,20 @@ solitario.game.CardGroup.prototype.setPosition_ = function(position) {
     position.y += solitario.game.constants.TABLEU_INTERCARD_DISTANCE_REVEALED;
     this.group_[i].setPosition(position);
   }
+};
+
+
+/**
+ * Returns the rectangular region this group is currently occupying.
+ *
+ * @return {goog.math.Rect} The rectangular region.
+ */
+solitario.game.CardGroup.prototype.getRect = function() {
+  var topCardRect = this.topCard_.getRect();
+  var tableuSize = this.getAbsoluteSize_();
+
+  return new goog.math.Rect(topCardRect.left, topCardRect.top, tableuSize.width,
+      tableuSize.height);
 };
 
 

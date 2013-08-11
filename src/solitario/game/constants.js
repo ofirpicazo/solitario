@@ -75,4 +75,4 @@ solitario.game.constants.TABLEU_INTERCARD_DISTANCE_HIDDEN = 0.8;
  * The relative distance (ems) between each revealed card in the Tableu.
  * @type {number}
  */
-solitario.game.constants.TABLEU_INTERCARD_DISTANCE_REVEALED = 2;
+solitario.game.constants.TABLEU_INTERCARD_DISTANCE_REVEALED = 2.2;

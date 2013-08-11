@@ -57,7 +57,13 @@ solitario.game.Tableu.prototype.getGroupFrom_ = function(card) {
 
   var cardGroup = new solitario.game.CardGroup(listOfCards);
   goog.events.listen(cardGroup, solitario.game.constants.Events.GROUP_DRAG_END,
-      this.onGroupDragEnd_, false, this);
+      function(evnt) {
+        goog.events.dispatchEvent(this, evnt);
+      }, false, this);
+  goog.events.listen(cardGroup, solitario.game.constants.Events.GROUP_DRAG_MOVE,
+      function(evnt) {
+        goog.events.dispatchEvent(this, evnt);
+      }, false, this);
 };
 
 
@@ -68,6 +74,8 @@ solitario.game.Tableu.prototype.getGroupFrom_ = function(card) {
  * @private
  */
 solitario.game.Tableu.prototype.onGroupDragEnd_ = function(evnt) {
+  var cardGroup = /** @type {solitario.game.CardGroup} */ (evnt.target);
+  goog.events.removeAll(cardGroup);
   goog.events.dispatchEvent(this, evnt);
 };
 
