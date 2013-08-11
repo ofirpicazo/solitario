@@ -130,6 +130,7 @@ goog.inherits(solitario.game.Card, goog.events.EventTarget);
  */
 solitario.game.Card.ClassNames_ = {
   DROP_TARGET: 'droptarget',
+  FANNED: 'fanned',
   GROUPER: 'grouper',
   REVEALED: 'revealed',
   SLANTED: 'slanted'
@@ -399,6 +400,15 @@ solitario.game.Card.prototype.hideDroppableIndicator = function() {
 
 
 /**
+ * Hides the drop shadow used when the card is fanned down.
+ */
+solitario.game.Card.prototype.hideFannedShadow = function() {
+  goog.dom.classes.remove(this.element_,
+      solitario.game.Card.ClassNames_.FANNED);
+};
+
+
+/**
  * Returns whether this card can form a group of fanned cards when dragged.
  *
  * @return {boolean} True if the card can from a group.
@@ -519,6 +529,15 @@ solitario.game.Card.prototype.showDraggingIndicator = function() {
 solitario.game.Card.prototype.showDroppableIndicator = function() {
   goog.dom.classes.add(this.element_,
       solitario.game.Card.ClassNames_.DROP_TARGET);
+};
+
+
+/**
+ * Shows the drop shadow used when the card is fanned down.
+ */
+solitario.game.Card.prototype.showFannedShadow = function() {
+  goog.dom.classes.add(this.element_,
+      solitario.game.Card.ClassNames_.FANNED);
 };
 
 

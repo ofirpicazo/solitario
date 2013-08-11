@@ -129,6 +129,7 @@ solitario.game.Tableu.prototype.initialize = function(cards) {
  */
 solitario.game.Tableu.prototype.pop = function() {
   var poppedCard = solitario.game.Tableu.superClass_.pop.call(this);
+  poppedCard.hideFannedShadow();
 
   // Remove listener for group events.
   goog.events.unlisten(poppedCard,
@@ -157,6 +158,7 @@ solitario.game.Tableu.prototype.push = function(card) {
   var previousCard = this.getTopCard();
 
   solitario.game.Tableu.superClass_.push.call(this, card);
+  card.showFannedShadow();
 
   if (previousCard) {
     var intercardDistance =
