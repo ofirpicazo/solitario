@@ -145,3 +145,13 @@ solitario.game.CardGroup.prototype.setPosition_ = function(position) {
     this.group_[i].setPosition(position);
   }
 };
+
+
+/**
+ * Return all the cards in the group to their original position in the tableu.
+ */
+solitario.game.CardGroup.prototype.returnToTableu = function() {
+  for (var i = 0; i < this.group_.length; i++) {
+    this.group_[i].returnToPile();
+  }
+};

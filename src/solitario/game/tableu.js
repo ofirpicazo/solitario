@@ -37,8 +37,9 @@ goog.inherits(solitario.game.Tableu, solitario.game.Pile);
  *     constructed from.
  *
  * @return {solitario.game.CardGroup} A group whose top card is the given one.
+ * @private
  */
-solitario.game.Tableu.prototype.getGroupFrom = function(card) {
+solitario.game.Tableu.prototype.getGroupFrom_ = function(card) {
   var listOfCards = [];
   var cardFound = false;
   for (var i = 0; i < this.pile.length; i++) {
@@ -53,7 +54,36 @@ solitario.game.Tableu.prototype.getGroupFrom = function(card) {
   if (!cardFound) {
     throw new Error('Specified card not found in Tableu!');
   }
-  return new solitario.game.CardGroup(listOfCards);
+
+  var cardGroup = new solitario.game.CardGroup(listOfCards);
+  goog.events.listen(cardGroup, solitario.game.constants.Events.GROUP_DRAG_END,
+      this.onGroupDragEnd_, false, this);
+};
+
+
+/**
+ * Event handler for when a group of cards is dropped.
+ *
+ * @param {goog.events.Event} evnt The event caught.
+ * @private
+ */
+solitario.game.Tableu.prototype.onGroupDragEnd_ = function(evnt) {
+  goog.events.dispatchEvent(this, evnt);
+};
+
+
+/**
+ * Event handler for when a grouper card is dragged.
+ *
+ * @param {goog.events.Event} evnt The event caught.
+ * @private
+ */
+solitario.game.Tableu.prototype.onGroupDragStart_ = function(evnt) {
+  var card = /** @type {solitario.game.Card} */ (evnt.target);
+  var cardGroup = this.getGroupFrom_(card);
+  var groupDragEvent = new goog.events.Event(
+      solitario.game.constants.Events.GROUP_DRAG_START, cardGroup);
+  goog.events.dispatchEvent(this, groupDragEvent);
 };
 
 
@@ -91,6 +121,12 @@ solitario.game.Tableu.prototype.initialize = function(cards) {
  */
 solitario.game.Tableu.prototype.pop = function() {
   var poppedCard = solitario.game.Tableu.superClass_.pop.call(this);
+
+  // Remove listener for group events.
+  goog.events.unlisten(poppedCard,
+      solitario.game.constants.Events.GROUP_DRAG_START, this.onGroupDragStart_,
+      false, this);
+
   // Reveal the new top card if there is one.
   var topCard = this.getTopCard();
   if (topCard) {
@@ -132,4 +168,8 @@ solitario.game.Tableu.prototype.push = function(card) {
     card.setPosition(cardPosition);
     card.positionInPile = cardPosition;
   }
+
+  // Add listener for group events.
+  goog.events.listen(card, solitario.game.constants.Events.GROUP_DRAG_START,
+      this.onGroupDragStart_, false, this);
 };

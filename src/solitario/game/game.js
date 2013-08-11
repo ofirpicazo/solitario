@@ -157,19 +157,24 @@ solitario.game.Game.prototype.moveCardFromStockToWaste_ = function(evnt) {
 
 
 /**
- * Handles when a playable card starts being dragged.
+ * Handles when a playable card ends being dragged.
  *
  * @param {goog.events.Event} evnt The event object passed.
  * @private
  */
-solitario.game.Game.prototype.onCardDragStart_ = function(evnt) {
-  // Calculate droppable regions for all the piles.
-  var piles = goog.array.concat(this.foundations_, this.tableux_);
-  for (var i = 0; i < piles.length; i++) {
-    piles[i].calculateDroppableRegion();
-  }
+solitario.game.Game.prototype.onCardDragEnd_ = function(evnt) {
   var card = /** @type {game.solitario.Card} */ (evnt.target);
-  card.slant();
+  card.straighten();
+
+  // A drop target was found, move the card here.
+  if (this.dropPile_ && this.dropPile_ != card.pile) {
+    this.dropPile_.hideDroppableIndicator();
+    card.detachFromPile();
+    this.dropPile_.push(card);
+    this.dropPile_ = null;
+  } else {
+    card.returnToPile();
+  }
 };
 
 
@@ -210,37 +215,62 @@ solitario.game.Game.prototype.onCardDragMove_ = function(evnt) {
 
 
 /**
- * Handles when a playable card ends being dragged.
+ * Handles when a playable card starts being dragged.
  *
  * @param {goog.events.Event} evnt The event object passed.
  * @private
  */
-solitario.game.Game.prototype.onCardDragEnd_ = function(evnt) {
+solitario.game.Game.prototype.onCardDragStart_ = function(evnt) {
+  // Calculate droppable regions for all the piles.
+  var piles = goog.array.concat(this.foundations_, this.tableux_);
+  for (var i = 0; i < piles.length; i++) {
+    piles[i].calculateDroppableRegion();
+  }
   var card = /** @type {game.solitario.Card} */ (evnt.target);
-  card.straighten();
+  card.slant();
+};
 
-  // A drop target was found, move the card here.
-  if (this.dropPile_ && this.dropPile_ != card.pile) {
-    this.dropPile_.hideDroppableIndicator();
-    card.detachFromPile();
-    this.dropPile_.push(card);
-    this.dropPile_ = null;
+
+/**
+ * Handles when a group of cards is dropped.
+ *
+ * @param {goog.events.Event} evnt The event object passed.
+ * @private
+ */
+solitario.game.Game.prototype.onGroupDragEnd_ = function(evnt) {
+  var group = /** @type {solitario.game.CardGroup} */ (evnt.target);
+
+  // A drop target was found, move the group here.
+  if (this.dropPile_ && this.dropPile_ != group.tableu) {
+    // this.dropPile_.hideDroppableIndicator();
+    // card.detachFromPile();
+    // this.dropPile_.push(card);
+    // this.dropPile_ = null;
   } else {
-    card.returnToPile();
+    group.returnToTableu();
   }
 };
 
 
 /**
- * Handles when a card is dragged to form a group.
+ * Handles when a group of cards is being dragged.
+ *
+ * @param {goog.events.Event} evnt The event object passed.
+ * @private
+ */
+solitario.game.Game.prototype.onGroupDragMove_ = function(evnt) {
+};
+
+
+/**
+ * Handles group of cards starts being dragged.
  *
  * @param {goog.events.Event} evnt The event object passed.
  * @private
  */
 solitario.game.Game.prototype.onGroupDragStart_ = function(evnt) {
-  var card = /** @type {solitario.game.Card} */ (evnt.target);
-  var tableu = /** @type {solitario.game.Tableu} */ (card.pile);
-  var cardGroup = tableu.getGroupFrom(card);
+  // Calculate droppable regions.
+  window.console.debug(evnt);
 };
 
 
@@ -267,7 +297,7 @@ solitario.game.Game.prototype.start = function() {
   this.shuffleCards_();
 
   // Sets up listeners for cards' events.
-  for (var i = 0; i < this.cards_.length; i++) {
+  for (var i = this.cards_.length - 1; i >= 0; i--) {
     goog.events.listen(this.cards_[i],
         solitario.game.constants.Events.DRAG_START, this.onCardDragStart_,
         false, this);
@@ -277,9 +307,19 @@ solitario.game.Game.prototype.start = function() {
     goog.events.listen(this.cards_[i],
         solitario.game.constants.Events.DRAG_END, this.onCardDragEnd_,
         false, this);
-    goog.events.listen(this.cards_[i],
+  }
+
+  // Sets up listeners for card group events.
+  for (var i = this.tableux_.length - 1; i >= 0; i--) {
+    goog.events.listen(this.tableux_[i],
         solitario.game.constants.Events.GROUP_DRAG_START,
         this.onGroupDragStart_, false, this);
+    goog.events.listen(this.tableux_[i],
+        solitario.game.constants.Events.GROUP_DRAG_MOVE,
+        this.onGroupDragMove_, false, this);
+    goog.events.listen(this.tableux_[i],
+        solitario.game.constants.Events.GROUP_DRAG_END,
+        this.onGroupDragEnd_, false, this);
   }
 
   // Sets cards for tableux.
