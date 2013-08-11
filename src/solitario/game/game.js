@@ -110,7 +110,7 @@ solitario.game.Game.prototype.init_ = function() {
   // Get the card deck.
   var cardElements = goog.dom.getElementsByClass(
       solitario.game.Game.ClassNames_.CARD);
-  for (var i = 0; i < cardElements.length; i++) {
+  for (var i = cardElements.length - 1; i >= 0; i--) {
     this.cards_.push(new solitario.game.Card(cardElements[i]));
   }
 
@@ -123,14 +123,14 @@ solitario.game.Game.prototype.init_ = function() {
   // Get foundations.
   var foundationElements = goog.dom.getElementsByClass(
       solitario.game.Game.ClassNames_.FOUNDATION);
-  for (var i = 0; i < foundationElements.length; i++) {
+  for (var i = foundationElements.length - 1; i >= 0; i--) {
     this.foundations_[i] = new solitario.game.Foundation(foundationElements[i]);
   }
 
   // Get tableux.
   var tableuElements = goog.dom.getElementsByClass(
       solitario.game.Game.ClassNames_.TABLEU);
-  for (var i = 0; i < tableuElements.length; i++) {
+  for (var i = tableuElements.length - 1; i >= 0; i--) {
     this.tableux_[i] = new solitario.game.Tableu(tableuElements[i]);
   }
 };
@@ -198,7 +198,7 @@ solitario.game.Game.prototype.onCardDragMove_ = function(evnt) {
   var piles = goog.array.concat(this.foundations_, this.tableux_);
 
   // Find drop target pile.
-  for (var i = 0; i < piles.length; i++) {
+  for (var i = piles.length - 1; i >= 0; i--) {
     intersection = goog.math.Rect.intersection(cardRect,
         piles[i].getDroppableRegion());
     if (intersection && (!this.dropPile_ ||
@@ -223,7 +223,7 @@ solitario.game.Game.prototype.onCardDragMove_ = function(evnt) {
 solitario.game.Game.prototype.onCardDragStart_ = function(evnt) {
   // Calculate droppable regions for all the piles.
   var piles = goog.array.concat(this.foundations_, this.tableux_);
-  for (var i = 0; i < piles.length; i++) {
+  for (var i = piles.length - 1; i >= 0; i--) {
     piles[i].calculateDroppableRegion();
   }
   var card = /** @type {game.solitario.Card} */ (evnt.target);
@@ -242,8 +242,8 @@ solitario.game.Game.prototype.onGroupDragEnd_ = function(evnt) {
 
   // A drop target was found, move the group here.
   if (this.dropPile_ && this.dropPile_ != group.tableu) {
-    // this.dropPile_.hideDroppableIndicator();
-    // card.detachFromPile();
+    this.dropPile_.hideDroppableIndicator();
+    group.detachFromPile();
     // this.dropPile_.push(card);
     // this.dropPile_ = null;
   } else {
@@ -271,7 +271,7 @@ solitario.game.Game.prototype.onGroupDragMove_ = function(evnt) {
   var largestAreaIntersected = 0;
 
   // Find drop target pile.
-  for (var i = 0; i < this.tableux_.length; i++) {
+  for (var i = this.tableux_.length - 1; i >= 0; i--) {
     intersection = goog.math.Rect.intersection(cardGroupRect,
         this.tableux_[i].getDroppableRegion());
     if (intersection && (!this.dropPile_ ||
@@ -295,7 +295,7 @@ solitario.game.Game.prototype.onGroupDragMove_ = function(evnt) {
  */
 solitario.game.Game.prototype.onGroupDragStart_ = function(evnt) {
   // Calculate droppable regions for all the tableux.
-  for (var i = 0; i < this.tableux_.length; i++) {
+  for (var i = this.tableux_.length - 1; i >= 0; i--) {
     this.tableux_[i].calculateDroppableRegion();
   }
 };

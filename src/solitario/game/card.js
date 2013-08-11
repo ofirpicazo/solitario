@@ -429,7 +429,7 @@ solitario.game.Card.prototype.removeEventListenersByType = function(type) {
   if (!this.eventListenerKeys_[type]) {
     return;
   }
-  for (var i = 0; i < this.eventListenerKeys_[type].length; i++) {
+  for (var i = this.eventListenerKeys_[type].length - 1; i >= 0; i--) {
     goog.events.unlistenByKey(this.eventListenerKeys_[type][i]);
   }
 };

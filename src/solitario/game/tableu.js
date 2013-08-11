@@ -138,9 +138,8 @@ solitario.game.Tableu.prototype.pop = function() {
   // Reveal the new top card if there is one.
   var topCard = this.getTopCard();
   if (topCard) {
-    topCard.reveal();
-    // If the previous card was a grouper, disable it.
     topCard.disableGrouper();
+    topCard.reveal();
   }
   return poppedCard;
 };
