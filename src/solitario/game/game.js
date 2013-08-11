@@ -244,10 +244,10 @@ solitario.game.Game.prototype.onGroupDragEnd_ = function(evnt) {
   if (this.dropPile_ && this.dropPile_ != group.tableu) {
     this.dropPile_.hideDroppableIndicator();
     group.detachFromPile();
-    // this.dropPile_.push(card);
-    // this.dropPile_ = null;
+    this.dropPile_.pushGroup(group);
+    this.dropPile_ = null;
   } else {
-    group.returnToTableu();
+    group.returnToPile();
   }
 };
 

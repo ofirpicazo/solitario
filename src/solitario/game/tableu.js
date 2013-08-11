@@ -180,3 +180,15 @@ solitario.game.Tableu.prototype.push = function(card) {
   goog.events.listen(card, solitario.game.constants.Events.GROUP_DRAG_START,
       this.onGroupDragStart_, false, this);
 };
+
+
+/**
+ * Adds a CardGroup to the tableu keeping ordering.
+ *
+ * @param {solitario.game.CardGroup} group Card group to be added to the tableu.
+ */
+solitario.game.Tableu.prototype.pushGroup = function(group) {
+  for (var i = 0; i < group.cards.length; i++) {
+    this.push(group.cards[i]);
+  }
+};

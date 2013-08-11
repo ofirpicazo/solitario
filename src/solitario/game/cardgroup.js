@@ -55,6 +55,12 @@ solitario.game.CardGroup = function(group) {
    */
   this.size_ = this.getAbsoluteSize_();
 
+  /**
+   * Tableu that this card group belongs to.
+   * @type {solitario.game.Tableu}
+   */
+  this.tableu = this.topCard_.pile;
+
   this.initialize_();
 };
 goog.inherits(solitario.game.CardGroup, goog.events.EventTarget);
@@ -201,7 +207,7 @@ solitario.game.CardGroup.prototype.getRect = function() {
 /**
  * Return all the cards in the group to their original position in the tableu.
  */
-solitario.game.CardGroup.prototype.returnToTableu = function() {
+solitario.game.CardGroup.prototype.returnToPile = function() {
   for (var i = this.cards.length - 1; i >= 0; i--) {
     this.cards[i].returnToPile();
   }

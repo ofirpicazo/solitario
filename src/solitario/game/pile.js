@@ -182,8 +182,6 @@ solitario.game.Pile.prototype.pop = function() {
 solitario.game.Pile.prototype.push = function(card) {
   this.pile.push(card);
   card.pile = this;
-  // Set the card on top of everything during the change of position.
-  card.setZIndex(solitario.game.constants.MAX_ZINDEX);
   // Position card at 0,0 relative to the pile.
   var position = this.getPosition();
   card.setPosition(position);
