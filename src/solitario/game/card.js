@@ -30,6 +30,13 @@ solitario.game.Card = function(el) {
   goog.base(this);
 
   /**
+   * Cache of the absolute position of this.element_ in order to avoid repaints.
+   * @type {?goog.math.Coordinate}
+   * @private
+   */
+  this.absolutePosition_ = null;
+
+  /**
    * DOM element with the card contents.
    * @type {Element}
    * @private
@@ -308,7 +315,10 @@ solitario.game.Card.prototype.enableGrouper = function() {
  * @return {goog.math.Coordinate} The absolute position of the card.
  */
 solitario.game.Card.prototype.getAbsolutePosition = function() {
-  return goog.style.getPosition(this.element_);
+  if (!this.absolutePosition_) {
+    this.absolutePosition_ = goog.style.getPosition(this.element_);
+  }
+  return this.absolutePosition_;
 };
 
 
@@ -466,6 +476,7 @@ solitario.game.Card.prototype.reveal = function() {
  * @param {goog.math.Coordinate} position Absolute position to set the card to.
  */
 solitario.game.Card.prototype.setAbsolutePosition = function(position) {
+  this.absolutePosition_ = position;
   goog.style.setPosition(this.element_, position.x, position.y);
 };
 
@@ -476,6 +487,7 @@ solitario.game.Card.prototype.setAbsolutePosition = function(position) {
  * @param {goog.math.Coordinate} position Relative position to set the card to.
  */
 solitario.game.Card.prototype.setPosition = function(position) {
+  this.absolutePosition_ = null;
   var leftEms = solitario.game.utils.getEmStyleValue(position.x);
   var topEms = solitario.game.utils.getEmStyleValue(position.y);
   goog.style.setPosition(this.element_, leftEms, topEms);
