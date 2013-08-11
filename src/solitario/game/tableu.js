@@ -191,6 +191,6 @@ solitario.game.Tableu.prototype.push = function(card) {
  */
 solitario.game.Tableu.prototype.pushGroup = function(group) {
   for (var i = 0; i < group.cards.length; i++) {
-    this.push(group.cards[i]);
+    window.setTimeout(goog.bind(this.push, this), i * 20, group.cards[i]);
   }
 };
