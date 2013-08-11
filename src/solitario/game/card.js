@@ -461,16 +461,6 @@ solitario.game.Card.prototype.reveal = function() {
 
 
 /**
- * Modifies the z-index of this card.
- *
- * @param {number} zIndex The z-index as an integer.
- */
-solitario.game.Card.prototype.setZIndex = function(zIndex) {
-  this.element_.style.zIndex = zIndex + '';  // explicit string cast.
-};
-
-
-/**
  * Sets the absolute position of the card in the viewport, in px.
  *
  * @param {goog.math.Coordinate} position Absolute position to set the card to.
@@ -489,6 +479,16 @@ solitario.game.Card.prototype.setPosition = function(position) {
   var leftEms = solitario.game.utils.getEmStyleValue(position.x);
   var topEms = solitario.game.utils.getEmStyleValue(position.y);
   goog.style.setPosition(this.element_, leftEms, topEms);
+};
+
+
+/**
+ * Modifies the z-index of this card.
+ *
+ * @param {number} zIndex The z-index as an integer.
+ */
+solitario.game.Card.prototype.setZIndex = function(zIndex) {
+  this.element_.style.zIndex = zIndex + '';  // explicit string cast.
 };
 
 

@@ -69,6 +69,9 @@ solitario.game.CardGroup.prototype.initialize_ = function() {
   for (var i = 0; i < this.group_.length; i++) {
     this.group_[i].disableAnimation();
     this.group_[i].showDraggingIndicator();
+    // Send the whole group to the top keeping relative positions.
+    this.group_[i].setZIndex(solitario.game.constants.MAX_ZINDEX -
+        this.group_.length + i);
   }
 
   this.topCard_.addEventListener(goog.events.EventType.MOUSEUP,
