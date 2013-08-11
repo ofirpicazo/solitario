@@ -137,10 +137,7 @@ solitario.game.CardGroup.prototype.mouseUp_ = function(evnt) {
  */
 solitario.game.CardGroup.prototype.setPosition_ = function(position) {
   this.topCard_.setPosition(position);
-  var cardPosition; /** @type {goog.math.Coordinate} */
   for (var i = 1; i < this.group_.length; i++) {
-    // cardPosition = position.clone();
-    // cardPosition.y += (i * solitario.game.constants.INTERCARD_DISTANCE_REVEALED);
     position.y += solitario.game.constants.TABLEU_INTERCARD_DISTANCE_REVEALED;
     this.group_[i].setPosition(position);
   }
