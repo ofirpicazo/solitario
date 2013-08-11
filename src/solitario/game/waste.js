@@ -59,14 +59,7 @@ solitario.game.Waste.prototype.pop = function() {
  * @override
  */
 solitario.game.Waste.prototype.push = function(card) {
-  // Remove dragging for previous top card.
-  var topCard = this.getTopCard();
-  if (topCard) {
-    topCard.isDraggable = false;
-  }
-
   solitario.game.Waste.superClass_.push.call(this, card);
   // Reveal all cards added to the waste.
   card.reveal();
-  card.isDraggable = true;
 };
