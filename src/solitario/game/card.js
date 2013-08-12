@@ -15,6 +15,7 @@ goog.require('goog.events.EventTarget');
 goog.require('goog.style');
 goog.require('solitario.game.constants');
 goog.require('solitario.game.utils');
+goog.require('solitario.pubsub');
 
 
 
@@ -118,6 +119,10 @@ solitario.game.Card = function(el) {
     // Bubble up the transitionend event on this.element_.
     goog.events.dispatchEvent(this, evnt);
   });
+
+  // Subscribe to PubSub messages.
+  solitario.pubsub.subscribe(solitario.pubsub.Topics.RESIZE_BOARD,
+      this.invalidatePositionCache_, this);
 };
 goog.inherits(solitario.game.Card, goog.events.EventTarget);
 
@@ -160,6 +165,16 @@ solitario.game.Card.Suits_ = {
   DIAMOND: 'diamond',
   HEART: 'heart',
   SPADE: 'spade'
+};
+
+
+/**
+ * Resets the cache created for the absolute position of this card.
+ *
+ * @private
+ */
+solitario.game.Card.prototype.invalidatePositionCache_ = function() {
+  this.absolutePosition_ = null;
 };
 
 

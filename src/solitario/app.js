@@ -14,6 +14,7 @@ goog.require('goog.dom.BufferedViewportSizeMonitor');
 goog.require('goog.dom.ViewportSizeMonitor');
 goog.require('goog.events');
 goog.require('solitario.game.Game');
+goog.require('solitario.pubsub');
 
 
 /**
@@ -70,6 +71,9 @@ solitario.App.prototype.resizeBoard_ = function(e) {
   var heightPixelSize = (viewportSize.height / 60).toFixed(1);
   var pixelSize = Math.min(widthPixelSize, heightPixelSize) + 'px';
   goog.dom.getDocument().body.style.fontSize = pixelSize;
+
+  // Notify subscribers that the board was resized.
+  solitario.pubsub.publish(solitario.pubsub.Topics.RESIZE_BOARD);
 };
 
 
