@@ -171,10 +171,11 @@ solitario.game.Game.prototype.onCardDragEnd_ = function(evnt) {
     this.dropPile_.hideDroppableIndicator();
     card.detachFromPile();
     this.dropPile_.push(card);
-    this.dropPile_ = null;
   } else {
     card.returnToPile();
   }
+
+  this.dropPile_ = null;
 };
 
 
@@ -245,10 +246,11 @@ solitario.game.Game.prototype.onGroupDragEnd_ = function(evnt) {
     this.dropPile_.hideDroppableIndicator();
     group.detachFromPile();
     this.dropPile_.pushGroup(group);
-    this.dropPile_ = null;
   } else {
     group.returnToPile();
   }
+
+  this.dropPile_ = null;
 };
 
 

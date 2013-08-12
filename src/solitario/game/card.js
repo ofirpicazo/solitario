@@ -196,9 +196,6 @@ solitario.game.Card.prototype.mouseDown_ = function(evnt) {
   goog.events.listen(goog.dom.getDocument(), goog.events.EventType.MOUSEOUT,
                      this.mouseMove_, false, this);
 
-  // Set the card above everything else.
-  this.setZIndex(solitario.game.constants.MAX_ZINDEX);
-
   var dragStartEvent = new goog.events.Event(
       solitario.game.constants.Events.DRAG_START, this);
   goog.events.dispatchEvent(this, dragStartEvent);
@@ -213,6 +210,9 @@ solitario.game.Card.prototype.mouseDown_ = function(evnt) {
  * @private
  */
 solitario.game.Card.prototype.mouseMove_ = function(evnt) {
+  // Set the card above everything else.
+  this.setZIndex(solitario.game.constants.MAX_ZINDEX);
+
   var x = evnt.clientX - this.mouseDownPosition_.x;
   var y = evnt.clientY - this.mouseDownPosition_.y;
   var newLocation = new goog.math.Coordinate(
