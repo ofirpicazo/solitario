@@ -137,14 +137,11 @@ solitario.game.Game.prototype.init_ = function() {
 
 
 /**
- * Event handler triggered when a card must be moved from the stock to the
- * waste, it can be due to a click on the stock or when a card is popped from
- * the waste..
+ * Move the top card from the stock to the waste.
  *
- * @param {goog.events.Event} evnt The event object passed.
  * @private
  */
-solitario.game.Game.prototype.moveCardFromStockToWaste_ = function(evnt) {
+solitario.game.Game.prototype.moveCardFromStockToWaste_ = function() {
   // Remove card from stock.
   var card = this.stock_.pop();
   if (card) {
@@ -304,6 +301,30 @@ solitario.game.Game.prototype.onGroupDragStart_ = function(evnt) {
 
 
 /**
+ * Event handler triggered when the user takes a card from the stock.
+ *
+ * @param {goog.events.Event} evnt The event object passed.
+ * @private
+ */
+solitario.game.Game.prototype.onStockTaken_ = function(evnt) {
+  this.moveCardFromStockToWaste_();
+};
+
+
+/**
+ * Event handler triggered when the user takes a card from the waste.
+ *
+ * @param {goog.events.Event} evnt The event object passed.
+ * @private
+ */
+solitario.game.Game.prototype.onWasteTaken_ = function(evnt) {
+  if (this.waste_.isEmpty()) {
+    this.moveCardFromStockToWaste_();
+  }
+};
+
+
+/**
  * Shuffles the cards in random order.
  *
  * @private
@@ -382,7 +403,7 @@ solitario.game.Game.prototype.start = function() {
 
   // Sets up listeners for game events.
   goog.events.listen(this.stock_, solitario.game.constants.Events.STOCK_TAKEN,
-                     this.moveCardFromStockToWaste_, false, this);
+                     this.onStockTaken_, false, this);
   goog.events.listen(this.waste_, solitario.game.constants.Events.WASTE_TAKEN,
-                     this.moveCardFromStockToWaste_, false, this);
+                     this.onWasteTaken_, false, this);
 };

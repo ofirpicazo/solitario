@@ -152,14 +152,24 @@ solitario.game.Pile.prototype.getZIndex = function() {
 solitario.game.Pile.prototype.hideDroppableIndicator = function() {
   // If the pile has cards, remove indicator from every card, otherwise use
   // the pile itself.
-  if (this.pile.length) {
+  if (this.isEmpty()) {
+    goog.dom.classes.remove(this.element_,
+        solitario.game.Pile.ClassNames_.DROP_TARGET);
+  } else {
     for (var i = this.pile.length - 1; i >= 0; i--) {
       this.pile[i].hideDroppableIndicator();
     }
-  } else {
-    goog.dom.classes.remove(this.element_,
-        solitario.game.Pile.ClassNames_.DROP_TARGET);
   }
+};
+
+
+/**
+ * Returns whether the pile has cards or not.
+ *
+ * @return {boolean} True if the pile has no cards, false if it does.
+ */
+solitario.game.Pile.prototype.isEmpty = function() {
+  return (this.pile.length > 0) ? false : true;
 };
 
 
@@ -206,12 +216,12 @@ solitario.game.Pile.prototype.push = function(card) {
 solitario.game.Pile.prototype.showDroppableIndicator = function() {
   // If the pile has cards, add the indicator to every card, otherwise use
   // the pile itself.
-  if (this.pile.length) {
+  if (this.isEmpty()) {
+    goog.dom.classes.add(this.element_,
+        solitario.game.Pile.ClassNames_.DROP_TARGET);
+  } else {
     for (var i = this.pile.length - 1; i >= 0; i--) {
       this.pile[i].showDroppableIndicator();
     }
-  } else {
-    goog.dom.classes.add(this.element_,
-        solitario.game.Pile.ClassNames_.DROP_TARGET);
   }
 };
