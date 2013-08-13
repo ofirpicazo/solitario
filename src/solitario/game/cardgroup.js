@@ -109,9 +109,9 @@ solitario.game.CardGroup.prototype.initialize_ = function() {
 
   this.topCard_.addEventListener(goog.events.EventType.MOUSEUP,
       goog.bind(this.mouseUp_, this));
+  goog.events.listen(goog.dom.getDocument(), goog.events.EventType.MOUSEUP,
+                     this.mouseUp_, false, this);
   goog.events.listen(goog.dom.getDocument(), goog.events.EventType.MOUSEMOVE,
-                     this.mouseMove_, false, this);
-  goog.events.listen(goog.dom.getDocument(), goog.events.EventType.MOUSEOUT,
                      this.mouseMove_, false, this);
 };
 
@@ -145,11 +145,11 @@ solitario.game.CardGroup.prototype.mouseMove_ = function(evnt) {
  * @private
  */
 solitario.game.CardGroup.prototype.mouseUp_ = function(evnt) {
+  this.topCard_.removeEventListenersByType(goog.events.EventType.MOUSEUP);
+  goog.events.unlisten(goog.dom.getDocument(), goog.events.EventType.MOUSEUP,
+                       this.mouseUp_, false, this);
   goog.events.unlisten(goog.dom.getDocument(), goog.events.EventType.MOUSEMOVE,
                        this.mouseMove_, false, this);
-  goog.events.unlisten(goog.dom.getDocument(), goog.events.EventType.MOUSEOUT,
-                       this.mouseMove_, false, this);
-  this.topCard_.removeEventListenersByType(goog.events.EventType.MOUSEUP);
 
   this.mouseDownPosition_ = null;
 
