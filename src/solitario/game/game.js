@@ -145,6 +145,8 @@ solitario.game.Game.prototype.moveCardFromStockToWaste_ = function() {
   // Remove card from stock.
   var card = this.stock_.pop();
   if (card) {
+    // Set the card above everything else.
+    card.setZIndex(solitario.game.constants.MAX_ZINDEX);
     // Add card to waste.
     this.waste_.push(card);
   }
