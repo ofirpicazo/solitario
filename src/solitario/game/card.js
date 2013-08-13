@@ -190,10 +190,11 @@ solitario.game.Card.prototype.mouseDown_ = function(evnt) {
 
   this.disableAnimation();
   this.showDraggingIndicator();
+
   this.addEventListener(goog.events.EventType.MOUSEUP, this.mouseUp_);
+  goog.events.listen(goog.dom.getDocument(), goog.events.EventType.MOUSEUP,
+                     this.mouseUp_, false, this);
   goog.events.listen(goog.dom.getDocument(), goog.events.EventType.MOUSEMOVE,
-                     this.mouseMove_, false, this);
-  goog.events.listen(goog.dom.getDocument(), goog.events.EventType.MOUSEOUT,
                      this.mouseMove_, false, this);
 
   var dragStartEvent = new goog.events.Event(
@@ -234,11 +235,12 @@ solitario.game.Card.prototype.mouseMove_ = function(evnt) {
  * @private
  */
 solitario.game.Card.prototype.mouseUp_ = function(evnt) {
+  this.removeEventListenersByType(goog.events.EventType.MOUSEUP);
+  goog.events.unlisten(goog.dom.getDocument(), goog.events.EventType.MOUSEUP,
+                       this.mouseUp_, false, this);
   goog.events.unlisten(goog.dom.getDocument(), goog.events.EventType.MOUSEMOVE,
                        this.mouseMove_, false, this);
-  goog.events.unlisten(goog.dom.getDocument(), goog.events.EventType.MOUSEOUT,
-                       this.mouseMove_, false, this);
-  this.removeEventListenersByType(goog.events.EventType.MOUSEUP);
+
   goog.dom.classes.remove(this.element_,
       solitario.game.constants.ClassNames.DRAGGING,
       solitario.game.constants.ClassNames.NO_ANIMATION);
