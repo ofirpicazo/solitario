@@ -21,6 +21,15 @@ solitario.game.constants.Card = {
 
 
 /**
+ * Duration of the delay between cards when dropping them as a group. The value
+ * is in milliseconds.
+ * @type {number}
+ * @const
+ */
+solitario.game.constants.CARD_GROUP_DROP_ANIMATION_DURATION = 20;
+
+
+/**
  * Class names used in the various object.
  * @enum {string}
  * @const

@@ -209,6 +209,7 @@ solitario.game.CardGroup.prototype.getRect = function() {
  */
 solitario.game.CardGroup.prototype.returnToPile = function() {
   for (var i = this.cards.length - 1; i >= 0; i--) {
-    this.cards[i].returnToPile();
+    window.setTimeout(goog.bind(this.cards[i].returnToPile, this.cards[i]),
+        i * solitario.game.constants.CARD_GROUP_DROP_ANIMATION_DURATION);
   }
 };
