@@ -197,6 +197,10 @@ solitario.game.Game.prototype.onCardDragMove_ = function(evnt) {
 
   // Find drop target pile.
   for (var i = piles.length - 1; i >= 0; i--) {
+    // Skip the source pile.
+    if (card.pile == piles[i])
+      continue;
+
     intersection = goog.math.Rect.intersection(cardRect,
         piles[i].getDroppableRegion());
     if (intersection && (!this.dropPile_ ||
@@ -271,6 +275,10 @@ solitario.game.Game.prototype.onGroupDragMove_ = function(evnt) {
 
   // Find drop target pile.
   for (var i = this.tableux_.length - 1; i >= 0; i--) {
+    // Skip the source pile.
+    if (cardGroup.tableu == this.tableux_[i])
+      continue;
+
     intersection = goog.math.Rect.intersection(cardGroupRect,
         this.tableux_[i].getDroppableRegion());
     if (intersection && (!this.dropPile_ ||
