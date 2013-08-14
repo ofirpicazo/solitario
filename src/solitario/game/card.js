@@ -234,7 +234,7 @@ solitario.game.Card.prototype.mouseMove_ = function(evnt) {
   var newLocation = new goog.math.Coordinate(
       (x < 0) ? 0 : x,
       (y < 0) ? 0 : y);
-  this.setPosition(solitario.game.utils.toRelativeUnits(newLocation));
+  this.setAbsolutePosition(newLocation);
 
   var dragMoveEvent = new goog.events.Event(
       solitario.game.constants.Events.DRAG_MOVE, this);

@@ -129,7 +129,7 @@ solitario.game.CardGroup.prototype.mouseMove_ = function(evnt) {
   var newLocation = new goog.math.Coordinate(
       (x < 0) ? 0 : x,
       (y < 0) ? 0 : y);
-  this.setPosition_(solitario.game.utils.toRelativeUnits(newLocation));
+  this.setAbsolutePosition_(newLocation);
 
   var dragMoveEvent = new goog.events.Event(
       solitario.game.constants.Events.GROUP_DRAG_MOVE, this);
@@ -168,14 +168,17 @@ solitario.game.CardGroup.prototype.mouseUp_ = function(evnt) {
  * Moves the entire group to a different position, keeping the cards on their
  * relative positions.
  *
- * @param {goog.math.Coordinate} position Relative position to set the group to.
+ * @param {goog.math.Coordinate} position Absolute position to set the group to.
  * @private
  */
-solitario.game.CardGroup.prototype.setPosition_ = function(position) {
-  this.topCard_.setPosition(position);
+solitario.game.CardGroup.prototype.setAbsolutePosition_ = function(position) {
+  var absoluteIntercardDistance = solitario.game.utils.toAbsoluteUnits(
+      solitario.game.constants.TABLEU_INTERCARD_DISTANCE_REVEALED);
+
+  this.topCard_.setAbsolutePosition(position);
   for (var i = 1; i < this.cards.length; i++) {
-    position.y += solitario.game.constants.TABLEU_INTERCARD_DISTANCE_REVEALED;
-    this.cards[i].setPosition(position);
+    position.y += absoluteIntercardDistance;
+    this.cards[i].setAbsolutePosition(position);
   }
 };
 
