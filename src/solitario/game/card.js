@@ -145,8 +145,7 @@ solitario.game.Card.ClassNames_ = {
   DROP_TARGET: 'droptarget',
   FANNED: 'fanned',
   GROUPER: 'grouper',
-  REVEALED: 'revealed',
-  SLANTED: 'slanted'
+  REVEALED: 'revealed'
 };
 
 
@@ -580,21 +579,4 @@ solitario.game.Card.prototype.showDroppableIndicator = function() {
 solitario.game.Card.prototype.showFannedShadow = function() {
   goog.dom.classes.add(this.element_,
       solitario.game.Card.ClassNames_.FANNED);
-};
-
-
-/**
- * Rotates the card slightly to the right.
- */
-solitario.game.Card.prototype.slant = function() {
-  goog.dom.classes.add(this.element_, solitario.game.Card.ClassNames_.SLANTED);
-};
-
-
-/**
- * Removes any rotation on the card.
- */
-solitario.game.Card.prototype.straighten = function() {
-  goog.dom.classes.remove(this.element_,
-      solitario.game.Card.ClassNames_.SLANTED);
 };

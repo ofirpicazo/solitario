@@ -28,11 +28,6 @@ $card-width: 10em;
   width: $card-width;
   z-index: 10;
 
-  &.slanted {
-    @include rotate(3deg);
-    @include transform-origin(50%, 50%);
-  }
-
   &.revealed .flipper {
     @include rotateY(180deg);
   }
