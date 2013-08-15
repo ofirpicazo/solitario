@@ -60,6 +60,14 @@ solitario.game.Card = function(el) {
   this.mouseDownPosition_ = null;
 
   /**
+   * Flag to determine whether the card was dragged between a mouseDown and a
+   * mouseUp event.
+   * @type {boolean}
+   * @private
+   */
+  this.wasDragged_ = false;
+
+  /**
    * Unique identifier for this card.
    * @type {string}
    */
@@ -203,6 +211,9 @@ solitario.game.Card.prototype.mouseDown_ = function(evnt) {
     return;
   }
 
+  this.wasDragged_ = false;
+  // Set the card above everything else.
+  this.setZIndex(solitario.game.constants.MAX_ZINDEX);
   this.disableAnimation();
   this.showDraggingIndicator();
 
@@ -226,9 +237,7 @@ solitario.game.Card.prototype.mouseDown_ = function(evnt) {
  * @private
  */
 solitario.game.Card.prototype.mouseMove_ = function(evnt) {
-  // Set the card above everything else.
-  this.setZIndex(solitario.game.constants.MAX_ZINDEX);
-
+  this.wasDragged_ = true;
   var x = evnt.clientX - this.mouseDownPosition_.x;
   var y = evnt.clientY - this.mouseDownPosition_.y;
   var newLocation = new goog.math.Coordinate(
@@ -250,6 +259,13 @@ solitario.game.Card.prototype.mouseMove_ = function(evnt) {
  * @private
  */
 solitario.game.Card.prototype.mouseUp_ = function(evnt) {
+  // Fixes the zIndex when a card is clicked but not dragged, we need to do this
+  // in order not to set the zIndex on every mouseMove and avoid repaints.
+  if (!this.wasDragged_) {
+    this.restoreZIndex();
+  }
+
+  this.wasDragged_ = false;
   this.removeEventListenersByType(goog.events.EventType.MOUSEUP);
   goog.events.unlisten(goog.dom.getDocument(), goog.events.EventType.MOUSEUP,
                        this.mouseUp_, false, this);
@@ -463,6 +479,16 @@ solitario.game.Card.prototype.removeEventListenersByType = function(type) {
 
 
 /**
+ * Restores the zIndex defined in the pile for this card.
+ */
+solitario.game.Card.prototype.restoreZIndex = function() {
+  if (this.zIndexInPile) {
+    this.setZIndex(this.zIndexInPile);
+  }
+};
+
+
+/**
  * If the card belongs to a pile, return to its original position, otherwise
  * do nothing.
  */
@@ -470,17 +496,15 @@ solitario.game.Card.prototype.returnToPile = function() {
   if (this.pile) {
     this.pile.hideDroppableIndicator();
   }
+
   if (this.positionInPile) {
     this.setPosition(this.positionInPile);
   }
-  if (this.zIndexInPile) {
-    // Trigger final z-index update at end of position change to allow time for
-    // animations to finish.
-    goog.events.listenOnce(this.element_, goog.events.EventType.TRANSITIONEND,
-        function(evnt) {
-          this.setZIndex(this.zIndexInPile);
-        }, false, this);
-  }
+
+  // Trigger final z-index update at end of position change to allow time for
+  // animations to finish.
+  goog.events.listenOnce(this.element_, goog.events.EventType.TRANSITIONEND,
+      this.restoreZIndex, false, this);
 };
 
 

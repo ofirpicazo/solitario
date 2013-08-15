@@ -56,6 +56,14 @@ solitario.game.CardGroup = function(group) {
   this.size_ = this.getAbsoluteSize_();
 
   /**
+   * Flag to determine whether the group was dragged between a mouseDown and a
+   * mouseUp event.
+   * @type {boolean}
+   * @private
+   */
+  this.wasDragged_ = false;
+
+  /**
    * Tableu that this card group belongs to.
    * @type {solitario.game.Tableu}
    */
@@ -124,6 +132,7 @@ solitario.game.CardGroup.prototype.initialize_ = function() {
  * @private
  */
 solitario.game.CardGroup.prototype.mouseMove_ = function(evnt) {
+  this.wasDragged_ = true;
   var x = evnt.clientX - this.mouseDownPosition_.x;
   var y = evnt.clientY - this.mouseDownPosition_.y;
   var newLocation = new goog.math.Coordinate(
@@ -154,6 +163,11 @@ solitario.game.CardGroup.prototype.mouseUp_ = function(evnt) {
   this.mouseDownPosition_ = null;
 
   for (var i = this.cards.length - 1; i >= 0; i--) {
+    // Fixes the zIndex when a card is clicked but not dragged, we need to do
+    // this in order not to set the zIndex on every mouseMove and avoid repaints
+    if (!this.wasDragged_) {
+      this.cards[i].restoreZIndex();
+    }
     this.cards[i].enableAnimation();
     this.cards[i].hideDraggingIndicator();
   }
