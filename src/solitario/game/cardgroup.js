@@ -138,6 +138,17 @@ solitario.game.CardGroup.prototype.mouseMove_ = function(evnt) {
   var newLocation = new goog.math.Coordinate(
       (x < 0) ? 0 : x,
       (y < 0) ? 0 : y);
+
+  // Slant the card towards the horizontal direction of the drag.
+  var previousLocation = this.topCard_.getAbsolutePosition();
+  if (!goog.math.nearlyEquals(newLocation.x, previousLocation.x, 1)) {
+    if (newLocation.x > previousLocation.x) {
+      this.slantRight_();
+    } else {
+      this.slantLeft_();
+    }
+  }
+
   this.setAbsolutePosition_(newLocation);
 
   var dragMoveEvent = new goog.events.Event(
@@ -168,6 +179,7 @@ solitario.game.CardGroup.prototype.mouseUp_ = function(evnt) {
     if (!this.wasDragged_) {
       this.cards[i].restoreZIndex();
     }
+    this.cards[i].straighten();
     this.cards[i].enableAnimation();
     this.cards[i].hideDraggingIndicator();
   }
@@ -193,6 +205,28 @@ solitario.game.CardGroup.prototype.setAbsolutePosition_ = function(position) {
   for (var i = 1; i < this.cards.length; i++) {
     position.y += absoluteIntercardDistance;
     this.cards[i].setAbsolutePosition(position);
+  }
+};
+
+
+/**
+ * Slants all the cards in the group to the left.
+ * @private
+ */
+solitario.game.CardGroup.prototype.slantLeft_ = function() {
+  for (var i = this.cards.length - 1; i >= 0; i--) {
+    this.cards[i].slantLeft();
+  }
+};
+
+
+/**
+ * Slants all the cards in the group to the right.
+ * @private
+ */
+solitario.game.CardGroup.prototype.slantRight_ = function() {
+  for (var i = this.cards.length - 1; i >= 0; i--) {
+    this.cards[i].slantRight();
   }
 };
 
