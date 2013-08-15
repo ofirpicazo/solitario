@@ -503,8 +503,9 @@ solitario.game.Card.prototype.reveal = function() {
  * @param {goog.math.Coordinate} position Absolute position to set the card to.
  */
 solitario.game.Card.prototype.setAbsolutePosition = function(position) {
-  this.absolutePosition_ = position;
-  goog.style.setPosition(this.element_, position.x, position.y);
+  var relativePosition = solitario.game.utils.toRelativeUnits(position);
+  // Position must be set in relative units (ems).
+  this.setPosition(relativePosition);
 };
 
 
@@ -514,7 +515,7 @@ solitario.game.Card.prototype.setAbsolutePosition = function(position) {
  * @param {goog.math.Coordinate} position Relative position to set the card to.
  */
 solitario.game.Card.prototype.setPosition = function(position) {
-  this.absolutePosition_ = null;
+  this.absolutePosition_ = solitario.game.utils.toAbsoluteUnits(position);
   var leftEms = solitario.game.utils.getEmStyleValue(position.x);
   var topEms = solitario.game.utils.getEmStyleValue(position.y);
   goog.style.setPosition(this.element_, leftEms, topEms);
