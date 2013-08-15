@@ -28,6 +28,13 @@ solitario.game.Pile = function(el) {
   goog.base(this);
 
   /**
+   * Cache of the absolute position of this.element_ in order to avoid repaints.
+   * @type {?goog.math.Coordinate}
+   * @private
+   */
+  this.absolutePosition_ = null;
+
+  /**
    * Rectangular region of the pile where cards can be dropped on to.
    * This value is cached, because calculating it is expensive as it causes
    * a repaint.
@@ -78,7 +85,10 @@ solitario.game.Pile.INTERCARD_ZINDEX = 10;
  * @private
  */
 solitario.game.Pile.prototype.getAbsolutePosition_ = function() {
-  return goog.style.getPosition(this.element_);
+  if (!this.absolutePosition_) {
+    this.absolutePosition_ = goog.style.getPosition(this.element_);
+  }
+  return this.absolutePosition_;
 };
 
 
@@ -86,19 +96,27 @@ solitario.game.Pile.prototype.getAbsolutePosition_ = function() {
  * Calculates the region where cards can be dropped on to this pile.
  */
 solitario.game.Pile.prototype.calculateDroppableRegion = function() {
-  var topCard = this.getTopCard();
-  // If the pile has cards, use the region of the top card, otherwise calculate
-  // the region of the empty pile.
-  if (topCard) {
-    this.droppableRegion_ = topCard.getRect();
-  } else {
-    var position = this.getAbsolutePosition_();
-    var size = solitario.game.utils.toAbsoluteUnits(
-        solitario.game.constants.Card.WIDTH,
-        solitario.game.constants.Card.HEIGHT);
-    this.droppableRegion_ = new goog.math.Rect(position.x, position.y, size.x,
-        size.y);
-  }
+  var position = this.getAbsolutePosition_();
+  var size = this.getAbsoluteSize();
+
+  this.droppableRegion_ = new goog.math.Rect(position.x, position.y, size.width,
+      size.height);
+};
+
+
+/**
+ * Returns the absolute size of the pile, in pixels.
+ *
+ * @return {goog.math.Size} The size of the pile.
+ * @protected
+ */
+solitario.game.Pile.prototype.getAbsoluteSize = function() {
+  // toAbsoluteUnits returns a goog.math.Coordinate, so we need to convert it
+  // to a goog.math.Size.
+  var coordinate = solitario.game.utils.toAbsoluteUnits(
+      solitario.game.constants.Card.WIDTH,
+      solitario.game.constants.Card.HEIGHT);
+  return new goog.math.Size(coordinate.x, coordinate.y);
 };
 
 

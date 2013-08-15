@@ -26,8 +26,44 @@ goog.require('solitario.game.utils');
  */
 solitario.game.Tableu = function(el) {
   goog.base(this, el);
+
+  /**
+   * Cache of the absolute size from top to bottom card of this tableu, in
+   * pixels.
+   * @type {?goog.math.Size}
+   * @private
+   */
+  this.size_ = null;
 };
 goog.inherits(solitario.game.Tableu, solitario.game.Pile);
+
+
+/**
+ * Returns the absolute size of the card pile, in pixels.
+ * Calculating this is expensive, so we cache its value.
+ *
+ * @return {goog.math.Size} The size of the group.
+ * @override
+ * @protected
+ */
+solitario.game.Tableu.prototype.getAbsoluteSize = function() {
+  if (!this.size_) {
+    var singleCardSize =
+        solitario.game.Tableu.superClass_.getAbsoluteSize.call(this);
+
+    if (this.pile.length > 1) {
+      var absoluteIntercardDistance = solitario.game.utils.toAbsoluteUnits(
+          solitario.game.constants.TABLEU_INTERCARD_DISTANCE_REVEALED);
+      var tableuHeight = singleCardSize.height + ((this.pile.length - 1) *
+          absoluteIntercardDistance);
+      this.size_ = new goog.math.Size(singleCardSize.width, tableuHeight);
+    } else {
+      this.size_ = singleCardSize;
+    }
+  }
+
+  return this.size_;
+};
 
 
 /**

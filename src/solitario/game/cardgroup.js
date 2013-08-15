@@ -49,7 +49,7 @@ solitario.game.CardGroup = function(group) {
   this.topCard_ = this.cards[0];
 
   /**
-   * Absolute size from top to bottom card of this group in pixels.
+   * Absolute size from top to bottom card of this group, in pixels.
    * @type {goog.math.Size}
    * @private
    */
