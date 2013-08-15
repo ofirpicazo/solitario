@@ -146,7 +146,8 @@ solitario.game.Card.ClassNames_ = {
   FANNED: 'fanned',
   GROUPER: 'grouper',
   REVEALED: 'revealed',
-  SLANTED: 'slanted'
+  SLANTED_LEFT: 'slanted-left',
+  SLANTED_RIGHT: 'slanted-right'
 };
 
 
@@ -243,6 +244,17 @@ solitario.game.Card.prototype.mouseMove_ = function(evnt) {
   var newLocation = new goog.math.Coordinate(
       (x < 0) ? 0 : x,
       (y < 0) ? 0 : y);
+
+  // Slant the card depending on the horizontal direction of the drag.
+  var previousLocation = this.getAbsolutePosition();
+  if (goog.math.nearlyEquals(newLocation.x, previousLocation.x, 1)) {
+    this.straighten();
+  } else if (newLocation.x > previousLocation.x) {
+    this.slantRight();
+  } else {
+    this.slantLeft();
+  }
+
   this.setAbsolutePosition(newLocation);
 
   var dragMoveEvent = new goog.events.Event(
@@ -265,6 +277,7 @@ solitario.game.Card.prototype.mouseUp_ = function(evnt) {
     this.restoreZIndex();
   }
 
+  this.straighten();
   this.wasDragged_ = false;
   this.removeEventListenersByType(goog.events.EventType.MOUSEUP);
   goog.events.unlisten(goog.dom.getDocument(), goog.events.EventType.MOUSEUP,
@@ -584,10 +597,22 @@ solitario.game.Card.prototype.showFannedShadow = function() {
 
 
 /**
+ * Rotates the card slightly to the left.
+ */
+solitario.game.Card.prototype.slantLeft = function() {
+  goog.dom.classes.addRemove(this.element_,
+      solitario.game.Card.ClassNames_.SLANTED_RIGHT,  // Removes it
+      solitario.game.Card.ClassNames_.SLANTED_LEFT);  // Adds it
+};
+
+
+/**
  * Rotates the card slightly to the right.
  */
-solitario.game.Card.prototype.slant = function() {
-  goog.dom.classes.add(this.element_, solitario.game.Card.ClassNames_.SLANTED);
+solitario.game.Card.prototype.slantRight = function() {
+  goog.dom.classes.addRemove(this.element_,
+      solitario.game.Card.ClassNames_.SLANTED_LEFT,  // Removes it
+      solitario.game.Card.ClassNames_.SLANTED_RIGHT);  // Adds it
 };
 
 
@@ -596,5 +621,6 @@ solitario.game.Card.prototype.slant = function() {
  */
 solitario.game.Card.prototype.straighten = function() {
   goog.dom.classes.remove(this.element_,
-      solitario.game.Card.ClassNames_.SLANTED);
+      solitario.game.Card.ClassNames_.SLANTED_LEFT,
+      solitario.game.Card.ClassNames_.SLANTED_RIGHT);
 };

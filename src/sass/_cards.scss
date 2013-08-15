@@ -28,7 +28,12 @@ $card-width: 10em;
   width: $card-width;
   z-index: 10;
 
-  &.slanted {
+  &.slanted-left {
+    @include rotate(-3deg);
+    @include transform-origin(50%, 50%);
+  }
+
+  &.slanted-right {
     @include rotate(3deg);
     @include transform-origin(50%, 50%);
   }
