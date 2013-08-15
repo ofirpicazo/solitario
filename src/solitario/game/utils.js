@@ -10,6 +10,33 @@ goog.provide('solitario.game.utils');
 
 goog.require('goog.dom');
 goog.require('goog.math.Coordinate');
+goog.require('solitario.pubsub');
+
+
+/**
+ * Cache of the document.style.fontSize in order to avoid relayouts.
+ * @type {?number}
+ * @private
+ */
+solitario.game.utils.fontSize_ = null;
+
+
+// Subscribe to PubSub messages.
+solitario.pubsub.subscribe(solitario.pubsub.Topics.RESIZE_BOARD,
+    function() {
+      solitario.game.utils.resetFontSize_();
+    });
+
+
+/**
+ * Retrieves the current font size from the document.style.
+ *
+ * @private
+ */
+solitario.game.utils.resetFontSize_ = function() {
+  solitario.game.utils.fontSize_ = parseFloat(
+      goog.dom.getDocument().body.style.fontSize);
+};
 
 
 /**
@@ -26,7 +53,6 @@ goog.require('goog.math.Coordinate');
  */
 solitario.game.utils.toAbsoluteUnits = function(arg1, opt_arg2) {
   var leftPx, topPx, leftEm, topEm;
-  var absoluteFontSize = parseFloat(goog.dom.getDocument().body.style.fontSize);
 
   if (arg1 instanceof goog.math.Coordinate) {
     leftEm = arg1.x;
@@ -35,11 +61,11 @@ solitario.game.utils.toAbsoluteUnits = function(arg1, opt_arg2) {
     leftEm = arg1;
     topEm = opt_arg2;
   } else {
-    return arg1 * absoluteFontSize;
+    return arg1 * solitario.game.utils.fontSize_;
   }
 
-  leftPx = leftEm * absoluteFontSize;
-  topPx = topEm * absoluteFontSize;
+  leftPx = leftEm * solitario.game.utils.fontSize_;
+  topPx = topEm * solitario.game.utils.fontSize_;
 
   return new goog.math.Coordinate(leftPx, topPx);
 };
@@ -59,7 +85,6 @@ solitario.game.utils.toAbsoluteUnits = function(arg1, opt_arg2) {
  */
 solitario.game.utils.toRelativeUnits = function(arg1, opt_arg2) {
   var leftPx, topPx, leftEm, topEm;
-  var absoluteFontSize = parseFloat(goog.dom.getDocument().body.style.fontSize);
 
   if (arg1 instanceof goog.math.Coordinate) {
     leftPx = arg1.x;
@@ -68,11 +93,11 @@ solitario.game.utils.toRelativeUnits = function(arg1, opt_arg2) {
     leftPx = arg1;
     topPx = opt_arg2;
   } else {
-    return arg1 / absoluteFontSize;
+    return arg1 / solitario.game.utils.fontSize_;
   }
 
-  leftEm = leftPx / absoluteFontSize;
-  topEm = topPx / absoluteFontSize;
+  leftEm = leftPx / solitario.game.utils.fontSize_;
+  topEm = topPx / solitario.game.utils.fontSize_;
 
   return new goog.math.Coordinate(leftEm, topEm);
 };
