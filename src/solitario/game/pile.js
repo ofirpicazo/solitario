@@ -13,6 +13,7 @@ goog.require('goog.events.EventTarget');
 goog.require('goog.style');
 goog.require('solitario.game.constants');
 goog.require('solitario.game.utils');
+goog.require('solitario.pubsub');
 
 
 
@@ -56,6 +57,10 @@ solitario.game.Pile = function(el) {
    * @protected
    */
   this.pile = [];
+
+  // Subscribe to PubSub messages.
+  solitario.pubsub.subscribe(solitario.pubsub.Topics.RESIZE_BOARD,
+      this.invalidatePositionCache_, this);
 };
 goog.inherits(solitario.game.Pile, goog.events.EventTarget);
 
@@ -89,6 +94,16 @@ solitario.game.Pile.prototype.getAbsolutePosition_ = function() {
     this.absolutePosition_ = goog.style.getPosition(this.element_);
   }
   return this.absolutePosition_;
+};
+
+
+/**
+ * Resets the cache created for the absolute position of this pile.
+ *
+ * @private
+ */
+solitario.game.Pile.prototype.invalidatePositionCache_ = function() {
+  this.absolutePosition_ = null;
 };
 
 
