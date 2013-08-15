@@ -245,14 +245,14 @@ solitario.game.Card.prototype.mouseMove_ = function(evnt) {
       (x < 0) ? 0 : x,
       (y < 0) ? 0 : y);
 
-  // Slant the card depending on the horizontal direction of the drag.
+  // Slant the card towards the horizontal direction of the drag.
   var previousLocation = this.getAbsolutePosition();
-  if (goog.math.nearlyEquals(newLocation.x, previousLocation.x, 1)) {
-    this.straighten();
-  } else if (newLocation.x > previousLocation.x) {
-    this.slantRight();
-  } else {
-    this.slantLeft();
+  if (!goog.math.nearlyEquals(newLocation.x, previousLocation.x, 1)) {
+    if (newLocation.x > previousLocation.x) {
+      this.slantRight();
+    } else {
+      this.slantLeft();
+    }
   }
 
   this.setAbsolutePosition(newLocation);
