@@ -48,18 +48,23 @@ goog.inherits(solitario.game.Tableu, solitario.game.Pile);
  */
 solitario.game.Tableu.prototype.getAbsoluteSize = function() {
   if (!this.size_) {
-    var singleCardSize =
-        solitario.game.Tableu.superClass_.getAbsoluteSize.call(this);
+    var tableuSize = solitario.game.Tableu.superClass_.getAbsoluteSize.call(
+        this);
+    var intercardDistanceRevealed = solitario.game.utils.toAbsoluteUnits(
+        solitario.game.constants.TABLEU_INTERCARD_DISTANCE_REVEALED);
+    var intercardDistanceHidden = solitario.game.utils.toAbsoluteUnits(
+        solitario.game.constants.TABLEU_INTERCARD_DISTANCE_HIDDEN);
 
-    if (this.pile.length > 1) {
-      var absoluteIntercardDistance = solitario.game.utils.toAbsoluteUnits(
-          solitario.game.constants.TABLEU_INTERCARD_DISTANCE_REVEALED);
-      var tableuHeight = singleCardSize.height + ((this.pile.length - 1) *
-          absoluteIntercardDistance);
-      this.size_ = new goog.math.Size(singleCardSize.width, tableuHeight);
-    } else {
-      this.size_ = singleCardSize;
+    // Add the distance of the fanned cards if there are any.
+    for (var i = 0; i < this.pile.length - 1; i++) {
+      if (this.pile[i].isRevealed()) {
+        tableuSize.height += intercardDistanceRevealed;
+      } else {
+        tableuSize.height += intercardDistanceHidden;
+      }
     }
+
+    this.size_ = tableuSize;
   }
 
   return this.size_;
@@ -167,6 +172,9 @@ solitario.game.Tableu.prototype.pop = function() {
   var poppedCard = solitario.game.Tableu.superClass_.pop.call(this);
   poppedCard.hideFannedShadow();
 
+  // Invalidate size cache.
+  this.size_ = null;
+
   // Remove listener for group events.
   goog.events.unlisten(poppedCard,
       solitario.game.constants.Events.GROUP_DRAG_START, this.onGroupDragStart_,
@@ -189,6 +197,9 @@ solitario.game.Tableu.prototype.pop = function() {
  * @override
  */
 solitario.game.Tableu.prototype.push = function(card) {
+  // Invalidate size cache.
+  this.size_ = null;
+
   // The position of the pushed card is relative to the previous card's position
   // and status (revealed/hidden).
   var previousCard = this.getTopCard();
