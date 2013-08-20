@@ -75,7 +75,7 @@ solitario.game.Card = function(el) {
 
   /**
    * Number of this card, includes also non-digits (A, J, Q, K).
-   * @type {string}
+   * @type {solitario.game.constants.CardNumber}
    */
   this.number = goog.dom.dataset.get(
       this.element_, solitario.game.Card.DataAttrs_.NUMBER);
@@ -109,10 +109,16 @@ solitario.game.Card = function(el) {
   /**
    * Color of the card depending on the chosen suit.
    * Values are 'red' or 'black'.
-   * @type {string}
+   * @type {solitario.game.constants.CardColor}
    */
   this.color = (this.suit === solitario.game.Card.Suits_.HEART ||
       this.suit === solitario.game.Card.Suits_.DIAMOND) ? 'red' : 'black';
+
+  /**
+   * Numeric value of this card.
+   * @type {number}
+   */
+  this.value = solitario.game.constants.CardValue[this.number];
 
   /**
    * Enables or disables dragging behaviour on this card.

@@ -21,6 +21,61 @@ solitario.game.constants.Card = {
 
 
 /**
+ * Possible values for the color of the cards.
+ * @enum {string}
+ * @const
+ */
+solitario.game.constants.CardColor = {
+  BLACK: 'black',
+  RED: 'red'
+};
+
+
+/**
+ * Representation of the number associated to each card.
+ * @enum {string}
+ * @const
+ */
+solitario.game.constants.CardNumber = {
+  ACE: 'A',
+  TWO: '2',
+  THREE: '3',
+  FOUR: '4',
+  FIVE: '5',
+  SIX: '6',
+  SEVEN: '7',
+  EIGHT: '8',
+  NINE: '9',
+  TEN: '10',
+  JACK: 'J',
+  QUEEN: 'Q',
+  KING: 'K'
+};
+
+
+/**
+ * Numeric values for each card number.
+ * @type {Object.<string, number>}
+ * @const
+ */
+solitario.game.constants.CardValue = {
+  'A': 1,
+  '2': 2,
+  '3': 3,
+  '4': 4,
+  '5': 5,
+  '6': 6,
+  '7': 7,
+  '8': 8,
+  '9': 9,
+  '10': 10,
+  'J': 11,
+  'Q': 12,
+  'K': 13
+};
+
+
+/**
  * Duration of the delay between cards when dropping them as a group. The value
  * is in milliseconds.
  * @type {number}

@@ -165,7 +165,7 @@ solitario.game.Game.prototype.onCardDragEnd_ = function(evnt) {
   var card = /** @type {game.solitario.Card} */ (evnt.target);
 
   // A drop target was found, move the card here.
-  if (this.dropPile_ && this.dropPile_ != card.pile) {
+  if (this.dropPile_) {
     this.dropPile_.hideDroppableIndicator();
     card.detachFromPile();
     this.dropPile_.push(card);
@@ -198,8 +198,8 @@ solitario.game.Game.prototype.onCardDragMove_ = function(evnt) {
 
   // Find drop target pile.
   for (var i = piles.length - 1; i >= 0; i--) {
-    // Skip the source pile.
-    if (card.pile == piles[i])
+    // Skip if the card cannot be accepted.
+    if (!piles[i].canAcceptCard(card))
       continue;
 
     intersection = goog.math.Rect.intersection(cardRect,

@@ -39,6 +39,30 @@ goog.inherits(solitario.game.Tableu, solitario.game.Pile);
 
 
 /**
+ * Return true if this tableu can accept the passed card given the game rules.
+ *
+ * @param {solitario.game.Card} card The card to be evaluated.
+ * @return {boolean} true if the card can be pushed to the tableu, false if not.
+ * @override
+ */
+solitario.game.Tableu.prototype.canAcceptCard = function(card) {
+  // If the super class says no, we cannot say yes.
+  if (!solitario.game.Tableu.superClass_.canAcceptCard.call(this, card)) {
+    return false;
+  }
+
+  // Check that card is a King when the tableu is empty, otherwise it must be of
+  // an alternate color and its immediate predecesor.
+  if (this.isEmpty()) {
+    return (card.number == solitario.game.constants.CardNumber.KING);
+  } else {
+    var topCard = this.getTopCard();
+    return (card.color != topCard.color && (topCard.value - card.value == 1));
+  }
+};
+
+
+/**
  * Returns the absolute size of the card pile, in pixels.
  * Calculating this is expensive, so we cache its value.
  *

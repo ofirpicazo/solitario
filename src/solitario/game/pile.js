@@ -120,6 +120,18 @@ solitario.game.Pile.prototype.calculateDroppableRegion = function() {
 
 
 /**
+ * Return true if this pile can accept the passed card given the game rules.
+ *
+ * @param {solitario.game.Card} card The card to be evaluated.
+ * @return {boolean} true if the card can be pushed to the pile, false if not.
+ */
+solitario.game.Pile.prototype.canAcceptCard = function(card) {
+  // Don't accept if the card is from the same pile.
+  return (card.pile != this);
+};
+
+
+/**
  * Returns the absolute size of the pile, in pixels.
  *
  * @return {goog.math.Size} The size of the pile.
