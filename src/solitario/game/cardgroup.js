@@ -44,9 +44,8 @@ solitario.game.CardGroup = function(group) {
   /**
    * Drag a drop handle, always the first card of the group.
    * @type {solitario.game.Card}
-   * @private
    */
-  this.topCard_ = this.cards[0];
+  this.topCard = this.cards[0];
 
   /**
    * Absolute size from top to bottom card of this group, in pixels.
@@ -67,7 +66,7 @@ solitario.game.CardGroup = function(group) {
    * Tableu that this card group belongs to.
    * @type {solitario.game.Tableu}
    */
-  this.tableu = this.topCard_.pile;
+  this.tableu = this.topCard.pile;
 
   this.initialize_();
 };
@@ -83,7 +82,7 @@ goog.inherits(solitario.game.CardGroup, goog.events.EventTarget);
  */
 solitario.game.CardGroup.prototype.getAbsoluteSize_ = function() {
   if (!this.size_) {
-    var cardSize = this.topCard_.getAbsoluteSize();
+    var cardSize = this.topCard.getAbsoluteSize();
     var absoluteIntercardDistance = solitario.game.utils.toAbsoluteUnits(
         solitario.game.constants.TABLEU_INTERCARD_DISTANCE_REVEALED);
     var tableuHeight = cardSize.height + ((this.cards.length - 1) *
@@ -101,11 +100,11 @@ solitario.game.CardGroup.prototype.getAbsoluteSize_ = function() {
  * @private
  */
 solitario.game.CardGroup.prototype.initialize_ = function() {
-  if (!this.topCard_.getMouseDownPosition()) {
+  if (!this.topCard.getMouseDownPosition()) {
     throw new Error('The grouper card did not have a mouse down position!');
   }
 
-  this.mouseDownPosition_ = this.topCard_.getMouseDownPosition();
+  this.mouseDownPosition_ = this.topCard.getMouseDownPosition();
 
   for (var i = 0; i < this.cards.length; i++) {
     this.cards[i].disableAnimation();
@@ -115,7 +114,7 @@ solitario.game.CardGroup.prototype.initialize_ = function() {
         this.cards.length + i);
   }
 
-  this.topCard_.addEventListener(goog.events.EventType.MOUSEUP,
+  this.topCard.addEventListener(goog.events.EventType.MOUSEUP,
       goog.bind(this.mouseUp_, this));
   goog.events.listen(goog.dom.getDocument(), goog.events.EventType.MOUSEUP,
                      this.mouseUp_, false, this);
@@ -154,7 +153,7 @@ solitario.game.CardGroup.prototype.mouseMove_ = function(evnt) {
  * @private
  */
 solitario.game.CardGroup.prototype.mouseUp_ = function(evnt) {
-  this.topCard_.removeEventListenersByType(goog.events.EventType.MOUSEUP);
+  this.topCard.removeEventListenersByType(goog.events.EventType.MOUSEUP);
   goog.events.unlisten(goog.dom.getDocument(), goog.events.EventType.MOUSEUP,
                        this.mouseUp_, false, this);
   goog.events.unlisten(goog.dom.getDocument(), goog.events.EventType.MOUSEMOVE,
@@ -189,7 +188,7 @@ solitario.game.CardGroup.prototype.setAbsolutePosition_ = function(position) {
   var absoluteIntercardDistance = solitario.game.utils.toAbsoluteUnits(
       solitario.game.constants.TABLEU_INTERCARD_DISTANCE_REVEALED);
 
-  this.topCard_.setAbsolutePosition(position);
+  this.topCard.setAbsolutePosition(position);
   for (var i = 1; i < this.cards.length; i++) {
     position.y += absoluteIntercardDistance;
     this.cards[i].setAbsolutePosition(position);
@@ -213,7 +212,7 @@ solitario.game.CardGroup.prototype.detachFromPile = function() {
  * @return {goog.math.Rect} The rectangular region.
  */
 solitario.game.CardGroup.prototype.getRect = function() {
-  var topCardRect = this.topCard_.getRect();
+  var topCardRect = this.topCard.getRect();
   var tableuSize = this.getAbsoluteSize_();
 
   return new goog.math.Rect(topCardRect.left, topCardRect.top, tableuSize.width,

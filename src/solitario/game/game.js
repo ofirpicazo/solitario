@@ -274,8 +274,8 @@ solitario.game.Game.prototype.onGroupDragMove_ = function(evnt) {
 
   // Find drop target pile.
   for (var i = this.tableux_.length - 1; i >= 0; i--) {
-    // Skip the source pile.
-    if (cardGroup.tableu == this.tableux_[i])
+    // Skip if the group cannot be accepted.
+    if (!this.tableux_[i].canAcceptCard(cardGroup.topCard))
       continue;
 
     intersection = goog.math.Rect.intersection(cardGroupRect,
