@@ -24,6 +24,10 @@ goog.require('solitario.game.constants');
  */
 solitario.game.Stock = function(el) {
   goog.base(this, el);
+
+  // Setup listener for restock event.
+  goog.events.listen(this.element_, goog.events.EventType.CLICK,
+                     this.dispatchRestockEvent_, false, this);
 };
 goog.inherits(solitario.game.Stock, solitario.game.Pile);
 
@@ -43,12 +47,26 @@ solitario.game.Stock.prototype.initialize = function(cards) {
 
 
 /**
- * Dispatches an event indicating the user has taken a card from the stock.
+ * Dispatches an event indicating the user wishes to move all cards from the
+ * waste back to the stock
  *
- * @param {goog.event.Event} evt The event dispatched.
+ * @param {goog.event.Event} evnt The event dispatched.
  * @private
  */
-solitario.game.Stock.prototype.dispatchStockTakenEvent_ = function(evt) {
+solitario.game.Stock.prototype.dispatchRestockEvent_ = function(evnt) {
+  var restockEvent = new goog.events.Event(
+      solitario.game.constants.Events.RESTOCK, this);
+  goog.events.dispatchEvent(this, restockEvent);
+};
+
+
+/**
+ * Dispatches an event indicating the user has taken a card from the stock.
+ *
+ * @param {goog.event.Event} evnt The event dispatched.
+ * @private
+ */
+solitario.game.Stock.prototype.dispatchStockTakenEvent_ = function(evnt) {
   var stockTakenEvent = new goog.events.Event(
       solitario.game.constants.Events.STOCK_TAKEN, this);
   goog.events.dispatchEvent(this, stockTakenEvent);
@@ -89,6 +107,7 @@ solitario.game.Stock.prototype.push = function(card) {
   }
 
   solitario.game.Stock.superClass_.push.call(this, card);
+  card.cover();
 
   // Adds stock taken listeners to top card.
   card.addEventListener(goog.events.EventType.CLICK,

@@ -156,6 +156,23 @@ solitario.game.Game.prototype.moveCardFromStockToWaste_ = function() {
 
 
 /**
+ * Moves a card from the waste back to the stock.
+ *
+ * @private
+ */
+solitario.game.Game.prototype.moveCardFromWasteToStock_ = function() {
+  // Remove card from the waste.
+  var card = this.waste_.pop();
+  if (card) {
+    // Set the card above everything else.
+    card.setZIndex(solitario.game.constants.MAX_ZINDEX);
+    // Add card to waste.
+    this.stock_.push(card);
+  }
+};
+
+
+/**
  * Handles when a playable card ends being dragged.
  *
  * @param {goog.events.Event} evnt The event object passed.
@@ -308,6 +325,22 @@ solitario.game.Game.prototype.onGroupDragStart_ = function(evnt) {
 
 
 /**
+ * Event handler triggered when the user clicks on an empty stock.
+ *
+ * @param {goog.events.Event} evnt The event object passed.
+ * @private
+ */
+solitario.game.Game.prototype.onRestock_ = function(evnt) {
+  // Sends back akll the cards in the waste to the stock.
+  var delay = 0;
+  for (var i = this.waste_.pile.length - 1; i >= 0; i--) {
+    window.setTimeout(goog.bind(this.moveCardFromWasteToStock_, this), delay);
+    delay += 50;
+  }
+};
+
+
+/**
  * Event handler triggered when the user takes a card from the stock.
  *
  * @param {goog.events.Event} evnt The event object passed.
@@ -315,19 +348,6 @@ solitario.game.Game.prototype.onGroupDragStart_ = function(evnt) {
  */
 solitario.game.Game.prototype.onStockTaken_ = function(evnt) {
   this.moveCardFromStockToWaste_();
-};
-
-
-/**
- * Event handler triggered when the user takes a card from the waste.
- *
- * @param {goog.events.Event} evnt The event object passed.
- * @private
- */
-solitario.game.Game.prototype.onWasteTaken_ = function(evnt) {
-  if (this.waste_.isEmpty()) {
-    this.moveCardFromStockToWaste_();
-  }
 };
 
 
@@ -409,8 +429,8 @@ solitario.game.Game.prototype.start = function() {
   this.stock_.initialize(cardsForStock);
 
   // Sets up listeners for game events.
+  goog.events.listen(this.stock_, solitario.game.constants.Events.RESTOCK,
+                     this.onRestock_, false, this);
   goog.events.listen(this.stock_, solitario.game.constants.Events.STOCK_TAKEN,
                      this.onStockTaken_, false, this);
-  goog.events.listen(this.waste_, solitario.game.constants.Events.WASTE_TAKEN,
-                     this.onWasteTaken_, false, this);
 };

@@ -302,6 +302,16 @@ solitario.game.Card.prototype.addEventListener = function(type, listener) {
 
 
 /**
+ * Unreveals the card.
+ */
+solitario.game.Card.prototype.cover = function() {
+  goog.dom.classes.remove(this.element_,
+      solitario.game.Card.ClassNames_.REVEALED);
+  this.isDraggable = false;
+};
+
+
+/**
  * Detaches the card from its holding pile.
  */
 solitario.game.Card.prototype.detachFromPile = function() {
