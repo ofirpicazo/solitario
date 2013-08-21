@@ -101,7 +101,7 @@ solitario.game.Card = function(el) {
 
   /**
    * Suit this card belongs to (club, diamond, heart, spade).
-   * @type {string}
+   * @type {solitario.game.constants.SUIT}
    */
   this.suit = goog.dom.dataset.get(
       this.element_, solitario.game.Card.DataAttrs_.SUIT);

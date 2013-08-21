@@ -114,23 +114,30 @@ solitario.game.constants.Events = {
 
 
 /**
- * Constant for distance threshold, in pixels, an element has to be moved to
- * initiate a drag operation.
- * @type {number}
- */
-solitario.game.constants.INIT_DRAG_DISTANCE_THRESHOLD = 5;
-
-
-/**
  * Maximum ZIndex level, things set to this value will always be visible.
  * @type {number}
+ * @const
  */
 solitario.game.constants.MAX_ZINDEX = 1000;
 
 
 /**
+ * Card suits used in the game.
+ * @enum {string}
+ * @const
+ */
+solitario.game.constants.SUIT = {
+  CLUB: 'club',
+  DIAMOND: 'diamond',
+  HEAD: 'heart',
+  SPADE: 'spade'
+};
+
+
+/**
  * The relative distance (ems) between each hidden card in the Tableu.
  * @type {number}
+ * @const
  */
 solitario.game.constants.TABLEU_INTERCARD_DISTANCE_HIDDEN = 0.8;
 
@@ -138,5 +145,6 @@ solitario.game.constants.TABLEU_INTERCARD_DISTANCE_HIDDEN = 0.8;
 /**
  * The relative distance (ems) between each revealed card in the Tableu.
  * @type {number}
+ * @const
  */
 solitario.game.constants.TABLEU_INTERCARD_DISTANCE_REVEALED = 2.2;

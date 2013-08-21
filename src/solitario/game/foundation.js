@@ -26,21 +26,49 @@ solitario.game.Foundation = function(el) {
 
   /**
    * Suit this foundation contains.
-   * @type {string}
-   * @private
+   * @type {?solitario.game.constants.SUIT}
    */
-  this.suit_ = goog.dom.dataset.get(
-      el, solitario.game.Foundation.DataAttrs_.SUIT);
+  this.suit = null;
 };
 goog.inherits(solitario.game.Foundation, solitario.game.Pile);
 
 
 /**
- * Foundation data attributes.
- * @enum {string}
- * @const
- * @private
+ * Return true if this foundation can accept the passed card given the game
+ * rules.
+ *
+ * @param {solitario.game.Card} card The card to be evaluated.
+ * @return {boolean} true if the card can be pushed to the tableu, false if not.
+ * @override
  */
-solitario.game.Foundation.DataAttrs_ = {
-  SUIT: 'suit'
+solitario.game.Foundation.prototype.canAcceptCard = function(card) {
+  // If the super class says no, we cannot say yes.
+  if (!solitario.game.Foundation.superClass_.canAcceptCard.call(this, card)) {
+    return false;
+  }
+
+  // Check that card is a Ace when the foundation is empty, otherwise it must be
+  // the next card for the suit of the pile.
+  if (this.isEmpty()) {
+    return (card.number == solitario.game.constants.CardNumber.ACE);
+  } else {
+    var topCard = this.getTopCard();
+    return (card.suit == this.suit && (card.value - topCard.value == 1));
+  }
+};
+
+
+/**
+ * Adds a new card to the foundation. Sets the foundation's suit if it's not yet
+ * set.
+ *
+ * @param {solitario.game.Card} card Card to be pushed.
+ * @override
+ */
+solitario.game.Foundation.prototype.push = function(card) {
+  solitario.game.Foundation.superClass_.push.call(this, card);
+
+  if (!this.suit) {
+    this.suit = card.suit;
+  }
 };
