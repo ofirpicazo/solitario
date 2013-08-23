@@ -108,7 +108,25 @@ body {
 
 #stock {
   @extend %top-row;
+  cursor: pointer;
+  display: table;
   left: $board-margin;
+  text-align: center;
+
+  .restock {
+    @include transition-duration(0.3s);
+    @include transition-property(color);
+    color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    display: table-cell;
+    font-size: 8em;
+    font-weight: bold;
+    vertical-align: middle;
+  }
+
+  &:hover .restock {
+    color: rgba(255, 255, 255, 0.5);
+  }
 }
 
 #waste {

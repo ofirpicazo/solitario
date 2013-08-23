@@ -72,9 +72,14 @@ $card-width: 10em;
   .front {
     @extend %card-side;
     background-color: $card-color;
+    cursor: pointer;
     @include background-image(linear-gradient(left top, $card-color 50%, $card-shadow-color 100%));
     @include rotateY(180deg);
     z-index: 20;
+
+    div, span {
+      cursor: pointer;
+    }
 
     .corner {
       line-height: 1;

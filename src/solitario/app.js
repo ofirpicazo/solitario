@@ -68,7 +68,7 @@ goog.addSingletonGetter(solitario.App);
 solitario.App.prototype.resizeBoard_ = function(e) {
   var viewportSize = this.viewportMonitor_.getSize();
   var widthPixelSize = (viewportSize.width / 85).toFixed(1);
-  var heightPixelSize = (viewportSize.height / 60).toFixed(1);
+  var heightPixelSize = (viewportSize.height / 65).toFixed(1);
   var pixelSize = Math.min(widthPixelSize, heightPixelSize) + 'px';
   goog.dom.getDocument().body.style.fontSize = pixelSize;
 
