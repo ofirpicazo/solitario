@@ -1,0 +1,30 @@
+// Copyright 2013 Ofir Picazo. All Rights Reserved.
+
+/**
+ * Styles for the icons in the game.
+ *
+ * @author ofirpicazo@gmail.com (Ofir Picazo)
+ */
+
+@include font-face("solitario", font-files("solitario.woff", "solitario.ttf",
+                   "solitario.svg"), "solitario.eot", normal, normal);
+
+.icon-gamepad,
+.icon-reload {
+  font-family: 'solitario';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+.icon-gamepad:before {
+  content: "\67";
+}
+
+.icon-reload:before {
+  content: "\72";
+}
