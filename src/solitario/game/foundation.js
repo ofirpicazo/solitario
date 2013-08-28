@@ -25,6 +25,12 @@ solitario.game.Foundation = function(el) {
   goog.base(this, el);
 
   /**
+   * Whether this pile can be used for building automatically.
+   * @type {Boolean}
+   */
+  this.isBuildTarget = true;
+
+  /**
    * Suit this foundation contains.
    * @type {?solitario.game.constants.SUIT}
    */
@@ -55,6 +61,23 @@ solitario.game.Foundation.prototype.canAcceptCard = function(card) {
     var topCard = this.getTopCard();
     return (card.suit == this.suit && (card.value - topCard.value == 1));
   }
+};
+
+
+/**
+ * Pop a card off of the foundation.
+ *
+ * @return {?solitario.game.Card} The card popped from the pile.
+ * @override
+ */
+solitario.game.Foundation.prototype.pop = function() {
+  var card = solitario.game.Foundation.superClass_.pop.call(this);
+
+  if (this.isEmpty()) {
+    this.suit = null;
+  }
+
+  return card;
 };
 
 

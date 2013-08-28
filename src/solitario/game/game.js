@@ -150,8 +150,6 @@ solitario.game.Game.prototype.moveCardFromStockToWaste_ = function() {
     // Add card to waste.
     this.waste_.push(card);
   }
-  // TODO(ofirp): Do something when the last card is pulled from the stock, such
-  // as a warning to the user or display an indicator on the empty stock.
 };
 
 
@@ -168,6 +166,31 @@ solitario.game.Game.prototype.moveCardFromWasteToStock_ = function() {
     card.setZIndex(solitario.game.constants.MAX_ZINDEX);
     // Add card to waste.
     this.stock_.push(card);
+  }
+};
+
+
+/**
+ * Handles when a playable card is sent to the foundations automatically by
+ * double clicking on it.
+ *
+ * @param {goog.events.Event} evnt The event object passed.
+ * @private
+ */
+solitario.game.Game.prototype.onBuild_ = function(evnt) {
+  var card = /** @type {game.solitario.Card} */ (evnt.target);
+  var selectedFoundation = null;
+
+  for (var i = 0; i < this.foundations_.length; i++) {
+    if (this.foundations_[i].canAcceptCard(card)) {
+      selectedFoundation = this.foundations_[i];
+      break;
+    }
+  }
+
+  if (selectedFoundation) {
+    card.detachFromPile();
+    selectedFoundation.push(card);
   }
 };
 
@@ -383,6 +406,9 @@ solitario.game.Game.prototype.start = function() {
         false, this);
     goog.events.listen(this.cards_[i],
         solitario.game.constants.Events.DRAG_END, this.onCardDragEnd_,
+        false, this);
+    goog.events.listen(this.cards_[i],
+        solitario.game.constants.Events.BUILD, this.onBuild_,
         false, this);
   }
 

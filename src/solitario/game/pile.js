@@ -52,6 +52,12 @@ solitario.game.Pile = function(el) {
   this.element_ = el;
 
   /**
+   * Whether this pile can be used for building automatically.
+   * @type {Boolean}
+   */
+  this.isBuildTarget = false;
+
+  /**
    * Pile of cards stacked in this tableu.
    * @type {Array.<solitario.game.Card>}
    * @protected

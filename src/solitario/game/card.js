@@ -129,6 +129,7 @@ solitario.game.Card = function(el) {
 
   // Initialize listeners.
   this.addEventListener(goog.events.EventType.MOUSEDOWN, this.mouseDown_);
+  this.addEventListener(goog.events.EventType.DBLCLICK, this.doubleClick_);
   this.addEventListener(goog.events.EventType.TRANSITIONEND, function(evnt) {
     // Bubble up the transitionend event on this.element_.
     goog.events.dispatchEvent(this, evnt);
@@ -188,6 +189,21 @@ solitario.game.Card.Suits_ = {
  */
 solitario.game.Card.prototype.invalidatePositionCache_ = function() {
   this.absolutePosition_ = null;
+};
+
+
+/**
+ * Event handler for double click.
+ *
+ * @param {goog.events.BrowserEvent} evnt Double click event.
+ * @private
+ */
+solitario.game.Card.prototype.doubleClick_ = function(evnt) {
+  if (this.isRevealed() && !this.isGrouper() && !this.pile.isBuildTarget) {
+    var buildEvent = new goog.events.Event(
+        solitario.game.constants.Events.BUILD, this);
+    goog.events.dispatchEvent(this, buildEvent);
+  }
 };
 
 

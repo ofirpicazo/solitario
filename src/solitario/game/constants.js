@@ -101,6 +101,7 @@ solitario.game.constants.ClassNames = {
  * @const
  */
 solitario.game.constants.Events = {
+  BUILD: 'build',
   DRAG_END: 'dragEnd',
   DRAG_MOVE: 'dragMove',
   DRAG_START: 'dragStart',
