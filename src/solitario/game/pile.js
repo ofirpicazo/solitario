@@ -52,10 +52,10 @@ solitario.game.Pile = function(el) {
   this.element_ = el;
 
   /**
-   * Whether this pile can be used for building automatically.
-   * @type {Boolean}
+   * Type of pile, override in subclases.
+   * @type {solitario.game.constants.PileTypes}
    */
-  this.isBuildTarget = false;
+  this.pileType = null;
 
   /**
    * Pile of cards stacked in this tableu.

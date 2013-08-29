@@ -34,6 +34,12 @@ solitario.game.Tableu = function(el) {
    * @private
    */
   this.size_ = null;
+
+  /**
+   * Type of pile, workaround to avoid using instanceof.
+   * @type {solitario.game.constants.PileTypes}
+   */
+  this.pileType = solitario.game.constants.PileTypes.TABLEU;
 };
 goog.inherits(solitario.game.Tableu, solitario.game.Pile);
 

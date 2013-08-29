@@ -199,7 +199,8 @@ solitario.game.Card.prototype.invalidatePositionCache_ = function() {
  * @private
  */
 solitario.game.Card.prototype.doubleClick_ = function(evnt) {
-  if (this.isRevealed() && !this.isGrouper() && !this.pile.isBuildTarget) {
+  if (this.isRevealed() && !this.isGrouper() &&
+      this.pile.pileType != solitario.game.constants.PileTypes.FOUNDATION) {
     var buildEvent = new goog.events.Event(
         solitario.game.constants.Events.BUILD, this);
     goog.events.dispatchEvent(this, buildEvent);

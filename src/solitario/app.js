@@ -53,6 +53,10 @@ solitario.App = function() {
   // Trigger initial viewport calculation.
   this.resizeBoard_();
 
+  // Subscribe to game notifications.
+  solitario.pubsub.subscribe(solitario.pubsub.Topics.SCORE_UPDATED,
+      this.updateScore_, this);
+
   this.game_.start();
 };
 goog.addSingletonGetter(solitario.App);
@@ -74,6 +78,18 @@ solitario.App.prototype.resizeBoard_ = function(e) {
 
   // Notify subscribers that the board was resized.
   solitario.pubsub.publish(solitario.pubsub.Topics.RESIZE_BOARD);
+};
+
+
+/**
+ * Updates the displayed game score.
+ *
+ * @param {number} score The new value for the score.
+ * @private
+ */
+solitario.App.prototype.updateScore_ = function(score) {
+  // TODO(ofirp): Implement this for realz.
+  window.console.log(score);
 };
 
 

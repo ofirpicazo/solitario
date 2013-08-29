@@ -25,10 +25,10 @@ solitario.game.Foundation = function(el) {
   goog.base(this, el);
 
   /**
-   * Whether this pile can be used for building automatically.
-   * @type {Boolean}
+   * Type of pile, workaround to avoid using instanceof.
+   * @type {solitario.game.constants.PileTypes}
    */
-  this.isBuildTarget = true;
+  this.pileType = solitario.game.constants.PileTypes.FOUNDATION;
 
   /**
    * Suit this foundation contains.

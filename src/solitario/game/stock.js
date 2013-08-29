@@ -25,6 +25,12 @@ goog.require('solitario.game.constants');
 solitario.game.Stock = function(el) {
   goog.base(this, el);
 
+  /**
+   * Type of pile, workaround to avoid using instanceof.
+   * @type {solitario.game.constants.PileTypes}
+   */
+  this.pileType = solitario.game.constants.PileTypes.STOCK;
+
   // Setup listener for restock event.
   goog.events.listen(this.element_, goog.events.EventType.CLICK,
                      this.dispatchRestockEvent_, false, this);

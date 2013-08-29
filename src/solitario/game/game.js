@@ -17,6 +17,7 @@ goog.require('solitario.game.Stock');
 goog.require('solitario.game.Tableu');
 goog.require('solitario.game.Waste');
 goog.require('solitario.game.constants');
+goog.require('solitario.pubsub');
 
 
 
@@ -80,6 +81,12 @@ solitario.game.Game = function() {
    */
   this.is_started = false;
 
+  /**
+   * Numeric score of the running game.
+   * @type {number}
+   */
+  this.score = 0;
+
   // Initialize the elements of the game.
   this.init_();
 };
@@ -98,6 +105,40 @@ solitario.game.Game.ClassNames_ = {
   STOCK: 'stock',
   TABLEU: 'tableu',
   WASTE: 'waste'
+};
+
+
+/**
+ * Calculates the points awarded for moving a card from its current pile to a
+ * new pile.
+ *
+ * @param {solitario.game.Card} card The card to be moved to a new pile
+ * @param {solitario.game.Pile} newPile The receiving pile.
+ * @return {number} A signed int indicated the points awarded for the move, or
+ *     zero if no score was awarded.
+ * @private
+ */
+solitario.game.Game.prototype.calculateCardMovingPoints_ = function(card,
+    newPile) {
+  var oldPileType = card.pile.pileType;
+  var newPileType = newPile.pileType;
+  var points = 0;
+
+  if (oldPileType == solitario.game.constants.PileTypes.WASTE &&
+      newPileType == solitario.game.constants.PileTypes.TABLEU) {
+    points = solitario.game.constants.Scoring.WASTE_TO_TABLEU;
+  } else if (oldPileType == solitario.game.constants.PileTypes.WASTE &&
+             newPileType == solitario.game.constants.PileTypes.FOUNDATION) {
+    points = solitario.game.constants.Scoring.WASTE_TO_FOUNDATION;
+  } else if (oldPileType == solitario.game.constants.PileTypes.TABLEU &&
+             newPileType == solitario.game.constants.PileTypes.FOUNDATION) {
+    points = solitario.game.constants.Scoring.TABLEU_TO_FOUNDATION;
+  } else if (oldPileType == solitario.game.constants.PileTypes.FOUNDATION &&
+             newPileType == solitario.game.constants.PileTypes.TABLEU) {
+    points = solitario.game.constants.Scoring.FOUNDATION_TO_TABLEU;
+  }
+
+  return points;
 };
 
 
@@ -189,6 +230,9 @@ solitario.game.Game.prototype.onBuild_ = function(evnt) {
   }
 
   if (selectedFoundation) {
+    var points = this.calculateCardMovingPoints_(card, selectedFoundation);
+    this.updateScore_(points);
+
     card.detachFromPile();
     selectedFoundation.push(card);
   }
@@ -206,7 +250,10 @@ solitario.game.Game.prototype.onCardDragEnd_ = function(evnt) {
 
   // A drop target was found, move the card here.
   if (this.dropPile_) {
+    var points = this.calculateCardMovingPoints_(card, this.dropPile_);
+    this.updateScore_(points);
     this.dropPile_.hideDroppableIndicator();
+
     card.detachFromPile();
     this.dropPile_.push(card);
   } else {
@@ -385,6 +432,25 @@ solitario.game.Game.prototype.shuffleCards_ = function() {
     var tmp = this.cards_[i];
     this.cards_[i] = this.cards_[randomPosition];
     this.cards_[randomPosition] = tmp;
+  }
+};
+
+
+/**
+ * Updates the score value by adding/subtracting the points passed.
+ *
+ * @param {number} points A signed integer indicating the number of points to be
+ *     added or subtracted to the current score value.
+ * @private
+ */
+solitario.game.Game.prototype.updateScore_ = function(points) {
+  // Only update it if the score is other than zero.
+  if (points != 0) {
+    var newScore = this.score + points;
+    this.score = (newScore < 0) ? 0 : newScore;
+
+    // Notify subscribers that the score was updated.
+    solitario.pubsub.publish(solitario.pubsub.Topics.SCORE_UPDATED, this.score);
   }
 };
 

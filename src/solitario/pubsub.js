@@ -27,7 +27,8 @@ solitario.pubsub.instance_ = new goog.pubsub.PubSub();
  * @const
  */
 solitario.pubsub.Topics = {
-  RESIZE_BOARD: 'resizeBoard'
+  RESIZE_BOARD: 'resizeBoard',
+  SCORE_UPDATED: 'scoreUpdated'
 };
 
 

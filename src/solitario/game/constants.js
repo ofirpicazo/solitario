@@ -123,6 +123,34 @@ solitario.game.constants.MAX_ZINDEX = 1000;
 
 
 /**
+ * Types of piles (children of solitario.game.Pile) used in the game.
+ * @enum {string}
+ * @const
+ */
+solitario.game.constants.PileTypes = {
+  FOUNDATION: 'foundation',
+  STOCK: 'stock',
+  TABLEU: 'table',
+  WASTE: 'waste'
+};
+
+
+/**
+ * Score values for different moves in the game.
+ * @enum {number}
+ * @const
+ */
+solitario.game.constants.Scoring = {
+  FOUNDATION_TO_TABLEU: -15,
+  RESTOCK: -100,
+  TABLEU_REVEAL: 5,
+  TABLEU_TO_FOUNDATION: 10,
+  WASTE_TO_FOUNDATION: 10,
+  WASTE_TO_TABLEU: 5
+};
+
+
+/**
  * Card suits used in the game.
  * @enum {string}
  * @const
