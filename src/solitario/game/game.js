@@ -425,6 +425,18 @@ solitario.game.Game.prototype.onStockTaken_ = function(evnt) {
 
 
 /**
+ * Event handler for when a card is revealed in a tableu.
+ *
+ * @param {goog.events.Event} evnt The event objects passed.
+ * @private
+ */
+solitario.game.Game.prototype.onTableuReveal_ = function(evnt) {
+  // This action awards some score points.
+  this.updateScore_(solitario.game.constants.Scoring.TABLEU_REVEAL);
+};
+
+
+/**
  * Shuffles the cards in random order.
  *
  * @private
@@ -517,6 +529,10 @@ solitario.game.Game.prototype.start = function() {
 
     var tableuCards = this.cards_.slice(startIndex, endIndex);
     tableu.initialize(tableuCards);
+
+    // Add event listeners for tableu events.
+    goog.events.listen(tableu, solitario.game.constants.Events.TABLEU_REVEAL,
+        this.onTableuReveal_, false, this);
   }, this);
 
   // Sets cards for stock

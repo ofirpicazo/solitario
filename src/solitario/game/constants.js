@@ -110,7 +110,8 @@ solitario.game.constants.Events = {
   GROUP_DRAG_START: 'groupDragStart',
   READY: 'ready',
   RESTOCK: 'restock',
-  STOCK_TAKEN: 'stockTaken'
+  STOCK_TAKEN: 'stockTaken',
+  TABLEU_REVEAL: 'tableuReveal'
 };
 
 

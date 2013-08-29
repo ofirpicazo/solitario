@@ -215,6 +215,10 @@ solitario.game.Tableu.prototype.pop = function() {
   if (topCard) {
     topCard.disableGrouper();
     topCard.reveal();
+
+    var tableuRevealEvent = new goog.events.Event(
+        solitario.game.constants.Events.TABLEU_REVEAL, this);
+    goog.events.dispatchEvent(this, tableuRevealEvent);
   }
   return poppedCard;
 };
