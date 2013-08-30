@@ -233,6 +233,7 @@ solitario.game.Game.prototype.onBuild_ = function(evnt) {
     var points = this.calculateCardMovingPoints_(card, selectedFoundation);
     this.updateScore_(points);
 
+    card.setZIndex(solitario.game.constants.MAX_ZINDEX);
     card.detachFromPile();
     selectedFoundation.push(card);
   }
