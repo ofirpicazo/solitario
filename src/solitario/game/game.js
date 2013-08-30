@@ -189,6 +189,7 @@ solitario.game.Game.prototype.onBuild_ = function(evnt) {
   }
 
   if (selectedFoundation) {
+    card.setZIndex(solitario.game.constants.MAX_ZINDEX);
     card.detachFromPile();
     selectedFoundation.push(card);
   }
