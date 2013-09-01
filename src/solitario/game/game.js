@@ -475,6 +475,8 @@ solitario.game.Game.prototype.updateScore_ = function(points) {
  * Starts a new game reinitializing all the elements.
  */
 solitario.game.Game.prototype.start = function() {
+  this.updateScore_(0); // Always start at zero points.
+
   // Shuffles the cards.
   this.shuffleCards_();
 

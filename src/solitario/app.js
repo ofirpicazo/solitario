@@ -40,6 +40,13 @@ solitario.App = function() {
   this.game_ = new solitario.game.Game();
 
   /**
+   * DOM element to display the score in.
+   * @type {Element}
+   * @private
+   */
+  this.scoreElement_ = goog.dom.getElement(solitario.App.DomIds_.SCORE);
+
+  /**
    * Viewport monitor to adjust for size changes.
    * @type {goog.dom.ViewportSizeMonitor}
    * @private
@@ -60,6 +67,17 @@ solitario.App = function() {
   this.game_.start();
 };
 goog.addSingletonGetter(solitario.App);
+
+
+/**
+ * DOM ids for elements of the app.
+ * @enum {string}
+ * @const
+ * @private
+ */
+solitario.App.DomIds_ = {
+  SCORE: 'score-value'
+};
 
 
 /**
@@ -88,8 +106,7 @@ solitario.App.prototype.resizeBoard_ = function(e) {
  * @private
  */
 solitario.App.prototype.updateScore_ = function(score) {
-  // TODO(ofirp): Implement this for realz.
-  window.console.log(score);
+  goog.dom.setTextContent(this.scoreElement_, score);
 };
 
 
