@@ -12,6 +12,7 @@ goog.provide('solitario.init');
 goog.require('goog.dom');
 goog.require('goog.dom.BufferedViewportSizeMonitor');
 goog.require('goog.dom.ViewportSizeMonitor');
+goog.require('goog.dom.classes');
 goog.require('goog.events');
 goog.require('solitario.game.Game');
 goog.require('solitario.pubsub');
@@ -70,6 +71,17 @@ goog.addSingletonGetter(solitario.App);
 
 
 /**
+ * CSS class names for elements of the app.
+ * @enum {string}
+ * @const
+ * @private
+ */
+solitario.App.ClassNames_ = {
+  ROTATED: 'rotated'
+};
+
+
+/**
  * DOM ids for elements of the app.
  * @enum {string}
  * @const
@@ -106,6 +118,8 @@ solitario.App.prototype.resizeBoard_ = function(e) {
  * @private
  */
 solitario.App.prototype.updateScore_ = function(score) {
+  goog.dom.classes.toggle(this.scoreElement_,
+      solitario.App.ClassNames_.ROTATED);
   goog.dom.setTextContent(this.scoreElement_, score);
 };
 
