@@ -402,14 +402,16 @@ solitario.game.Game.prototype.onGroupDragStart_ = function(evnt) {
  * @private
  */
 solitario.game.Game.prototype.onRestock_ = function(evnt) {
-  // Updates the game score, doing a restock is a bad choice :(
-  this.updateScore_(solitario.game.constants.Scoring.RESTOCK);
+  if (!this.waste_.isEmpty()) {
+    // Updates the game score, doing a restock is a bad choice :(
+    this.updateScore_(solitario.game.constants.Scoring.RESTOCK);
 
-  // Sends back all the cards in the waste to the stock.
-  var delay = 0;
-  for (var i = this.waste_.pile.length - 1; i >= 0; i--) {
-    window.setTimeout(goog.bind(this.moveCardFromWasteToStock_, this), delay);
-    delay += 50;
+    // Sends back all the cards in the waste to the stock.
+    var delay = 0;
+    for (var i = this.waste_.pile.length - 1; i >= 0; i--) {
+      window.setTimeout(goog.bind(this.moveCardFromWasteToStock_, this), delay);
+      delay += 50;
+    }
   }
 };
 
