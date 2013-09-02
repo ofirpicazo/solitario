@@ -152,6 +152,7 @@ solitario.game.Card.ClassNames_ = {
   DROP_TARGET: 'droptarget',
   FANNED: 'fanned',
   GROUPER: 'grouper',
+  POINTER: 'pointer',
   REVEALED: 'revealed'
 };
 
@@ -612,4 +613,13 @@ solitario.game.Card.prototype.showDroppableIndicator = function() {
 solitario.game.Card.prototype.showFannedShadow = function() {
   goog.dom.classes.add(this.element_,
       solitario.game.Card.ClassNames_.FANNED);
+};
+
+
+/**
+ * Turns the cursor into a pointer cursor when hover over the back of this card.
+ */
+solitario.game.Card.prototype.showPointer = function() {
+  goog.dom.classes.add(this.element_,
+      solitario.game.Card.ClassNames_.POINTER);
 };

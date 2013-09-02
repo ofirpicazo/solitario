@@ -114,6 +114,7 @@ solitario.game.Stock.prototype.push = function(card) {
 
   solitario.game.Stock.superClass_.push.call(this, card);
   card.cover();
+  card.showPointer();
 
   // Adds stock taken listeners to top card.
   card.addEventListener(goog.events.EventType.CLICK,

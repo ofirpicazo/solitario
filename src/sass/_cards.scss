@@ -48,6 +48,11 @@ $card-width: 10em;
     @include single-box-shadow($card-shadow-color, 0, 0, 0.5em);
   }
 
+  &.pointer .back,
+  &.pointer .front {
+    cursor: pointer;
+  }
+
   %card-side {
     @include backface-visibility(hidden);
     @include border-radius(0.5em);
