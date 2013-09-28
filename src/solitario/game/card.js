@@ -341,9 +341,6 @@ solitario.game.Card.prototype.cover = function() {
 solitario.game.Card.prototype.detachFromPile = function() {
   if (this.pile) {
     this.pile.pop();
-    this.pile = null;
-    this.positionInPile = null;
-    this.zIndexInPile = null;
   }
 };
 
