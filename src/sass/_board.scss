@@ -98,7 +98,7 @@ body {
   top: 0.2em;
 
   #score-value {
-    @include transition-duration(0.3s);
+    @include transition-duration(300ms);
     @include transition-timing-function(ease-out);
     @include transform-style(preserve-3d);
     display: inline-block;

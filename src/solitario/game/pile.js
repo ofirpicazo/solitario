@@ -8,6 +8,7 @@
 
 goog.provide('solitario.game.Pile');
 
+goog.require('goog.Timer');
 goog.require('goog.events');
 goog.require('goog.events.EventTarget');
 goog.require('goog.style');
@@ -230,7 +231,11 @@ solitario.game.Pile.prototype.isEmpty = function() {
  * @return {?solitario.game.Card} The card popped from the pile.
  */
 solitario.game.Pile.prototype.pop = function() {
-  return this.pile.pop();
+  var card = this.pile.pop();
+  card.pile = null;
+  card.positionInPile = null;
+  card.zIndexInPile = null;
+  return card;
 };
 
 
@@ -257,6 +262,14 @@ solitario.game.Pile.prototype.push = function(card) {
         card.setZIndex(cardZIndex);
         card.zIndexInPile = cardZIndex;
       }, false, this);
+
+  // Fallback for setting the card z-index, because sometimes the browser fails
+  // to trigger the TRANSITIONEND event.
+  // TODO(ofirp): Figure out why!
+  goog.Timer.callOnce(function(evnt) {
+    card.setZIndex(cardZIndex);
+    card.zIndexInPile = cardZIndex;
+  }, 350, this);
 };
 
 

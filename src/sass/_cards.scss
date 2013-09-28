@@ -18,7 +18,7 @@ $card-width: 10em;
 .card {
   @include perspective(1000);
   @include transition-property(left, top);
-  @include transition-duration(0.3s, 0.3s);
+  @include transition-duration(300ms, 300ms);
   @include transition-timing-function(ease-in-out, ease-in-out);
   font-family: "Suit", "Helvetica Neue", Helvetica, Arial, sans-serif;
   height: $card-height;
@@ -33,7 +33,7 @@ $card-width: 10em;
   }
 
   .flipper {
-    @include transition-duration(0.3s);
+    @include transition-duration(300ms);
     @include transition-timing-function(ease-out);
     @include transform-style(preserve-3d);
     position: relative;

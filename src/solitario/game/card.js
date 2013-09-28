@@ -138,6 +138,12 @@ solitario.game.Card = function(el) {
   // Subscribe to PubSub messages.
   solitario.pubsub.subscribe(solitario.pubsub.Topics.RESIZE_BOARD,
       this.invalidatePositionCache_, this);
+
+  // Reset DOM element states.
+  this.cover();
+  this.disableGrouper();
+  this.hideFannedShadow();
+  this.hidePointer();
 };
 goog.inherits(solitario.game.Card, goog.events.EventTarget);
 
@@ -330,12 +336,14 @@ solitario.game.Card.prototype.cover = function() {
 
 
 /**
- * Detaches the card from its holding pile.
+ * Detaches the card from its holding pile and removes any references to it.
  */
 solitario.game.Card.prototype.detachFromPile = function() {
   if (this.pile) {
     this.pile.pop();
     this.pile = null;
+    this.positionInPile = null;
+    this.zIndexInPile = null;
   }
 };
 
@@ -475,6 +483,15 @@ solitario.game.Card.prototype.hideFannedShadow = function() {
 
 
 /**
+ * Makes the cursor normal.
+ */
+solitario.game.Card.prototype.hidePointer = function() {
+  goog.dom.classes.remove(this.element_,
+      solitario.game.Card.ClassNames_.POINTER);
+};
+
+
+/**
  * Returns whether this card can form a group of fanned cards when dragged.
  *
  * @return {boolean} True if the card can from a group.
@@ -508,6 +525,8 @@ solitario.game.Card.prototype.removeEventListenersByType = function(type) {
   for (var i = this.eventListenerKeys_[type].length - 1; i >= 0; i--) {
     goog.events.unlistenByKey(this.eventListenerKeys_[type][i]);
   }
+
+  delete this.eventListenerKeys_[type];
 };
 
 

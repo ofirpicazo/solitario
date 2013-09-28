@@ -14,6 +14,7 @@ goog.require('goog.dom.BufferedViewportSizeMonitor');
 goog.require('goog.dom.ViewportSizeMonitor');
 goog.require('goog.dom.classes');
 goog.require('goog.events');
+goog.require('goog.storage.mechanism.HTML5WebStorage');
 goog.require('solitario.game.Game');
 goog.require('solitario.pubsub');
 
@@ -41,6 +42,21 @@ solitario.App = function() {
   this.game_ = new solitario.game.Game();
 
   /**
+   * Button to start a new game.
+   * @type {Element}
+   * @private
+   */
+  this.newGameButton_ = goog.dom.getElement(
+      solitario.App.DomIds_.NEW_GAME_BUTTON);
+
+  /**
+   * Storage mechanism for using HTML5 local storage to save game state.
+   * @type {goog.storage.mechanism.HTML5WebStorage}
+   * @private
+   */
+  this.storage_ = new goog.storage.mechanism.HTML5WebStorage();
+
+  /**
    * DOM element to display the score in.
    * @type {Element}
    * @private
@@ -55,17 +71,8 @@ solitario.App = function() {
   this.viewportMonitor_ = new goog.dom.BufferedViewportSizeMonitor(
       new goog.dom.ViewportSizeMonitor(), 50);
 
-  // Listen for viewport changes.
-  goog.events.listen(this.viewportMonitor_, goog.events.EventType.RESIZE,
-                     this.resizeBoard_, false, this);
-  // Trigger initial viewport calculation.
-  this.resizeBoard_();
-
-  // Subscribe to game notifications.
-  solitario.pubsub.subscribe(solitario.pubsub.Topics.SCORE_UPDATED,
-      this.updateScore_, this);
-
-  this.game_.start();
+  // Initialize event listeners, pubsub subscribers and the game.
+  this.init_();
 };
 goog.addSingletonGetter(solitario.App);
 
@@ -88,7 +95,31 @@ solitario.App.ClassNames_ = {
  * @private
  */
 solitario.App.DomIds_ = {
+  NEW_GAME_BUTTON: 'new-game-btn',
   SCORE: 'score-value'
+};
+
+
+/**
+ * Setup event listeners, pubsub subscribers and run some initialization logic.
+ * @private
+ */
+solitario.App.prototype.init_ = function() {
+  // Setup event listeners for UI elements and viewport changes.
+  goog.events.listen(this.newGameButton_, goog.events.EventType.CLICK,
+      this.startNewGame_, false, this);
+  goog.events.listen(this.viewportMonitor_, goog.events.EventType.RESIZE,
+      this.resizeBoard_, false, this);
+
+  // Subscribe to pubsub notifications.
+  solitario.pubsub.subscribe(solitario.pubsub.Topics.SCORE_UPDATED,
+      this.updateScore_, this);
+
+  // Trigger initial viewport calculation.
+  this.resizeBoard_();
+
+  // TODO(ofirp): Check for the existance of saved game, and load it.
+  this.game_.start();
 };
 
 
@@ -108,6 +139,18 @@ solitario.App.prototype.resizeBoard_ = function(e) {
 
   // Notify subscribers that the board was resized.
   solitario.pubsub.publish(solitario.pubsub.Topics.RESIZE_BOARD);
+};
+
+
+/**
+ * Resets game saved state and starts a new game.
+ * @private
+ */
+solitario.App.prototype.startNewGame_ = function() {
+  // TODO(ofirp): Wipe old game state.
+
+  this.game_ = new solitario.game.Game();
+  this.game_.start();
 };
 
 

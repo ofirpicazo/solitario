@@ -8,6 +8,7 @@
 
 goog.provide('solitario.game.Game');
 
+goog.require('goog.Timer');
 goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.events.EventTarget');
@@ -86,9 +87,6 @@ solitario.game.Game = function() {
    * @type {number}
    */
   this.score = 0;
-
-  // Initialize the elements of the game.
-  this.init_();
 };
 goog.inherits(solitario.game.Game, goog.events.EventTarget);
 
@@ -143,15 +141,20 @@ solitario.game.Game.prototype.calculateCardMovingPoints_ = function(card,
 
 
 /**
- * Initializes the elements of the game.
+ * Initializes DOM elements of the game.
  *
  * @private
  */
 solitario.game.Game.prototype.init_ = function() {
+  this.cards_ = [];
+  this.foundations_ = [];
+  this.tableux_ = [];
+
   // Get the card deck.
   var cardElements = goog.dom.getElementsByClass(
       solitario.game.Game.ClassNames_.CARD);
   for (var i = cardElements.length - 1; i >= 0; i--) {
+    goog.events.removeAll(cardElements[i]);
     this.cards_.push(new solitario.game.Card(cardElements[i]));
   }
 
@@ -190,6 +193,8 @@ solitario.game.Game.prototype.moveCardFromStockToWaste_ = function() {
     card.setZIndex(solitario.game.constants.MAX_ZINDEX);
     // Add card to waste.
     this.waste_.push(card);
+    // The game state changed, update subscribers.
+    solitario.pubsub.publish(solitario.pubsub.Topics.GAME_STATE_CHANGED);
   }
 };
 
@@ -236,6 +241,9 @@ solitario.game.Game.prototype.onBuild_ = function(evnt) {
     card.setZIndex(solitario.game.constants.MAX_ZINDEX);
     card.detachFromPile();
     selectedFoundation.push(card);
+
+    // The game state changed, update subscribers.
+    solitario.pubsub.publish(solitario.pubsub.Topics.GAME_STATE_CHANGED);
   }
 };
 
@@ -257,6 +265,9 @@ solitario.game.Game.prototype.onCardDragEnd_ = function(evnt) {
 
     card.detachFromPile();
     this.dropPile_.push(card);
+
+    // The game state changed, update subscribers.
+    solitario.pubsub.publish(solitario.pubsub.Topics.GAME_STATE_CHANGED);
   } else {
     card.returnToPile();
   }
@@ -334,6 +345,9 @@ solitario.game.Game.prototype.onGroupDragEnd_ = function(evnt) {
     this.dropPile_.hideDroppableIndicator();
     group.detachFromPile();
     this.dropPile_.pushGroup(group);
+
+    // The game state changed, update subscribers.
+    solitario.pubsub.publish(solitario.pubsub.Topics.GAME_STATE_CHANGED);
   } else {
     group.returnToPile();
   }
@@ -409,9 +423,14 @@ solitario.game.Game.prototype.onRestock_ = function(evnt) {
     // Sends back all the cards in the waste to the stock.
     var delay = 0;
     for (var i = this.waste_.pile.length - 1; i >= 0; i--) {
-      window.setTimeout(goog.bind(this.moveCardFromWasteToStock_, this), delay);
+      goog.Timer.callOnce(this.moveCardFromWasteToStock_, delay, this);
       delay += 50;
     }
+
+    // The game state changed, update subscribers after all cards are back in
+    // the stock.
+    // window.setTimeout(solitario.pubsub.publish, delay,
+    //     solitario.pubsub.Topics.GAME_STATE_CHANGED);
   }
 };
 
@@ -436,6 +455,17 @@ solitario.game.Game.prototype.onStockTaken_ = function(evnt) {
 solitario.game.Game.prototype.onTableuReveal_ = function(evnt) {
   // This action awards some score points.
   this.updateScore_(solitario.game.constants.Scoring.TABLEU_REVEAL);
+};
+
+
+/**
+ * Resets the score to the initial value for a new game.
+ * @private
+ */
+solitario.game.Game.prototype.resetScore_ = function() {
+  this.score = 0;
+  // Notify subscribers that the score was updated.
+  solitario.pubsub.publish(solitario.pubsub.Topics.SCORE_UPDATED, this.score);
 };
 
 
@@ -477,7 +507,10 @@ solitario.game.Game.prototype.updateScore_ = function(points) {
  * Starts a new game reinitializing all the elements.
  */
 solitario.game.Game.prototype.start = function() {
-  this.updateScore_(0); // Always start at zero points.
+  // Initialize the card objects, cards and piles.
+  this.init_();
+  this.resetScore_();
+  this.is_started = true;
 
   // Shuffles the cards.
   this.shuffleCards_();
@@ -529,6 +562,9 @@ solitario.game.Game.prototype.start = function() {
             var readyEvent = new goog.events.Event(
                 solitario.game.constants.Events.READY, this);
             goog.events.dispatchEvent(this, readyEvent);
+            // The game state changed, update subscribers.
+            solitario.pubsub.publish(
+                solitario.pubsub.Topics.GAME_STATE_CHANGED);
           }
         }, false, this);
 
