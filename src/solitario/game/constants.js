@@ -76,6 +76,15 @@ solitario.game.constants.CardValue = {
 
 
 /**
+ * Duration of CSS game animations in milliseconds, keep in sync with
+ * _cards.scss
+ * @type {number}
+ * @const
+ */
+solitario.game.constants.CARD_ANIMATION_DURATION = 300;
+
+
+/**
  * Duration of the delay between cards when dropping them as a group. The value
  * is in milliseconds.
  * @type {number}

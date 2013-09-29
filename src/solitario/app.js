@@ -101,6 +101,18 @@ solitario.App.DomIds_ = {
 
 
 /**
+ * Saves the game state when something changes.
+ * @private
+ */
+solitario.App.prototype.gameStateChanged_ = function() {
+  // Save state after all animations have finished.
+  goog.Timer.callOnce(function() {
+    window.console.debug('GAME_STATE_CHANGED');
+  }, solitario.game.constants.CARD_ANIMATION_DURATION);
+};
+
+
+/**
  * Setup event listeners, pubsub subscribers and run some initialization logic.
  * @private
  */
@@ -112,6 +124,8 @@ solitario.App.prototype.init_ = function() {
       this.resizeBoard_, false, this);
 
   // Subscribe to pubsub notifications.
+  solitario.pubsub.subscribe(solitario.pubsub.Topics.GAME_STATE_CHANGED,
+      this.gameStateChanged_, this);
   solitario.pubsub.subscribe(solitario.pubsub.Topics.SCORE_UPDATED,
       this.updateScore_, this);
 

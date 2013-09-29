@@ -193,8 +193,6 @@ solitario.game.Game.prototype.moveCardFromStockToWaste_ = function() {
     card.setZIndex(solitario.game.constants.MAX_ZINDEX);
     // Add card to waste.
     this.waste_.push(card);
-    // The game state changed, update subscribers.
-    solitario.pubsub.publish(solitario.pubsub.Topics.GAME_STATE_CHANGED);
   }
 };
 
@@ -417,7 +415,7 @@ solitario.game.Game.prototype.onGroupDragStart_ = function(evnt) {
  */
 solitario.game.Game.prototype.onRestock_ = function(evnt) {
   if (!this.waste_.isEmpty()) {
-    // Updates the game score, doing a restock is a bad choice :(
+    // Updates the game score negatively, doing a restock is a bad move :(
     this.updateScore_(solitario.game.constants.Scoring.RESTOCK);
 
     // Sends back all the cards in the waste to the stock.
@@ -429,8 +427,9 @@ solitario.game.Game.prototype.onRestock_ = function(evnt) {
 
     // The game state changed, update subscribers after all cards are back in
     // the stock.
-    // window.setTimeout(solitario.pubsub.publish, delay,
-    //     solitario.pubsub.Topics.GAME_STATE_CHANGED);
+    goog.Timer.callOnce(function() {
+      solitario.pubsub.publish(solitario.pubsub.Topics.GAME_STATE_CHANGED);
+    }, delay + solitario.game.constants.CARD_ANIMATION_DURATION);
   }
 };
 
@@ -443,6 +442,7 @@ solitario.game.Game.prototype.onRestock_ = function(evnt) {
  */
 solitario.game.Game.prototype.onStockTaken_ = function(evnt) {
   this.moveCardFromStockToWaste_();
+  solitario.pubsub.publish(solitario.pubsub.Topics.GAME_STATE_CHANGED);
 };
 
 

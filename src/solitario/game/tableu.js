@@ -184,7 +184,7 @@ solitario.game.Tableu.prototype.initialize = function(cards) {
 
   // Creates a delay for pushing each card to the tableu, in order to create
   // a progressive effect.
-  var delay = 300;
+  var delay = solitario.game.constants.CARD_ANIMATION_DURATION;
   for (var i = cards.length - 1; i >= 0; i--) {
     window.setTimeout(goog.bind(this.push, this), delay, cards[i]);
     delay += 80;

@@ -269,7 +269,7 @@ solitario.game.Pile.prototype.push = function(card) {
   goog.Timer.callOnce(function(evnt) {
     card.setZIndex(cardZIndex);
     card.zIndexInPile = cardZIndex;
-  }, 350, this);
+  }, solitario.game.constants.CARD_ANIMATION_DURATION, this);
 };
 
 
