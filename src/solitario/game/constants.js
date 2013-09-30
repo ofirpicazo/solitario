@@ -140,7 +140,7 @@ solitario.game.constants.MAX_ZINDEX = 1000;
 solitario.game.constants.PileTypes = {
   FOUNDATION: 'foundation',
   STOCK: 'stock',
-  TABLEU: 'table',
+  TABLEU: 'tableu',
   WASTE: 'waste'
 };
 

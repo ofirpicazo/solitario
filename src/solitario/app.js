@@ -143,8 +143,22 @@ solitario.App.prototype.init_ = function() {
   // Trigger initial viewport calculation.
   this.resizeBoard_();
 
-  // TODO(ofirp): Check for the existance of saved game, and load it.
-  this.game_.start();
+  // Load saved game or create a new one.
+  this.loadGame_();
+};
+
+
+/**
+ * Load saved game or create new one if none exists.
+ * @private
+ */
+solitario.App.prototype.loadGame_ = function() {
+  var savedGame = this.storage_.get(solitario.App.SAVED_GAME_STORAGE_KEY_);
+  if (savedGame) {
+
+  } else {
+    this.startNewGame_();
+  }
 };
 
 
@@ -172,10 +186,8 @@ solitario.App.prototype.resizeBoard_ = function(e) {
  * @private
  */
 solitario.App.prototype.startNewGame_ = function() {
-  // TODO(ofirp): Wipe old game state.
-
   this.game_ = new solitario.game.Game();
-  this.game_.start();
+  this.game_.newGame();
 };
 
 

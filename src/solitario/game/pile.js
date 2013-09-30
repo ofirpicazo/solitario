@@ -13,6 +13,8 @@ goog.require('goog.events');
 goog.require('goog.events.EventTarget');
 goog.require('goog.style');
 goog.require('solitario.game.constants');
+goog.require('solitario.game.storage.CardForStorage');
+goog.require('solitario.game.storage.PileForStorage');
 goog.require('solitario.game.utils');
 goog.require('solitario.pubsub');
 
@@ -145,27 +147,19 @@ solitario.game.Pile.prototype.canAcceptCard = function(card) {
 
 
 /**
- * Returns a lightweight representation of the pile.
+ * Returns a lightweight representation of the pile intended for storage.
  *
  * @return {Object} A lightweight object representing the pile.
  */
-solitario.game.Pile.prototype.forSerialization = function() {
-  var pile = {};
-  pile['id'] = this.id;
-  pile['type'] = this.pileType;
-
-  // Add cards
+solitario.game.Pile.prototype.forStorage = function() {
   var cards = [];
-  var card = {};
   for (var i = 0; i < this.pile.length; i++) {
-    card = {};
-    card['id'] = this.pile[i].id;
-    card['revealed'] = this.pile[i].isRevealed();
-    cards.push(card);
+    cards.push(new solitario.game.storage.CardForStorage(this.pile[i].id,
+        this.pile[i].isRevealed()));
   }
-  pile['cards'] = cards;
 
-  return pile;
+  return new solitario.game.storage.PileForStorage(this.id, this.pileType,
+      cards);
 };
 
 

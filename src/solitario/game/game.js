@@ -18,6 +18,7 @@ goog.require('solitario.game.Stock');
 goog.require('solitario.game.Tableu');
 goog.require('solitario.game.Waste');
 goog.require('solitario.game.constants');
+goog.require('solitario.game.storage.GameForStorage');
 goog.require('solitario.pubsub');
 
 
@@ -504,34 +505,9 @@ solitario.game.Game.prototype.updateScore_ = function(points) {
 
 
 /**
- * Returns a string representation of the current game state.
- *
- * @return {string} A JSON string representing the current game state.
- */
-solitario.game.Game.prototype.serialize = function() {
-  var game = {};
-  game['score'] = this.score;
-  game['stock'] = this.stock_.forSerialization();
-  game['waste'] = this.waste_.forSerialization();
-
-  // Serialize foundations
-  for (var i = this.foundations_.length - 1; i >= 0; i--) {
-    game[this.foundations_[i].id] = this.foundations_[i].forSerialization();
-  }
-
-  // Serialize tableux
-  for (var i = this.tableux_.length - 1; i >= 0; i--) {
-    game[this.tableux_[i].id] = this.tableux_[i].forSerialization();
-  }
-
-  return goog.json.serialize(game);
-};
-
-
-/**
  * Starts a new game reinitializing all the elements.
  */
-solitario.game.Game.prototype.start = function() {
+solitario.game.Game.prototype.newGame = function() {
   // Initialize the card objects, cards and piles.
   this.init_();
   this.resetScore_();
@@ -610,4 +586,28 @@ solitario.game.Game.prototype.start = function() {
                      this.onRestock_, false, this);
   goog.events.listen(this.stock_, solitario.game.constants.Events.STOCK_TAKEN,
                      this.onStockTaken_, false, this);
+};
+
+
+/**
+ * Returns a string representation of the current game state.
+ *
+ * @return {string} A JSON string representing the current game state.
+ */
+solitario.game.Game.prototype.serialize = function() {
+  // Get foundations
+  var foundations = [];
+  for (var i = 0; i < this.foundations_.length; i++) {
+    foundations.push(this.foundations_[i].forStorage());
+  }
+
+  // Get tableux
+  var tableux = [];
+  for (var i = 0; i < this.tableux_.length; i++) {
+    tableux.push(this.tableux_[i].forStorage());
+  }
+
+  var game = new solitario.game.storage.GameForStorage(this.score,
+      this.stock_.forStorage(), this.waste_.forStorage(), foundations, tableux);
+  return goog.json.serialize(game);
 };
