@@ -14,7 +14,8 @@ goog.require('goog.dom.BufferedViewportSizeMonitor');
 goog.require('goog.dom.ViewportSizeMonitor');
 goog.require('goog.dom.classes');
 goog.require('goog.events');
-goog.require('goog.storage.mechanism.HTML5WebStorage');
+goog.require('goog.json');
+goog.require('goog.storage.mechanism.HTML5LocalStorage');
 goog.require('solitario.game.Game');
 goog.require('solitario.pubsub');
 
@@ -51,10 +52,10 @@ solitario.App = function() {
 
   /**
    * Storage mechanism for using HTML5 local storage to save game state.
-   * @type {goog.storage.mechanism.HTML5WebStorage}
+   * @type {goog.storage.mechanism.HTML5LocalStorage}
    * @private
    */
-  this.storage_ = new goog.storage.mechanism.HTML5WebStorage();
+  this.storage_ = new goog.storage.mechanism.HTML5LocalStorage();
 
   /**
    * DOM element to display the score in.
@@ -101,14 +102,24 @@ solitario.App.DomIds_ = {
 
 
 /**
+ * HTML5 local storage key for saved games.
+ * @type {string}
+ * @const
+ * @private
+ */
+solitario.App.SAVED_GAME_STORAGE_KEY_ = 'savedGame';
+
+
+/**
  * Saves the game state when something changes.
  * @private
  */
 solitario.App.prototype.gameStateChanged_ = function() {
   // Save state after all animations have finished.
   goog.Timer.callOnce(function() {
-    window.console.debug('GAME_STATE_CHANGED');
-  }, solitario.game.constants.CARD_ANIMATION_DURATION);
+    this.storage_.set(solitario.App.SAVED_GAME_STORAGE_KEY_,
+        this.game_.serialize());
+  }, solitario.game.constants.CARD_ANIMATION_DURATION, this);
 };
 
 

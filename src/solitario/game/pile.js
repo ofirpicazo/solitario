@@ -53,6 +53,12 @@ solitario.game.Pile = function(el) {
   this.element_ = el;
 
   /**
+   * Unique identifier for this pile.
+   * @type {string}
+   */
+  this.id = this.element_.id;
+
+  /**
    * Type of pile, override in subclases.
    * @type {solitario.game.constants.PileTypes}
    */
@@ -135,6 +141,31 @@ solitario.game.Pile.prototype.calculateDroppableRegion = function() {
 solitario.game.Pile.prototype.canAcceptCard = function(card) {
   // Don't accept if the card is from the same pile.
   return (card.pile != this);
+};
+
+
+/**
+ * Returns a lightweight representation of the pile.
+ *
+ * @return {Object} A lightweight object representing the pile.
+ */
+solitario.game.Pile.prototype.forSerialization = function() {
+  var pile = {};
+  pile['id'] = this.id;
+  pile['type'] = this.pileType;
+
+  // Add cards
+  var cards = [];
+  var card = {};
+  for (var i = 0; i < this.pile.length; i++) {
+    card = {};
+    card['id'] = this.pile[i].id;
+    card['revealed'] = this.pile[i].isRevealed();
+    cards.push(card);
+  }
+  pile['cards'] = cards;
+
+  return pile;
 };
 
 

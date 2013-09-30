@@ -504,6 +504,31 @@ solitario.game.Game.prototype.updateScore_ = function(points) {
 
 
 /**
+ * Returns a string representation of the current game state.
+ *
+ * @return {string} A JSON string representing the current game state.
+ */
+solitario.game.Game.prototype.serialize = function() {
+  var game = {};
+  game['score'] = this.score;
+  game['stock'] = this.stock_.forSerialization();
+  game['waste'] = this.waste_.forSerialization();
+
+  // Serialize foundations
+  for (var i = this.foundations_.length - 1; i >= 0; i--) {
+    game[this.foundations_[i].id] = this.foundations_[i].forSerialization();
+  }
+
+  // Serialize tableux
+  for (var i = this.tableux_.length - 1; i >= 0; i--) {
+    game[this.tableux_[i].id] = this.tableux_[i].forSerialization();
+  }
+
+  return goog.json.serialize(game);
+};
+
+
+/**
  * Starts a new game reinitializing all the elements.
  */
 solitario.game.Game.prototype.start = function() {
