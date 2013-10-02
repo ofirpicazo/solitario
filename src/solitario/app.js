@@ -40,7 +40,7 @@ solitario.App = function() {
    * @type {solitario.game.Game}
    * @private
    */
-  this.game_ = new solitario.game.Game();
+  this.game_ = null;
 
   /**
    * Button to start a new game.

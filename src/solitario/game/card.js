@@ -190,6 +190,21 @@ solitario.game.Card.Suits_ = {
 
 
 /**
+ * Creates a Card object from a CardForStorage object.
+ *
+ * @param {solitario.game.storage.CardForStorage} cardForStorage The object to
+ *     recreate a Card from.
+ * @return {solitario.game.Card} The created Card full object.
+ */
+solitario.game.Card.buildFromStorage = function(cardForStorage) {
+  var cardElement = goog.dom.getElement(cardForStorage.id);
+  var card = new solitario.game.Card(cardElement);
+  (cardForStorage.revealed) ? card.reveal() : card.cover;
+  return card;
+};
+
+
+/**
  * Resets the cache created for the absolute position of this card.
  *
  * @private

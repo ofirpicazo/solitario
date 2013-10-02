@@ -108,6 +108,18 @@ solitario.game.Game.ClassNames_ = {
 
 
 /**
+ * Creates a Game object from a serialized GameForStorage object.
+ *
+ * @param {string} serializedGame A JSON serialized GameForStorage object.
+ *
+ * @return {solitario.game.Game} An initialized Game from the serialized object.
+ */
+solitario.game.Game.loadSavedGame = function(serializedGame) {
+  return null;
+};
+
+
+/**
  * Calculates the points awarded for moving a card from its current pile to a
  * new pile.
  *
@@ -146,38 +158,44 @@ solitario.game.Game.prototype.calculateCardMovingPoints_ = function(card,
  *
  * @private
  */
-solitario.game.Game.prototype.init_ = function() {
-  this.cards_ = [];
-  this.foundations_ = [];
-  this.tableux_ = [];
-
-  // Get the card deck.
-  var cardElements = goog.dom.getElementsByClass(
-      solitario.game.Game.ClassNames_.CARD);
-  for (var i = cardElements.length - 1; i >= 0; i--) {
-    goog.events.removeAll(cardElements[i]);
-    this.cards_.push(new solitario.game.Card(cardElements[i]));
+solitario.game.Game.prototype.initListeners_ = function() {
+  // Sets up listeners for cards' events.
+  for (var i = this.cards_.length - 1; i >= 0; i--) {
+    goog.events.listen(this.cards_[i],
+        solitario.game.constants.Events.DRAG_START, this.onCardDragStart_,
+        false, this);
+    goog.events.listen(this.cards_[i],
+        solitario.game.constants.Events.DRAG_MOVE, this.onCardDragMove_,
+        false, this);
+    goog.events.listen(this.cards_[i],
+        solitario.game.constants.Events.DRAG_END, this.onCardDragEnd_,
+        false, this);
+    goog.events.listen(this.cards_[i],
+        solitario.game.constants.Events.BUILD, this.onBuild_,
+        false, this);
   }
 
-  // Get stock and waste.
-  this.stock_ = new solitario.game.Stock(goog.dom.getElement(
-      solitario.game.Game.ClassNames_.STOCK));
-  this.waste_ = new solitario.game.Waste(goog.dom.getElement(
-      solitario.game.Game.ClassNames_.WASTE));
-
-  // Get foundations.
-  var foundationElements = goog.dom.getElementsByClass(
-      solitario.game.Game.ClassNames_.FOUNDATION);
-  for (var i = foundationElements.length - 1; i >= 0; i--) {
-    this.foundations_[i] = new solitario.game.Foundation(foundationElements[i]);
+  // Sets up listeners for tableu events.
+  for (var i = this.tableux_.length - 1; i >= 0; i--) {
+    goog.events.listen(this.tableux_[i],
+        solitario.game.constants.Events.GROUP_DRAG_START,
+        this.onGroupDragStart_, false, this);
+    goog.events.listen(this.tableux_[i],
+        solitario.game.constants.Events.GROUP_DRAG_MOVE,
+        this.onGroupDragMove_, false, this);
+    goog.events.listen(this.tableux_[i],
+        solitario.game.constants.Events.GROUP_DRAG_END,
+        this.onGroupDragEnd_, false, this);
+    goog.events.listen(this.tableux_[i],
+        solitario.game.constants.Events.TABLEU_REVEAL,
+        this.onTableuReveal_, false, this);
   }
 
-  // Get tableux.
-  var tableuElements = goog.dom.getElementsByClass(
-      solitario.game.Game.ClassNames_.TABLEU);
-  for (var i = tableuElements.length - 1; i >= 0; i--) {
-    this.tableux_[i] = new solitario.game.Tableu(tableuElements[i]);
-  }
+  // Sets up listeners for game events.
+  goog.events.listen(this.stock_, solitario.game.constants.Events.RESTOCK,
+                     this.onRestock_, false, this);
+  goog.events.listen(this.stock_, solitario.game.constants.Events.STOCK_TAKEN,
+                     this.onStockTaken_, false, this);
 };
 
 
@@ -508,44 +526,47 @@ solitario.game.Game.prototype.updateScore_ = function(points) {
  * Starts a new game reinitializing all the elements.
  */
 solitario.game.Game.prototype.newGame = function() {
-  // Initialize the card objects, cards and piles.
-  this.init_();
+  this.cards_ = [];
+  this.foundations_ = [];
+  this.tableux_ = [];
+
   this.resetScore_();
   this.is_started = true;
 
-  // Shuffles the cards.
-  this.shuffleCards_();
-
-  // Sets up listeners for cards' events.
-  for (var i = this.cards_.length - 1; i >= 0; i--) {
-    goog.events.listen(this.cards_[i],
-        solitario.game.constants.Events.DRAG_START, this.onCardDragStart_,
-        false, this);
-    goog.events.listen(this.cards_[i],
-        solitario.game.constants.Events.DRAG_MOVE, this.onCardDragMove_,
-        false, this);
-    goog.events.listen(this.cards_[i],
-        solitario.game.constants.Events.DRAG_END, this.onCardDragEnd_,
-        false, this);
-    goog.events.listen(this.cards_[i],
-        solitario.game.constants.Events.BUILD, this.onBuild_,
-        false, this);
+  // Get the card deck.
+  var cardElements = goog.dom.getElementsByClass(
+      solitario.game.Game.ClassNames_.CARD);
+  for (var i = cardElements.length - 1; i >= 0; i--) {
+    goog.events.removeAll(cardElements[i]);
+    this.cards_.push(new solitario.game.Card(cardElements[i]));
   }
 
-  // Sets up listeners for card group events.
-  for (var i = this.tableux_.length - 1; i >= 0; i--) {
-    goog.events.listen(this.tableux_[i],
-        solitario.game.constants.Events.GROUP_DRAG_START,
-        this.onGroupDragStart_, false, this);
-    goog.events.listen(this.tableux_[i],
-        solitario.game.constants.Events.GROUP_DRAG_MOVE,
-        this.onGroupDragMove_, false, this);
-    goog.events.listen(this.tableux_[i],
-        solitario.game.constants.Events.GROUP_DRAG_END,
-        this.onGroupDragEnd_, false, this);
+  // Shuffles the cards.
+  // TODO(ofir): Integrate this with the initialization of cards above.
+  this.shuffleCards_();
+
+  // Get stock and waste.
+  this.stock_ = new solitario.game.Stock(goog.dom.getElement(
+      solitario.game.Game.ClassNames_.STOCK));
+  this.waste_ = new solitario.game.Waste(goog.dom.getElement(
+      solitario.game.Game.ClassNames_.WASTE));
+
+  // Get foundations.
+  var foundationElements = goog.dom.getElementsByClass(
+      solitario.game.Game.ClassNames_.FOUNDATION);
+  for (var i = foundationElements.length - 1; i >= 0; i--) {
+    this.foundations_[i] = new solitario.game.Foundation(foundationElements[i]);
+  }
+
+  // Get tableux.
+  var tableuElements = goog.dom.getElementsByClass(
+      solitario.game.Game.ClassNames_.TABLEU);
+  for (var i = tableuElements.length - 1; i >= 0; i--) {
+    this.tableux_[i] = new solitario.game.Tableu(tableuElements[i]);
   }
 
   // Sets cards for tableux.
+  // TODO(ofir): Integrate this with the initialization of tableux above.
   var numCardsForTableu = 0;
   var startIndex, endIndex = 0;
   var numTableuxInitialized = 0;
@@ -571,21 +592,14 @@ solitario.game.Game.prototype.newGame = function() {
 
     var tableuCards = this.cards_.slice(startIndex, endIndex);
     tableu.initialize(tableuCards);
-
-    // Add event listeners for tableu events.
-    goog.events.listen(tableu, solitario.game.constants.Events.TABLEU_REVEAL,
-        this.onTableuReveal_, false, this);
   }, this);
 
   // Sets cards for stock
   var cardsForStock = this.cards_.slice(endIndex);
   this.stock_.initialize(cardsForStock);
 
-  // Sets up listeners for game events.
-  goog.events.listen(this.stock_, solitario.game.constants.Events.RESTOCK,
-                     this.onRestock_, false, this);
-  goog.events.listen(this.stock_, solitario.game.constants.Events.STOCK_TAKEN,
-                     this.onStockTaken_, false, this);
+  // Initialize event listeners for game elements.
+  this.initListeners_();
 };
 
 
