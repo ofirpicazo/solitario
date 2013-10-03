@@ -495,7 +495,8 @@ solitario.game.Game.prototype.resetScore_ = function() {
  */
 solitario.game.Game.prototype.shuffleCards_ = function() {
   for (var i = this.cards_.length - 1; i >= 0; i--) {
-    var randomPosition = solitario.game.utils.getRandomInt(0, i);
+    var randomPosition = solitario.game.utils.getRandomInt(0,
+        this.cards_.length - 1);
     var tmp = this.cards_[i];
     this.cards_[i] = this.cards_[randomPosition];
     this.cards_[randomPosition] = tmp;
@@ -533,7 +534,7 @@ solitario.game.Game.prototype.newGame = function() {
   this.resetScore_();
   this.is_started = true;
 
-  // Get the card deck.
+  // Setup the card deck.
   var cardElements = goog.dom.getElementsByClass(
       solitario.game.Game.ClassNames_.CARD);
   for (var i = cardElements.length - 1; i >= 0; i--) {
@@ -541,8 +542,7 @@ solitario.game.Game.prototype.newGame = function() {
     this.cards_.push(new solitario.game.Card(cardElements[i]));
   }
 
-  // Shuffles the cards.
-  // TODO(ofir): Integrate this with the initialization of cards above.
+  // Shuffle the cards.
   this.shuffleCards_();
 
   // Setup tableux.
