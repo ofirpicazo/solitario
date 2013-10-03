@@ -545,38 +545,20 @@ solitario.game.Game.prototype.newGame = function() {
   // TODO(ofir): Integrate this with the initialization of cards above.
   this.shuffleCards_();
 
-  // Get stock and waste.
-  this.stock_ = new solitario.game.Stock(goog.dom.getElement(
-      solitario.game.Game.ClassNames_.STOCK));
-  this.waste_ = new solitario.game.Waste(goog.dom.getElement(
-      solitario.game.Game.ClassNames_.WASTE));
-
-  // Get foundations.
-  var foundationElements = goog.dom.getElementsByClass(
-      solitario.game.Game.ClassNames_.FOUNDATION);
-  for (var i = foundationElements.length - 1; i >= 0; i--) {
-    this.foundations_[i] = new solitario.game.Foundation(foundationElements[i]);
-  }
-
-  // Get tableux.
-  var tableuElements = goog.dom.getElementsByClass(
-      solitario.game.Game.ClassNames_.TABLEU);
-  for (var i = tableuElements.length - 1; i >= 0; i--) {
-    this.tableux_[i] = new solitario.game.Tableu(tableuElements[i]);
-  }
-
-  // Sets cards for tableux.
-  // TODO(ofir): Integrate this with the initialization of tableux above.
-  var numCardsForTableu = 0;
+  // Setup tableux.
   var startIndex, endIndex = 0;
   var numTableuxInitialized = 0;
-  goog.array.forEach(this.tableux_, function(tableu, index) {
-    numCardsForTableu = index + 1;
+  var tableuElements = goog.dom.getElementsByClass(
+      solitario.game.Game.ClassNames_.TABLEU);
+  for (var i = 0; i < tableuElements.length; i++) {
+    this.tableux_[i] = new solitario.game.Tableu(tableuElements[i]);
     startIndex = endIndex;
-    endIndex += numCardsForTableu;
+    endIndex += i + 1;
+    var tableuCards = this.cards_.slice(startIndex, endIndex);
+    this.tableux_[i].initialize(tableuCards);
 
     // Trigger a READY event when all tableux are ready.
-    goog.events.listen(tableu, solitario.game.constants.Events.READY,
+    goog.events.listen(this.tableux_[i], solitario.game.constants.Events.READY,
         function(evnt) {
           numTableuxInitialized++;
           if (numTableuxInitialized == this.tableux_.length) {
@@ -589,14 +571,24 @@ solitario.game.Game.prototype.newGame = function() {
                 solitario.pubsub.Topics.GAME_STATE_CHANGED);
           }
         }, false, this);
+  }
 
-    var tableuCards = this.cards_.slice(startIndex, endIndex);
-    tableu.initialize(tableuCards);
-  }, this);
-
-  // Sets cards for stock
+  // Setup stock.
+  this.stock_ = new solitario.game.Stock(goog.dom.getElement(
+      solitario.game.Game.ClassNames_.STOCK));
   var cardsForStock = this.cards_.slice(endIndex);
   this.stock_.initialize(cardsForStock);
+
+  // Setup waste.
+  this.waste_ = new solitario.game.Waste(goog.dom.getElement(
+      solitario.game.Game.ClassNames_.WASTE));
+
+  // Setup foundations.
+  var foundationElements = goog.dom.getElementsByClass(
+      solitario.game.Game.ClassNames_.FOUNDATION);
+  for (var i = foundationElements.length - 1; i >= 0; i--) {
+    this.foundations_[i] = new solitario.game.Foundation(foundationElements[i]);
+  }
 
   // Initialize event listeners for game elements.
   this.initListeners_();
