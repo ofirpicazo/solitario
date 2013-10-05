@@ -39,20 +39,6 @@ goog.inherits(solitario.game.Stock, solitario.game.Pile);
 
 
 /**
- * Initializes the Stock with the given array of cards, the last card will
- * be revealed.
- *
- * @param {Array.<solitario.game.Card>} cards Cards to be stacked in the stock.
- */
-solitario.game.Stock.prototype.initialize = function(cards) {
-  // Push all cards to the pile.
-  goog.array.forEach(cards, function(card) {
-    this.push(card);
-  }, this);
-};
-
-
-/**
  * Dispatches an event indicating the user wishes to move all cards from the
  * waste back to the stock
  *

@@ -241,6 +241,21 @@ solitario.game.Pile.prototype.hideDroppableIndicator = function() {
 
 
 /**
+ * Initializes the pile with the given array of cards.
+ *
+ * @param {Array.<solitario.game.Card>} cards Cards to be stacked in the pile.
+ */
+solitario.game.Pile.prototype.initialize = function(cards) {
+  if (cards.length < 1)
+    return;
+  // Push all cards to the pile.
+  goog.array.forEach(cards, function(card) {
+    this.push(card);
+  }, this);
+};
+
+
+/**
  * Returns whether the pile has cards or not.
  *
  * @return {boolean} True if the pile has no cards, false if it does.

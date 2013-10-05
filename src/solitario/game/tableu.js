@@ -173,10 +173,13 @@ solitario.game.Tableu.prototype.onGroupDragStart_ = function(evnt) {
  * @param {Array.<solitario.game.Card>} cards Cards to be stacked in the tableu.
  */
 solitario.game.Tableu.prototype.initialize = function(cards) {
+  if (cards.length < 1)
+    return;
   // Reveal the top card when its the transition is finished.
-  goog.events.listenOnce(cards[0], goog.events.EventType.TRANSITIONEND,
+  var topCard = cards[cards.length - 1];
+  goog.events.listenOnce(topCard, goog.events.EventType.TRANSITIONEND,
       function(evnt) {
-        cards[0].reveal();
+        topCard.reveal();
         var readyEvent = new goog.events.Event(
             solitario.game.constants.Events.READY, this);
         goog.events.dispatchEvent(this, readyEvent);
@@ -185,7 +188,7 @@ solitario.game.Tableu.prototype.initialize = function(cards) {
   // Creates a delay for pushing each card to the tableu, in order to create
   // a progressive effect.
   var delay = solitario.game.constants.CARD_ANIMATION_DURATION;
-  for (var i = cards.length - 1; i >= 0; i--) {
+  for (var i = 0; i < cards.length; i++) {
     window.setTimeout(goog.bind(this.push, this), delay, cards[i]);
     delay += 80;
   }

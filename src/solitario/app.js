@@ -155,7 +155,8 @@ solitario.App.prototype.init_ = function() {
 solitario.App.prototype.loadGame_ = function() {
   var savedGame = this.storage_.get(solitario.App.SAVED_GAME_STORAGE_KEY_);
   if (savedGame) {
-
+    this.game_ = new solitario.game.Game();
+    this.game_.loadSavedGame(savedGame);
   } else {
     this.startNewGame_();
   }
@@ -187,7 +188,7 @@ solitario.App.prototype.resizeBoard_ = function(e) {
  */
 solitario.App.prototype.startNewGame_ = function() {
   this.game_ = new solitario.game.Game();
-  this.game_.newGame();
+  this.game_.startNewGame();
 };
 
 

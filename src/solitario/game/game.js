@@ -9,6 +9,7 @@
 goog.provide('solitario.game.Game');
 
 goog.require('goog.Timer');
+goog.require('goog.array');
 goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.events.EventTarget');
@@ -104,18 +105,6 @@ solitario.game.Game.ClassNames_ = {
   STOCK: 'stock',
   TABLEU: 'tableu',
   WASTE: 'waste'
-};
-
-
-/**
- * Creates a Game object from a serialized GameForStorage object.
- *
- * @param {string} serializedGame A JSON serialized GameForStorage object.
- *
- * @return {solitario.game.Game} An initialized Game from the serialized object.
- */
-solitario.game.Game.loadSavedGame = function(serializedGame) {
-  return null;
 };
 
 
@@ -524,15 +513,118 @@ solitario.game.Game.prototype.updateScore_ = function(points) {
 
 
 /**
+ * Sets the status of a game based on a serialized GameForStorage object.
+ *
+ * @param {string} serializedGame A JSON serialized GameForStorage object.
+ */
+solitario.game.Game.prototype.loadSavedGame = function(serializedGame) {
+  var game = /* @type {solitario.game.storage.GameForStorage} */
+      (goog.json.parse(serializedGame));
+
+  // Restore stock.
+  var stockCards = [];
+  for (var i = 0; i < game.stock.cards.length; i++) {
+    var card = new solitario.game.Card(goog.dom.getElement(
+        game.stock.cards[i].id));
+    // All cards in the stock should be covered.
+    card.cover();
+    stockCards.push(card);
+  }
+  this.stock_ = new solitario.game.Stock(goog.dom.getElement(game.stock.id));
+  this.stock_.initialize(stockCards);
+  goog.array.extend(this.cards_, stockCards);
+
+  // Restore waste.
+  var wasteCards = [];
+  for (var i = 0; i < game.waste.cards.length; i++) {
+    var card = new solitario.game.Card(goog.dom.getElement(
+        game.waste.cards[i].id));
+    // All cards in the waste are revealed.
+    card.reveal();
+    wasteCards.push(card);
+  }
+  this.waste_ = new solitario.game.Waste(goog.dom.getElement(game.waste.id));
+  this.waste_.initialize(wasteCards);
+  goog.array.extend(this.cards_, wasteCards);
+
+  // Restore foundations.
+  for (var i = 0; i < game.foundations.length; i++) {
+    var storedFoundation = game.foundations[i];
+    var foundationCards = [];
+    for (var j = 0; j < storedFoundation.cards.length; j++) {
+      var card = new solitario.game.Card(goog.dom.getElement(
+          storedFoundation.cards[j].id));
+      storedFoundation.cards[j].revealed ? card.reveal() : card.cover();
+      foundationCards.push(card);
+    }
+    var foundation = new solitario.game.Foundation(goog.dom.getElement(
+        storedFoundation.id));
+    foundation.initialize(foundationCards);
+    this.foundations_.push(foundation);
+    goog.array.extend(this.cards_, foundationCards);
+  }
+
+  // Restore tableux.
+  for (var i = 0; i < game.tableux.length; i++) {
+    var storedTableu = game.tableux[i];
+    var tableuCards = [];
+    for (var j = 0; j < storedTableu.cards.length; j++) {
+      var card = new solitario.game.Card(goog.dom.getElement(
+          storedTableu.cards[j].id));
+      storedTableu.cards[j].revealed ? card.reveal() : card.cover();
+      tableuCards.push(card);
+    }
+    var tableu = new solitario.game.Tableu(goog.dom.getElement(
+        storedTableu.id));
+    // Use Pile's initialize to avoid animations.
+    solitario.game.Tableu.superClass_.initialize.call(tableu, tableuCards);
+    this.tableux_.push(tableu);
+    goog.array.extend(this.cards_, tableuCards);
+  }
+
+  // Set the score
+  this.updateScore_(game.score);
+
+  // Initialize event listeners for game elements.
+  this.initListeners_();
+
+  this.is_started = true;
+};
+
+
+/**
+ * Returns a string representation of the current game state.
+ *
+ * @return {string} A JSON string representing the current game state.
+ */
+solitario.game.Game.prototype.serialize = function() {
+  // Get foundations
+  var foundations = [];
+  for (var i = 0; i < this.foundations_.length; i++) {
+    foundations.push(this.foundations_[i].forStorage());
+  }
+
+  // Get tableux
+  var tableux = [];
+  for (var i = 0; i < this.tableux_.length; i++) {
+    tableux.push(this.tableux_[i].forStorage());
+  }
+
+  var game = new solitario.game.storage.GameForStorage(this.score,
+      this.stock_.forStorage(), this.waste_.forStorage(), foundations, tableux);
+  return goog.json.serialize(game);
+};
+
+
+/**
  * Starts a new game reinitializing all the elements.
  */
-solitario.game.Game.prototype.newGame = function() {
+solitario.game.Game.prototype.startNewGame = function() {
   this.cards_ = [];
   this.foundations_ = [];
   this.tableux_ = [];
 
   this.resetScore_();
-  this.is_started = true;
 
   // Setup the card deck.
   var cardElements = goog.dom.getElementsByClass(
@@ -592,28 +684,6 @@ solitario.game.Game.prototype.newGame = function() {
 
   // Initialize event listeners for game elements.
   this.initListeners_();
-};
 
-
-/**
- * Returns a string representation of the current game state.
- *
- * @return {string} A JSON string representing the current game state.
- */
-solitario.game.Game.prototype.serialize = function() {
-  // Get foundations
-  var foundations = [];
-  for (var i = 0; i < this.foundations_.length; i++) {
-    foundations.push(this.foundations_[i].forStorage());
-  }
-
-  // Get tableux
-  var tableux = [];
-  for (var i = 0; i < this.tableux_.length; i++) {
-    tableux.push(this.tableux_[i].forStorage());
-  }
-
-  var game = new solitario.game.storage.GameForStorage(this.score,
-      this.stock_.forStorage(), this.waste_.forStorage(), foundations, tableux);
-  return goog.json.serialize(game);
+  this.is_started = true;
 };
