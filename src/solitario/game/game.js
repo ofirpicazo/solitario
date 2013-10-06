@@ -576,8 +576,7 @@ solitario.game.Game.prototype.loadSavedGame = function(serializedGame) {
     }
     var tableu = new solitario.game.Tableu(goog.dom.getElement(
         storedTableu.id));
-    // Use Pile's initialize to avoid animations.
-    solitario.game.Tableu.superClass_.initialize.call(tableu, tableuCards);
+    tableu.initialize(tableuCards);
     this.tableux_.push(tableu);
     goog.array.extend(this.cards_, tableuCards);
   }
@@ -647,7 +646,7 @@ solitario.game.Game.prototype.startNewGame = function() {
     startIndex = endIndex;
     endIndex += i + 1;
     var tableuCards = this.cards_.slice(startIndex, endIndex);
-    this.tableux_[i].initialize(tableuCards);
+    this.tableux_[i].initializeWithAnimation(tableuCards);
 
     // Trigger a READY event when all tableux are ready.
     goog.events.listen(this.tableux_[i], solitario.game.constants.Events.READY,

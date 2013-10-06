@@ -272,6 +272,9 @@ solitario.game.Pile.prototype.isEmpty = function() {
  */
 solitario.game.Pile.prototype.pop = function() {
   var card = this.pile.pop();
+  if (!card) {
+    return null;
+  }
   card.pile = null;
   card.positionInPile = null;
   card.zIndexInPile = null;

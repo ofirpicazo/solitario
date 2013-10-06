@@ -172,7 +172,7 @@ solitario.game.Tableu.prototype.onGroupDragStart_ = function(evnt) {
  *
  * @param {Array.<solitario.game.Card>} cards Cards to be stacked in the tableu.
  */
-solitario.game.Tableu.prototype.initialize = function(cards) {
+solitario.game.Tableu.prototype.initializeWithAnimation = function(cards) {
   if (cards.length < 1)
     return;
   // Reveal the top card when its the transition is finished.
