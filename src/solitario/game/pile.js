@@ -317,6 +317,14 @@ solitario.game.Pile.prototype.push = function(card) {
 
 
 /**
+ * Removes all the listeners on the pile DOM element.
+ */
+solitario.game.Pile.prototype.removeAllListeners = function() {
+  goog.events.removeAll(this.element_);
+};
+
+
+/**
  * Enables the visual clue indicating the droppable region of the pile can
  * receive a drop.
  */

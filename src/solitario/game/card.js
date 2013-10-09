@@ -526,6 +526,14 @@ solitario.game.Card.prototype.isRevealed = function() {
 
 
 /**
+ * Removes all the listeners on the card DOM element.
+ */
+solitario.game.Card.prototype.removeAllListeners = function() {
+  goog.events.removeAll(this.element_);
+};
+
+
+/**
  * Removes all listener functions for the specified event type.
  *
  * @param {number} type The type of event to remove listeners for.

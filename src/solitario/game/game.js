@@ -216,7 +216,7 @@ solitario.game.Game.prototype.moveCardFromWasteToStock_ = function() {
   if (card) {
     // Set the card above everything else.
     card.setZIndex(solitario.game.constants.MAX_ZINDEX);
-    // Add card to waste.
+    // Add card to stock.
     this.stock_.push(card);
   }
 };
@@ -467,6 +467,29 @@ solitario.game.Game.prototype.onTableuReveal_ = function(evnt) {
 
 
 /**
+ * Removes all listeners on the objects of this game.
+ *
+ * @private
+ */
+solitario.game.Game.prototype.removeListeners_ = function() {
+  // Sets up listeners for cards' events.
+  for (var i = this.cards_.length - 1; i >= 0; i--) {
+    this.cards_[i].removeAllListeners();
+    goog.events.removeAll(this.cards_[i]);
+  }
+
+  // Sets up listeners for tableu events.
+  for (var i = this.tableux_.length - 1; i >= 0; i--) {
+    goog.events.removeAll(this.tableux_[i]);
+  }
+
+  // Sets up listeners for game events.
+  this.stock_.removeAllListeners();
+  goog.events.removeAll(this.stock_);
+};
+
+
+/**
  * Resets the score to the initial value for a new game.
  * @private
  */
@@ -509,6 +532,16 @@ solitario.game.Game.prototype.updateScore_ = function(points) {
     // Notify subscribers that the score was updated.
     solitario.pubsub.publish(solitario.pubsub.Topics.SCORE_UPDATED, this.score);
   }
+};
+
+
+/**
+ * Finishes the game and cleans up listeners.
+ */
+solitario.game.Game.prototype.end = function() {
+  this.started = false;
+
+  this.removeListeners_();
 };
 
 

@@ -187,6 +187,9 @@ solitario.App.prototype.resizeBoard_ = function(e) {
  * @private
  */
 solitario.App.prototype.startNewGame_ = function() {
+  if (this.game_) {
+    this.game_.end();
+  }
   this.game_ = new solitario.game.Game();
   this.game_.startNewGame();
 };
