@@ -130,7 +130,7 @@ solitario.App.prototype.gameStateChanged_ = function() {
 solitario.App.prototype.init_ = function() {
   // Setup event listeners for UI elements and viewport changes.
   goog.events.listen(this.newGameButton_, goog.events.EventType.CLICK,
-      this.startNewGame_, false, this);
+      this.onNewGameButtonClicked_, false, this);
   goog.events.listen(this.viewportMonitor_, goog.events.EventType.RESIZE,
       this.resizeBoard_, false, this);
 
@@ -160,6 +160,23 @@ solitario.App.prototype.loadGame_ = function() {
   } else {
     this.startNewGame_();
   }
+};
+
+
+/**
+ * Handler for new game button clicks.
+ *
+ * @private
+ */
+solitario.App.prototype.onNewGameButtonClicked_ = function() {
+  this.newGameButton_.disabled = true;
+  this.startNewGame_();
+  // Enable the new game button until a new game is fully loaded in order to
+  // prevent creating a new game while we're still creating another one.
+  goog.events.listenOnce(this.game_, solitario.game.constants.Events.READY,
+      function(evnt) {
+        this.newGameButton_.disabled = false;
+      }, false, this);
 };
 
 
