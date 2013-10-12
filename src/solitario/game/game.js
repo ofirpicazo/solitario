@@ -143,6 +143,18 @@ solitario.game.Game.prototype.calculateCardMovingPoints_ = function(card,
 
 
 /**
+ * Show win state and end the game.
+ *
+ * @private
+ */
+solitario.game.Game.prototype.handleWin_ = function() {
+  // TODO(ofirp): Display message or/and animation to show winning state.
+
+  this.end();
+};
+
+
+/**
  * Initializes DOM elements of the game.
  *
  * @private
@@ -178,6 +190,13 @@ solitario.game.Game.prototype.initListeners_ = function() {
     goog.events.listen(this.tableux_[i],
         solitario.game.constants.Events.TABLEU_REVEAL,
         this.onTableuReveal_, false, this);
+  }
+
+  // Listen foundations for completed events.
+  for (var i = this.foundations_.length - 1; i >= 0; i--) {
+    goog.events.listen(this.foundations_[i],
+        solitario.game.constants.Events.FOUNDATION_COMPLETED,
+        this.onFoundationCompleted_, false, this);
   }
 
   // Sets up listeners for game events.
@@ -334,6 +353,25 @@ solitario.game.Game.prototype.onCardDragStart_ = function(evnt) {
   for (var i = piles.length - 1; i >= 0; i--) {
     piles[i].calculateDroppableRegion();
   }
+};
+
+
+/**
+ * Handles foundation completed events, triggered when a foundation has the full
+ * set of cards of its suit.
+ *
+ * @param {goog.events.Event} evnt The event object passed.
+ */
+solitario.game.Game.prototype.onFoundationCompleted_ = function(evnt) {
+  for (var i = this.foundations_.length - 1; i >= 0; i--) {
+    if (!this.foundations_[i].isCompleted()) {
+      // At least one foundation is not completed, so the game continues
+      return;
+    }
+  }
+
+  // All the foundations have been completed, we have won the game!!
+  this.handleWin_();
 };
 
 

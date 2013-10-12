@@ -65,6 +65,19 @@ solitario.game.Foundation.prototype.canAcceptCard = function(card) {
 
 
 /**
+ * Returns whether this foundation has been completed with all the cards of its
+ * suit.
+ *
+ * @return {boolean} true if completed, false otherwise.
+ */
+solitario.game.Foundation.prototype.isCompleted = function() {
+  var topCard = this.getTopCard();
+  return (topCard &&
+      topCard.number == solitario.game.constants.CardNumber.KING);
+};
+
+
+/**
  * Pop a card off of the foundation.
  *
  * @return {?solitario.game.Card} The card popped from the pile.
@@ -93,5 +106,11 @@ solitario.game.Foundation.prototype.push = function(card) {
 
   if (!this.suit) {
     this.suit = card.suit;
+  }
+
+  if (this.isCompleted()) {
+    var completedEvent = new goog.events.Event(
+        solitario.game.constants.Events.FOUNDATION_COMPLETED, this);
+    goog.events.dispatchEvent(this, completedEvent);
   }
 };
