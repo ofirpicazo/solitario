@@ -361,6 +361,7 @@ solitario.game.Game.prototype.onCardDragStart_ = function(evnt) {
  * set of cards of its suit.
  *
  * @param {goog.events.Event} evnt The event object passed.
+ * @private
  */
 solitario.game.Game.prototype.onFoundationCompleted_ = function(evnt) {
   for (var i = this.foundations_.length - 1; i >= 0; i--) {
