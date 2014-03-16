@@ -1,0 +1,123 @@
+// Copyright 2013 Ofir Picazo. All Rights Reserved.
+
+/**
+ * @fileoverview Animations definitions for different elements.
+ *
+ * @author ofirpicazo@gmail.com (Ofir Picazo)
+ */
+
+
+@mixin animation($name, $duration, $timing-function: ease, $delay: 0s, $count: 1, $fill-mode: both) {
+    -webkit-animation-delay: $delay;
+    -webkit-animation-duration: $duration;
+    -webkit-animation-iteration-count: $count;
+    -webkit-animation-name: $name;
+    -webkit-animation-timing-function: $timing-function;
+    -webkit-animation-fill-mode: $fill-mode;
+
+    -moz-animation-delay: $delay;
+    -moz-animation-duration: $duration;
+    -moz-animation-iteration-count: $count;
+    -moz-animation-name: $name;
+    -moz-animation-timing-function: $timing-function;
+    -moz-animation-fill-mode: $fill-mode;
+
+    animation-delay: $delay;
+    animation-duration: $duration;
+    animation-iteration-count: $count;
+    animation-name: $name;
+    animation-timing-function: $timing-function;
+    animation-fill-mode: $fill-mode;
+}
+
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+.victory-left {
+  @include animation(victory-left, 3s, linear);
+}
+
+.victory-right {
+  @include animation(victory-right, 3s, linear);
+}
+
+@include keyframes(victory-left) {
+  0% {
+    @include translate(0, 0);
+  }
+  10% {
+    @include translate(-7em, 46em);
+  }
+  20% {
+    @include translate(-13em, 23em);
+  }
+  30% {
+    @include translate(-19em, 46em);
+  }
+  40% {
+    @include translate(-24em, 35em);
+  }
+  50% {
+    @include translate(-29em, 46em);
+  }
+  60% {
+    @include translate(-34em, 41em);
+  }
+  70% {
+    @include translate(-38em, 46em);
+  }
+  80% {
+    @include translate(-41em, 44em);
+  }
+  90% {
+    @include translate(-44em, 46em);
+  }
+  100% {
+    @include translate(-46em, 46em);
+  }
+}
+
+@include keyframes(victory-right) {
+  0% {
+    @include translate(0, 0);
+  }
+  10% {
+    @include translate(7em, 46em);
+  }
+  20% {
+    @include translate(13em, 23em);
+  }
+  30% {
+    @include translate(19em, 46em);
+  }
+  40% {
+    @include translate(24em, 35em);
+  }
+  50% {
+    @include translate(29em, 46em);
+  }
+  60% {
+    @include translate(34em, 41em);
+  }
+  70% {
+    @include translate(38em, 46em);
+  }
+  80% {
+    @include translate(41em, 44em);
+  }
+  90% {
+    @include translate(44em, 46em);
+  }
+  100% {
+    @include translate(46em, 46em);
+  }
+}

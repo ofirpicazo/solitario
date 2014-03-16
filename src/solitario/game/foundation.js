@@ -8,7 +8,9 @@
 
 goog.provide('solitario.game.Foundation');
 
+goog.require('goog.Timer');
 goog.require('goog.dom.dataset');
+goog.require('goog.math');
 goog.require('solitario.game.Card');
 goog.require('solitario.game.Pile');
 
@@ -102,15 +104,35 @@ solitario.game.Foundation.prototype.pop = function() {
  * @override
  */
 solitario.game.Foundation.prototype.push = function(card) {
+  // Dispatch an event when the foundation is completed, but only after the
+  // pushed card has finished animating.
+  goog.events.listenOnce(card, goog.events.EventType.TRANSITIONEND,
+      function(evnt) {
+        if (this.isCompleted()) {
+          var completedEvent = new goog.events.Event(
+              solitario.game.constants.Events.FOUNDATION_COMPLETED, this);
+          goog.events.dispatchEvent(this, completedEvent);
+        }
+      }, false, this);
+
   solitario.game.Foundation.superClass_.push.call(this, card);
 
   if (!this.suit) {
     this.suit = card.suit;
   }
+};
 
-  if (this.isCompleted()) {
-    var completedEvent = new goog.events.Event(
-        solitario.game.constants.Events.FOUNDATION_COMPLETED, this);
-    goog.events.dispatchEvent(this, completedEvent);
+
+/**
+ * Shows the victory animation for all the cards in the foundation, with a
+ * random delay between them.
+ */
+solitario.game.Foundation.prototype.showVictory = function() {
+  var delay = 100;
+  for (var i = this.pile.length - 1; i >= 0; i--) {
+    // var delay = goog.math.safeFloor(goog.math.uniformRandom(300, 2000));
+    var card = this.pile[i];
+    goog.Timer.callOnce(card.showVictory, delay, card);
+    delay += 100 + goog.math.randomInt(50);
   }
 };

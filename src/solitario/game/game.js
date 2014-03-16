@@ -147,10 +147,12 @@ solitario.game.Game.prototype.calculateCardMovingPoints_ = function(card,
  *
  * @private
  */
-solitario.game.Game.prototype.handleWin_ = function() {
-  // TODO(ofirp): Display message or/and animation to show winning state.
-
+solitario.game.Game.prototype.handleVictory_ = function() {
   this.end();
+
+  for (var i = 0; i < this.foundations_.length; i++) {
+    this.foundations_[i].showVictory();
+  }
 };
 
 
@@ -372,7 +374,7 @@ solitario.game.Game.prototype.onFoundationCompleted_ = function(evnt) {
   }
 
   // All the foundations have been completed, we have won the game!!
-  this.handleWin_();
+  this.handleVictory_();
 };
 
 

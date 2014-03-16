@@ -12,6 +12,7 @@ goog.require('goog.dom.classes');
 goog.require('goog.dom.dataset');
 goog.require('goog.events');
 goog.require('goog.events.EventTarget');
+goog.require('goog.math');
 goog.require('goog.style');
 goog.require('solitario.game.constants');
 goog.require('solitario.game.utils');
@@ -159,7 +160,9 @@ solitario.game.Card.ClassNames_ = {
   FANNED: 'fanned',
   GROUPER: 'grouper',
   POINTER: 'pointer',
-  REVEALED: 'revealed'
+  REVEALED: 'revealed',
+  VICTORY_LEFT: 'victory-left',
+  VICTORY_RIGHT: 'victory-right'
 };
 
 
@@ -661,4 +664,17 @@ solitario.game.Card.prototype.showFannedShadow = function() {
 solitario.game.Card.prototype.showPointer = function() {
   goog.dom.classes.add(this.element_,
       solitario.game.Card.ClassNames_.POINTER);
+};
+
+
+/**
+ * Plays the victory animation on this card.
+ */
+solitario.game.Card.prototype.showVictory = function() {
+  var animations = [
+    solitario.game.Card.ClassNames_.VICTORY_LEFT,
+    solitario.game.Card.ClassNames_.VICTORY_RIGHT];
+  // Choose a victory animation randomly
+  goog.dom.classes.add(this.element_,
+      animations[goog.math.randomInt(animations.length)]);
 };
