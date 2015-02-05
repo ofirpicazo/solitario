@@ -2,3 +2,4 @@
 .sass-cache
 src/solitario/deps.js
 build/
+.idea
