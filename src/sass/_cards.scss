@@ -45,7 +45,7 @@ $card-width: 10em;
   }
 
   &.droptarget {
-    @include single-box-shadow($card-shadow-color, 0, 0, 0.5em);
+    @include single-box-shadow(0, 0, 0.5em, $card-shadow-color);
   }
 
   &.pointer .back,
@@ -57,7 +57,7 @@ $card-width: 10em;
     @include backface-visibility(hidden);
     @include border-radius(0.5em);
     // This shadow creates an outline for the card.
-    @include single-box-shadow($card-border-color, 0, 0, 0, 1px);
+    @include single-box-shadow(0, 0, 0, 1px, $card-border-color);
     height: $card-height;
     left: 0;
     position: absolute;
@@ -67,7 +67,7 @@ $card-width: 10em;
 
   &.dragging %card-side,
   &.fanned .front {
-    @include single-box-shadow(rgba(0, 0, 0, 0.5), 0, 0, 0.5em);
+    @include single-box-shadow(0, 0, 0.5em, rgba(0, 0, 0, 0.5));
   }
 
   &.droptarget .front {

@@ -42,7 +42,7 @@ body {
 }
 
 .topbar {
-  @include single-box-shadow(rgba(0, 0, 0, 0.4), 0, -1.5em, 4em, 0, true);
+  @include single-box-shadow(0, -1.5em, 4em, 0, rgba(0, 0, 0, 0.4), true);
   background: image-url("felt.jpg") left top;
   border-bottom: 3px solid rgba(0,0,0,0.4);
   color: #F5F5F5;
@@ -87,7 +87,7 @@ body {
 .score {
   @include border-radius(1em);
   @include perspective(1000);
-  @include single-box-shadow(rgba(30, 30, 30, 0.8), 0, 0, 0.5em, 0, true);
+  @include single-box-shadow(0, 0, 0.5em, 0, rgba(30, 30, 30, 0.8), true);
   font-size: 1.5em;
   font-weight: bold;
   left: 49.5em;
@@ -118,7 +118,7 @@ body {
 
 .pile {
   @include border-radius(0.5em);
-  @include single-box-shadow(rgba(0, 0, 0, 0.8), 0, 0, 0.5em, 0, true);
+  @include single-box-shadow(0, 0, 0.5em, 0, rgba(0, 0, 0, 0.8), true);
   background-color: rgba(255, 255, 255, 0.1);
   display: block;
   height: $pile-height;
